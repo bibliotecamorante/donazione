@@ -192,6 +192,19 @@
             text-decoration: underline;
         }
 
+        /* Nuovi stili per gli avvisi di input */
+        .input-warning {
+            color: #e74c3c;
+            font-size: 0.8em;
+            margin-top: 5px;
+            animation: fadeInOut 3s;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            10%, 90% { opacity: 1; }
+        }
+
         @media (max-width: 600px) {
             .container {
                 padding: 15px;
@@ -281,7 +294,7 @@
                 </div>
                 <div class="form-group">
                     <label>ISBN:</label>
-                    <input type="tel" class="book-isbn" pattern="[0-9]*">
+                    <input type="tel" class="book-isbn" pattern="[0-9]*" maxlength="13">
                 </div>
                 <button type="button" class="remove-book" onclick="removeBook(this)">Rimuovi</button>
                 <button type="button" class="add-book" onclick="createBookEntry()">+ Aggiungi Libro</button>
@@ -303,29 +316,80 @@
             });
         }
 
-        // Aggiungo event listener per la validazione numerica
+        // Validazione input
         document.addEventListener('DOMContentLoaded', () => {
-            // Validazione campo Telefono
             const telefonoInput = document.getElementById('telefono');
             telefonoInput.addEventListener('input', function(e) {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
-            });
-
-            // Delegated event listener per Anno e ISBN nei libri
-            document.getElementById('bookList').addEventListener('input', function(e) {
-                if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
-                    e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                const originalValue = e.target.value;
+                e.target.value = originalValue.replace(/[^0-9]/g, '');
+                
+                if (originalValue !== e.target.value) {
+                    showWarning(this, 'Inserire solo numeri nel campo Telefono');
                 }
             });
+
+            // Delegated event listener per Anno, ISBN nei libri
+            document.getElementById('bookList').addEventListener('input', function(e) {
+                if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
+                    const originalValue = e.target.value;
+                    
+                    // Validazione per Anno
+                    if (e.target.classList.contains('book-year')) {
+                        e.target.value = originalValue.replace(/[^0-9]/g, '');
+                        if (originalValue !== e.target.value) {
+                            showWarning(e.target, 'Inserire solo numeri nel campo Anno');
+                        }
+                    }
+                    
+                    // Validazione specifica per ISBN
+                    if (e.target.classList.contains('book-isbn')) {
+                        // Rimuovi caratteri non numerici
+                        const numericValue = originalValue.replace(/[^0-9]/g, '');
+                        
+                        // Limita a 13 cifre
+                        e.target.value = numericValue.slice(0, 13);
+                        
+                        // Mostra avviso se input originale era diverso
+                        if (originalValue !== e.target.value) {
+                            if (originalValue.replace(/[^0-9]/g, '').length > 13) {
+                                showWarning(e.target, 'L\'ISBN può contenere massimo 13 cifre');
+                            } else if (originalValue !== numericValue) {
+                                showWarning(e.target, 'Inserire solo numeri nel campo ISBN');
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Funzione per mostrare avvisi temporanei
+            function showWarning(element, message) {
+                // Rimuovi eventuali avvisi precedenti
+                const existingWarning = element.nextElementSibling;
+                if (existingWarning && existingWarning.classList.contains('input-warning')) {
+                    existingWarning.remove();
+                }
+
+                // Crea nuovo elemento di avviso
+                const warning = document.createElement('div');
+                warning.textContent = message;
+                warning.className = 'input-warning';
+                
+                // Inserisci l'avviso dopo l'input
+                element.parentNode.insertBefore(warning, element.nextSibling);
+
+                // Rimuovi l'avviso dopo 3 secondi
+                setTimeout(() => {
+                    if (warning.parentNode) {
+                        warning.remove();
+                    }
+                }, 3000);
+            }
         });
 
-        // Modifico la generazione Excel originale
         async function generateExcel(formData, books) {
-            // Il resto del codice rimane invariato
             const workbook = new ExcelJS.Workbook();
             const worksheet = workbook.addWorksheet('Donazione');
 
-            // Stili personalizzati
             const titleStyle = {
                 font: { size: 16, bold: true, color: { argb: '002060' } },
                 alignment: { horizontal: 'center' }
@@ -372,6 +436,8 @@
             worksheet.mergeCells('C5:G5');
             worksheet.getCell('A5').value = 'Nome e Cognome:';
             worksheet.getCell('C5').value = `${formData.nome} ${formData.cognome}`;
+            
+            
             
             worksheet.mergeCells('A6:B6');
             worksheet.mergeCells('C6:G6');
