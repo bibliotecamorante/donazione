@@ -318,7 +318,15 @@
 
         // Validazione input
 document.addEventListener('DOMContentLoaded', () => {
-    // Existing code for telephone validation...
+    const telefonoInput = document.getElementById('telefono');
+    telefonoInput.addEventListener('input', function(e) {
+        const originalValue = e.target.value;
+        e.target.value = originalValue.replace(/[^0-9]/g, '');
+        
+        if (originalValue !== e.target.value) {
+            showWarning(this, 'Inserire solo numeri nel campo Telefono');
+        }
+    });
 
     const emailInput = document.getElementById('email');
     emailInput.addEventListener('input', function(e) {
@@ -331,32 +339,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Existing delegated event listener, now with enhanced ISBN validation
+    // Delegated event listener per Anno, ISBN nei libri
     document.getElementById('bookList').addEventListener('input', function(e) {
         if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
             const originalValue = e.target.value;
             
-            // Existing Year validation...
-
-            // Enhanced ISBN validation
+            // Validazione per Anno
+            if (e.target.classList.contains('book-year')) {
+                e.target.value = originalValue.replace(/[^0-9]/g, '');
+                if (originalValue !== e.target.value) {
+                    showWarning(e.target, 'Inserire solo numeri nel campo Anno');
+                }
+            }
+            
+            // Validazione specifica per ISBN
             if (e.target.classList.contains('book-isbn')) {
                 // Rimuovi caratteri non numerici
                 const numericValue = originalValue.replace(/[^0-9]/g, '');
                 
-                // Limita a 13 cifre e mostra avviso specifico
+                // Limita a 13 cifre
                 if (numericValue.length > 13) {
                     e.target.value = numericValue.slice(0, 13);
                     showWarning(e.target, 'L\'ISBN può contenere massimo 13 cifre');
-                } else if (originalValue !== numericValue) {
-                    // Rimuovi caratteri non numerici
-                    e.target.value = numericValue;
-                    showWarning(e.target, 'Inserire solo numeri nel campo ISBN');
+                } else {
+                    // Mostra avviso per caratteri non numerici
+                    if (originalValue !== numericValue) {
+                        e.target.value = numericValue;
+                        showWarning(e.target, 'Inserire solo numeri nel campo ISBN');
+                    }
                 }
             }
         }
     });
 
-    // Existing showWarning function...
+    // Funzione per mostrare avvisi temporanei
     function showWarning(element, message) {
         // Rimuovi eventuali avvisi precedenti
         const existingWarning = element.nextElementSibling;
