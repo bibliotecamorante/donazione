@@ -317,74 +317,69 @@
         }
 
         // Validazione input
-        document.addEventListener('DOMContentLoaded', () => {
-            const telefonoInput = document.getElementById('telefono');
-            telefonoInput.addEventListener('input', function(e) {
-                const originalValue = e.target.value;
-                e.target.value = originalValue.replace(/[^0-9]/g, '');
+document.addEventListener('DOMContentLoaded', () => {
+    // Existing code for telephone validation...
+
+    const emailInput = document.getElementById('email');
+    emailInput.addEventListener('input', function(e) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const originalValue = e.target.value;
+
+        // Check for valid email format
+        if (originalValue && !emailRegex.test(originalValue)) {
+            showWarning(this, 'Inserire un indirizzo email valido');
+        }
+    });
+
+    // Existing delegated event listener, now with enhanced ISBN validation
+    document.getElementById('bookList').addEventListener('input', function(e) {
+        if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
+            const originalValue = e.target.value;
+            
+            // Existing Year validation...
+
+            // Enhanced ISBN validation
+            if (e.target.classList.contains('book-isbn')) {
+                // Rimuovi caratteri non numerici
+                const numericValue = originalValue.replace(/[^0-9]/g, '');
                 
-                if (originalValue !== e.target.value) {
-                    showWarning(this, 'Inserire solo numeri nel campo Telefono');
+                // Limita a 13 cifre e mostra avviso specifico
+                if (numericValue.length > 13) {
+                    e.target.value = numericValue.slice(0, 13);
+                    showWarning(e.target, 'L\'ISBN può contenere massimo 13 cifre');
+                } else if (originalValue !== numericValue) {
+                    // Rimuovi caratteri non numerici
+                    e.target.value = numericValue;
+                    showWarning(e.target, 'Inserire solo numeri nel campo ISBN');
                 }
-            });
-
-            // Delegated event listener per Anno, ISBN nei libri
-            document.getElementById('bookList').addEventListener('input', function(e) {
-                if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
-                    const originalValue = e.target.value;
-                    
-                    // Validazione per Anno
-                    if (e.target.classList.contains('book-year')) {
-                        e.target.value = originalValue.replace(/[^0-9]/g, '');
-                        if (originalValue !== e.target.value) {
-                            showWarning(e.target, 'Inserire solo numeri nel campo Anno');
-                        }
-                    }
-                    
-                    // Validazione specifica per ISBN
-                    if (e.target.classList.contains('book-isbn')) {
-                        // Rimuovi caratteri non numerici
-                        const numericValue = originalValue.replace(/[^0-9]/g, '');
-                        
-                        // Limita a 13 cifre
-                        e.target.value = numericValue.slice(0, 13);
-                        
-                        // Mostra avviso se input originale era diverso
-                        if (originalValue !== e.target.value) {
-                            if (originalValue.replace(/[^0-9]/g, '').length > 13) {
-                                showWarning(e.target, 'L\'ISBN può contenere massimo 13 cifre');
-                            } else if (originalValue !== numericValue) {
-                                showWarning(e.target, 'Inserire solo numeri nel campo ISBN');
-                            }
-                        }
-                    }
-                }
-            });
-
-            // Funzione per mostrare avvisi temporanei
-            function showWarning(element, message) {
-                // Rimuovi eventuali avvisi precedenti
-                const existingWarning = element.nextElementSibling;
-                if (existingWarning && existingWarning.classList.contains('input-warning')) {
-                    existingWarning.remove();
-                }
-
-                // Crea nuovo elemento di avviso
-                const warning = document.createElement('div');
-                warning.textContent = message;
-                warning.className = 'input-warning';
-                
-                // Inserisci l'avviso dopo l'input
-                element.parentNode.insertBefore(warning, element.nextSibling);
-
-                // Rimuovi l'avviso dopo 3 secondi
-                setTimeout(() => {
-                    if (warning.parentNode) {
-                        warning.remove();
-                    }
-                }, 3000);
             }
-        });
+        }
+    });
+
+    // Existing showWarning function...
+    function showWarning(element, message) {
+        // Rimuovi eventuali avvisi precedenti
+        const existingWarning = element.nextElementSibling;
+        if (existingWarning && existingWarning.classList.contains('input-warning')) {
+            existingWarning.remove();
+        }
+
+        // Crea nuovo elemento di avviso
+        const warning = document.createElement('div');
+        warning.textContent = message;
+        warning.className = 'input-warning';
+        
+        // Inserisci l'avviso dopo l'input
+        element.parentNode.insertBefore(warning, element.nextSibling);
+
+        // Rimuovi l'avviso dopo 3 secondi
+        setTimeout(() => {
+            if (warning.parentNode) {
+                warning.remove();
+            }
+        }, 3000);
+    }
+});
 
         async function generateExcel(formData, books) {
             const workbook = new ExcelJS.Workbook();
