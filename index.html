@@ -133,6 +133,226 @@
     </style>
 </head>
 <body>
-    <!-- Resto del codice HTML e JavaScript rimane invariato come nell'ultimo esempio -->
+<div class="container">
+    <h1>Donazione alla Biblioteca Elsa Morante</h1>
+    <div class="info-box">Compila il modulo per donare i tuoi libri alla biblioteca. Tutti i campi contrassegnati con * sono obbligatori.</div>
+    <form id="donationForm">
+        <h3>Dati Personali</h3>
+        <div class="form-group">
+            <label for="nome">Nome:* </label>
+            <input type="text" id="nome" name="nome" required>
+        </div>
+        <div class="form-group">
+            <label for="cognome">Cognome:* </label>
+            <input type="text" id="cognome" name="cognome" required>
+        </div>
+        <div class="form-group">
+            <label for="tessera">Numero Tessera:</label>
+            <input type="text" id="tessera" name="tessera">
+        </div>
+        <div class="form-group">
+            <label for="telefono">Telefono:</label>
+            <input type="tel" id="telefono" name="telefono" pattern="[0-9]+" title="Inserire solo numeri">
+        </div>
+        <div class="form-group">
+            <label for="email">Email:* </label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        
+        <h3>Libri da donare</h3>
+        <div id="bookList"></div>
+
+        <div class="consent-box">
+            <label><input type="checkbox" id="accept" name="accept" required> Ho letto e accetto i 
+                <a href="https://www.bibliotechediroma.it/sebina/repository/opac/images/Elsa_Morante/TERMINI%20E%20CONDIZIONI.pdf" target="_blank">termini e condizioni</a></label>
+        </div>
+
+        <button type="submit">Accetta e Genera il Documento</button>
+    </form>
+</div>
+
+<script>
+let bookCount = 0;
+
+function createBookEntry() {
+    const bookDiv = document.createElement('div');
+    bookDiv.className = 'book-entry';
+    bookCount++;
+    bookDiv.innerHTML = `
+    <div class="book-counter">${bookCount}</div>
+    <div class="form-group">
+      <label>Titolo:* </label>
+      <input type="text" class="book-title" required>
+    </div>
+    <div class="form-group">
+      <label>Autore:</label>
+      <input type="text" class="book-author">
+    </div>
+    <div class="form-group">
+      <label>Editore:</label>
+      <input type="text" class="book-publisher">
+    </div>
+    <div class="form-group">
+      <label>Anno:</label>
+      <input type="number" class="book-year" min="1000" max="2024">
+    </div>
+    <div class="form-group">
+      <label>ISBN:</label>
+      <input type="text" class="book-isbn" pattern="[0-9-]{10,13}" title="Inserire ISBN (solo numeri e trattini, max 13 caratteri)">
+    </div>
+
+    <button type='button' class='remove-book' onclick='removeBook(this)'>Rimuovi</button> 
+    <button type='button' class='add-book' onclick='createBookEntry()'>+ Aggiungi Libro</button>`;
+    
+    document.getElementById('bookList').appendChild(bookDiv);
+    updateBookCounters();
+}
+
+function removeBook(button) {
+    button.parentElement.remove();
+    bookCount--;
+    updateBookCounters();
+}
+
+function updateBookCounters() {
+    const bookEntries = document.querySelectorAll('.book-entry');
+    bookEntries.forEach((entry, index) => {
+        entry.querySelector('.book-counter').textContent = index + 1;
+    });
+}
+
+async function generateExcel(formData, books) {
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Donazione');
+
+    // Stili personalizzati
+    const titleStyle = {
+      font: { size: 16, bold: true, color: { argb: '002060' } },
+      alignment: { horizontal: 'center' },
+   };
+
+   const headerStyle = {
+      font: { bold: true, color: { argb: 'FFFFFF' }, size: 14 },
+      fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '2F5496' } },
+      alignment: { horizontal: 'center', vertical: 'middle' },
+      border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } },
+   };
+
+   const dataStyle = {
+      font: { size: 14 },
+      alignment: { vertical: 'middle' },
+      border: { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } },
+   };
+
+    // Resto della funzione generateExcel rimane invariato
+    // ... (codice precedente)
+
+    worksheet.columns = [
+        { width: 4 },   // N.
+        { width: 70 },  // Titolo (allargata ulteriormente)
+        { width: 50 },  // Autore (allargata)
+        { width: 45 },  // Editore (allargata)
+        { width: 15 },  // Anno
+        { width: 40 }   // ISBN (allargata)
+    ];
+
+    // ... (resto del codice)
+}
+
+// Event Listener per il form
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    
+    const tessera = document.getElementById('tessera').value.trim();
+    
+    const telefono = document.getElementById('telefono').value.trim();
+    
+    const acceptCheckbox = document.getElementById('accept');
+
+    
+    if (!nome || !cognome || !email) {
+       alert('Per favore compila tutti i campi obbligatori.');
+       return;
+    }
+
+    if (!acceptCheckbox.checked) {
+       alert('Devi accettare i termini e le condizioni per procedere.');
+       return;
+    }
+
+    const books = [];
+    const bookEntries = document.querySelectorAll('.book-entry');
+
+    for (const bookDiv of bookEntries) {
+       const title = bookDiv.querySelector('.book-title').value.trim();
+       
+       if (!title) {
+           alert('Per favore inserisci almeno il titolo per ogni libro.');
+           return;
+       }
+
+       const book = {
+           title: title,
+           author: bookDiv.querySelector('.book-author').value.trim(),
+           publisher: bookDiv.querySelector('.book-publisher').value.trim(),
+           year: bookDiv.querySelector('.book-year').value.trim(),
+           isbn: bookDiv.querySelector('.book-isbn').value.trim()
+       };
+       
+       books.push(book);
+    }
+
+    if (books.length === 0) {
+       alert('Aggiungi almeno un libro alla donazione.');
+       return;
+    }
+
+    const formData = {nome, cognome, email, tessera, telefono};
+
+    try {
+       // Mostra indicatore di caricamento
+       const submitButton = event.target.querySelector('button[type="submit"]');
+       const originalText = submitButton.textContent;
+       
+       submitButton.disabled = true;
+       submitButton.textContent = 'Generazione documento in corso...';
+
+       await generateExcel(formData, books);
+
+       // Ripristina il bottone 
+       submitButton.disabled = false;
+       submitButton.textContent = originalText;
+
+       // Reset form 
+       event.target.reset();
+       
+       const bookList = document.getElementById('bookList');
+       
+       bookList.innerHTML = '';
+       
+       bookCount = 0;
+       
+       createBookEntry();
+
+    } catch (error) {
+       
+       console.error('Errore durante la generazione del file Excel:', error);
+       alert('Si è verificato un errore durante la generazione del documento. Riprova più tardi.');
+
+       const submitButton = event.target.querySelector('button[type="submit"]');
+       submitButton.disabled = false;
+       submitButton.textContent = originalText;
+
+    }
+});
+
+// Crea il primo libro quando la pagina si carica
+document.addEventListener('DOMContentLoaded', createBookEntry);
+</script>
+
 </body>
 </html>
