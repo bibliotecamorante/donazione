@@ -317,6 +317,7 @@
         }
 
         // Validazione input
+
 document.addEventListener('DOMContentLoaded', () => {
     const telefonoInput = document.getElementById('telefono');
     telefonoInput.addEventListener('input', function(e) {
@@ -333,47 +334,46 @@ document.addEventListener('DOMContentLoaded', () => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const originalValue = e.target.value;
 
-        // Check for valid email format
         if (originalValue && !emailRegex.test(originalValue)) {
             showWarning(this, 'Inserire un indirizzo email valido');
         }
     });
 
-    // Delegated event listener per Anno, ISBN nei libri
+    // Delegated event listener for Year and ISBN in books
     document.getElementById('bookList').addEventListener('input', function(e) {
-    if (e.target.classList.contains('book-year')) {
-        const originalValue = e.target.value;
-        const currentYear = new Date().getFullYear();
-        
-        // Rimuove caratteri non numerici
-        e.target.value = originalValue.replace(/[^0-9]/g, '');
-
-        // Controlla lunghezza massima
-        if (e.target.value.length > 4) {
-            e.target.value = e.target.value.slice(0, 4);
-            showWarning(e.target, 'L\'anno può contenere massimo 4 cifre');
-        }
-
-        // Controlla intervallo valido
-        const numericValue = parseInt(e.target.value, 10);
-        if (numericValue < 1800 || numericValue > currentYear) {
-            showWarning(e.target, `Inserisci un anno tra 1800 e ${currentYear}`);
-        }
-    }
-});
-
+        if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
+            const originalValue = e.target.value;
             
-            // Validazione specifica per ISBN
+            // Year validation
+            if (e.target.classList.contains('book-year')) {
+                // Remove non-numeric characters
+                const numericValue = originalValue.replace(/[^0-9]/g, '');
+                e.target.value = numericValue;
+                
+                if (originalValue !== numericValue) {
+                    showWarning(e.target, 'Inserire solo numeri nel campo Anno');
+                }
+                
+                // Validate year range
+                const year = parseInt(numericValue);
+                const currentYear = new Date().getFullYear();
+                
+                if (numericValue.length > 0) {
+                    if (year < 1800 || year > currentYear) {
+                        e.target.value = ''; // Clear invalid input
+                        showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                    }
+                }
+            }
+            
+            // ISBN validation
             if (e.target.classList.contains('book-isbn')) {
-                // Rimuovi caratteri non numerici
                 const numericValue = originalValue.replace(/[^0-9]/g, '');
                 
-                // Limita a 13 cifre
                 if (numericValue.length > 13) {
                     e.target.value = numericValue.slice(0, 13);
                     showWarning(e.target, 'L\'ISBN può contenere massimo 13 cifre');
                 } else {
-                    // Mostra avviso per caratteri non numerici
                     if (originalValue !== numericValue) {
                         e.target.value = numericValue;
                         showWarning(e.target, 'Inserire solo numeri nel campo ISBN');
@@ -383,23 +383,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Funzione per mostrare avvisi temporanei
     function showWarning(element, message) {
-        // Rimuovi eventuali avvisi precedenti
         const existingWarning = element.nextElementSibling;
         if (existingWarning && existingWarning.classList.contains('input-warning')) {
             existingWarning.remove();
         }
 
-        // Crea nuovo elemento di avviso
         const warning = document.createElement('div');
         warning.textContent = message;
         warning.className = 'input-warning';
         
-        // Inserisci l'avviso dopo l'input
         element.parentNode.insertBefore(warning, element.nextSibling);
 
-        // Rimuovi l'avviso dopo 3 secondi
         setTimeout(() => {
             if (warning.parentNode) {
                 warning.remove();
@@ -407,6 +402,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 3000);
     }
 });
+
+        
 
         async function generateExcel(formData, books) {
             const workbook = new ExcelJS.Workbook();
