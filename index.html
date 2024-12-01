@@ -18,25 +18,34 @@
         .book-entry { background-color: #f8f9fa; border: 1px solid #e9ecef; border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; transition: transform 0.2s ease; }
         .book-entry:hover { transform: translateY(-2px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .book-counter { position: absolute; top: -10px; right: -10px; background: #3498db; color: white; width: 25px; height: 25px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; }
-        .button-group { text-align: center; margin: 20px 0; }
-        button { padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500; transition: all 0.3s ease; }
-        .add-book { background-color: #2ecc71; color: white; margin: 10px 0; width: 100%; }
-        .add-book:hover { background-color: #27ae60; transform: translateY(-2px); }
-        .remove-book { background-color: #e74c3c; color: white; padding: 8px 16px; font-size: 14px; position:absolute ; top :10 px ; right :10 px ; }
-        .remove-book:hover { background-color:# c0392b ; }
-        button[type="submit"] { background-color:#3498db ; color:white ; width :100 % ; max-width :300 px ; margin :20 px auto ; display:block ; }
-        button[type="submit"]:hover { background-color:#2980b9 ; }
-        .consent-box { background-color:#f8f9fa ; padding :15 px ; border-radius :5 px ; margin :20 px auto ; }
-        .consent-box label { display:flex ; align-items:center ; gap :10 px ; }
-        input[type="checkbox"] { width :18 px ; height :18 px ; }
-        .info-box { background-color:#e1f5fe ; border-left :4 px solid #03a9f4 ; padding :15 px ; margin-bottom :20 px ; border-radius :0 5 px 5 px 0 ; }
-        a { color:#3498db ; text-decoration:none ; }
-        a:hover { text-decoration :underline ; }
+        .button-group { display: flex; justify-content: space-between; margin-top: 10px; }
+        .remove-book, .add-book { 
+            padding: 8px 16px; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 14px; 
+            font-weight: 500; 
+            transition: all 0.3s ease; 
+            margin: 0 5px;
+        }
+        .add-book { background-color: #2ecc71; color: white; }
+        .add-book:hover { background-color: #27ae60; }
+        .remove-book { background-color: #e74c3c; color: white; }
+        .remove-book:hover { background-color: #c0392b; }
+        button[type="submit"] { background-color: #3498db; color: white; width: 100%; max-width: 300px; margin: 20px auto; display: block; padding: 12px 24px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: 500; transition: all 0.3s ease; }
+        button[type="submit"]:hover { background-color: #2980b9; }
+        .consent-box { background-color: #f8f9fa; padding: 15px; border-radius: 5px; margin: 20px auto; }
+        .consent-box label { display: flex; align-items: center; gap: 10px; }
+        input[type="checkbox"] { width: 18px; height: 18px; }
+        .info-box { background-color: #e1f5fe; border-left: 4px solid #03a9f4; padding: 15px; margin-bottom: 20px; border-radius: 0 5px 5px 0; }
+        a { color: #3498db; text-decoration: none; }
+        a:hover { text-decoration: underline; }
         .error-message { color: #e74c3c; font-size: 0.8em; margin-top: 5px; display: none; }
 
-        @media (max-width :600 px) {
-            .container { padding :15 px ; }
-            button { width :100 % ; margin-bottom :10 px ; }
+        @media (max-width: 600px) {
+            .container { padding: 15px; }
+            button { width: 100%; margin-bottom: 10px; }
         }
     </style>
 </head>
@@ -112,8 +121,11 @@ function createBookEntry() {
       <div class="error-message">Inserisci solo numeri e trattini, massimo 13 caratteri</div>
     </div>
 
-    <button type='button' class='remove-book' onclick='removeBook(this)'>Rimuovi</button> 
-    <button type='button' class='add-book' onclick='createBookEntry()'>+ Aggiungi Libro</button>`;
+    <div class="button-group">
+      <button type='button' class='remove-book' onclick='removeBook(this)'>Rimuovi</button>
+      <button type='button' class='add-book' onclick='createBookEntry()'>+ Aggiungi Libro</button>
+    </div>
+    `;
     
     document.getElementById('bookList').appendChild(bookDiv);
     updateBookCounters();
@@ -145,9 +157,13 @@ function validateISBNInput(input, errorElement) {
 }
 
 function removeBook(button) {
-    button.parentElement.remove();
-    bookCount--;
-    updateBookCounters();
+    if (document.querySelectorAll('.book-entry').length > 1) {
+        button.closest('.book-entry').remove();
+        bookCount--;
+        updateBookCounters();
+    } else {
+        alert('Deve essere presente almeno un libro');
+    }
 }
 
 function updateBookCounters() {
@@ -165,15 +181,92 @@ document.getElementById('telefono').addEventListener('input', function() {
     this.setCustomValidity(isValid ? '' : 'Invalid input');
 });
 
-// Rest of the previous generateExcel and form submission code remains the same as in the original script
-// (The generateExcel function and form submission event listener code would be identical to the previous version)
-
 async function generateExcel(formData, books) {
-    // ... (previous implementation remains the same)
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet('Donazione Libri');
+
+    // Intestazione personale
+    worksheet.columns = [
+        { header: 'Nome', key: 'nome', width: 20 },
+        { header: 'Cognome', key: 'cognome', width: 20 },
+        { header: 'Numero Tessera', key: 'tessera', width: 20 },
+        { header: 'Telefono', key: 'telefono', width: 20 },
+        { header: 'Email', key: 'email', width: 30 }
+    ];
+
+    worksheet.addRow({
+        nome: formData.nome,
+        cognome: formData.cognome,
+        tessera: formData.tessera || 'Non specificato',
+        telefono: formData.telefono || 'Non specificato',
+        email: formData.email
+    });
+
+    // Riga vuota
+    worksheet.addRow({});
+
+    // Intestazione libri
+    worksheet.columns = [
+        { header: 'Libro', key: 'numero', width: 10 },
+        { header: 'Titolo', key: 'titolo', width: 40 },
+        { header: 'Autore', key: 'autore', width: 30 },
+        { header: 'Editore', key: 'editore', width: 30 },
+        { header: 'Anno', key: 'anno', width: 15 },
+        { header: 'ISBN', key: 'isbn', width: 20 }
+    ];
+
+    // Aggiungi i libri
+    books.forEach((book, index) => {
+        worksheet.addRow({
+            numero: index + 1,
+            titolo: book.title,
+            autore: book.author || 'Non specificato',
+            editore: book.publisher || 'Non specificato',
+            anno: book.year || 'Non specificato',
+            isbn: book.isbn || 'Non specificato'
+        });
+    });
+
+    // Genera il file
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'donazione_libri.xlsx';
+    a.click();
+    window.URL.revokeObjectURL(url);
 }
 
 document.getElementById('donationForm').addEventListener('submit', async function(event) {
-    // ... (previous implementation remains the same)
+    event.preventDefault();
+
+    // Raccogli i dati personali
+    const formData = {
+        nome: document.getElementById('nome').value,
+        cognome: document.getElementById('cognome').value,
+        tessera: document.getElementById('tessera').value,
+        telefono: document.getElementById('telefono').value,
+        email: document.getElementById('email').value
+    };
+
+    // Raccogli i dati dei libri
+    const bookEntries = document.querySelectorAll('.book-entry');
+    const books = Array.from(bookEntries).map(entry => ({
+        title: entry.querySelector('.book-title').value,
+        author: entry.querySelector('.book-author').value,
+        publisher: entry.querySelector('.book-publisher').value,
+        year: entry.querySelector('.book-year').value,
+        isbn: entry.querySelector('.book-isbn').value
+    }));
+
+    try {
+        await generateExcel(formData, books);
+        alert('Documento generato con successo!');
+    } catch (error) {
+        console.error('Errore nella generazione del documento:', error);
+        alert('Si è verificato un errore durante la generazione del documento.');
+    }
 });
 
 // Crea il primo libro quando la pagina si carica
