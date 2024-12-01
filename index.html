@@ -31,10 +31,10 @@
 
         .header-container {
             display: flex;
-            align-items: center;
-            gap: 20px; /* Distanza tra il logo e il titolo */
+            flex-direction: column; /* Imposta la direzione verticale per il layout */
+            align-items: flex-start;
+            gap: 10px; /* Distanza tra logo e testo */
             margin-bottom: 30px;
-            justify-content: flex-start;
         }
 
         .header-container img {
@@ -45,17 +45,17 @@
         .header-container h1 {
             margin-bottom: 0;
             color: #2c3e50;
-            font-size: 2.2em; /* Dimensione standard del titolo */
+            font-size: 2.2em; /* Dimensione del titolo */
             line-height: 1.1;
         }
 
         .header-container h1 span {
-            display: block; /* Mostra "Elsa Morante" sulla riga successiva */
-            font-size: 1.5em; /* Più grande per enfatizzare */
-            font-weight: bold; /* Grassetto per maggiore enfasi */
-            color: #2c3e50; /* Colore coerente con il titolo */
-            margin-top: 5px;
+            display: block; /* Questo rende "Elsa Morante" un blocco a sé */
+            font-size: 1.5em; /* Dimensione più grande per "Elsa Morante" */
+            font-weight: bold; /* Rende il testo in grassetto */
+            color: #2c3e50;
         }
+
 
         h3 {
             color: #34495e;
