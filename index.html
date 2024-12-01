@@ -32,28 +32,29 @@
         .header-container {
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 20px; /* Standard gap */
-            margin-bottom: 30px; /* Standard bottom margin */
+            gap: 20px; /* Distanza tra il logo e il titolo */
+            margin-bottom: 30px;
+            justify-content: flex-start;
         }
 
         .header-container img {
-            height: 50px; /* Reduced from 60px */
+            height: 50px; /* Altezza del logo */
             width: auto;
         }
 
         .header-container h1 {
             margin-bottom: 0;
             color: #2c3e50;
-            text-align: center;
-            font-size: 2.2em; /* Standard font size */
-            line-height: 1.1; /* Reduced line height */
+            font-size: 2.2em; /* Dimensione standard del titolo */
+            line-height: 1.1;
         }
 
-        .title-line {
-            display: block; /* Makes text break into new line */
+        .header-container h1 span {
+            display: block; /* Mostra il sottotitolo sulla riga successiva */
+            font-size: 1.2em; /* Sottotitolo di dimensioni più piccole */
+            color: #7f8c8d; /* Colore del sottotitolo */
+            margin-top: 5px;
         }
-
 
         h3 {
             color: #34495e;
