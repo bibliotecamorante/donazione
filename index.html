@@ -318,7 +318,7 @@
 
         // Validazione input
 
-document.addEventListener('DOMContentLoaded', () => {
+      document.addEventListener('DOMContentLoaded', () => {
     const telefonoInput = document.getElementById('telefono');
     telefonoInput.addEventListener('input', function(e) {
         const originalValue = e.target.value;
@@ -347,17 +347,33 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Year validation
             if (e.target.classList.contains('book-year')) {
-                // Remove non-numeric characters and update input value
                 let numericValue = originalValue.replace(/[^0-9]/g, '');
-                e.target.value = numericValue;
                 
-                // Check year range only if we have a complete year
-                if (numericValue.length === 4) {
+                // Previeni l'inserimento di numeri che porterebbero a un anno invalido
+                if (numericValue.length > 0) {
                     const year = parseInt(numericValue);
-                    if (year < 1800 || year > currentYear) {
-                        showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                    if (numericValue.length === 4) {
+                        if (year < 1800 || year > currentYear) {
+                            numericValue = numericValue.slice(0, -1);
+                            showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                        }
+                    } else if (numericValue.length > 4) {
+                        numericValue = numericValue.slice(0, 4);
+                    } else {
+                        // Controllo preventivo per i primi numeri
+                        if (numericValue.length === 1 && (numericValue < '1')) {
+                            numericValue = '';
+                            showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                        } else if (numericValue.length === 2 && (numericValue < '18')) {
+                            numericValue = numericValue.slice(0, -1);
+                            showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                        } else if (numericValue.length === 3 && parseInt(numericValue) < 180) {
+                            numericValue = numericValue.slice(0, -1);
+                            showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
+                        }
                     }
                 }
+                e.target.value = numericValue;
             }
             
             // ISBN validation
