@@ -258,22 +258,84 @@ input[type="checkbox"] {
             10%, 90% { opacity: 1; }
         }
 
-        @media (max-width: 600px) {
+          @media (max-width: 600px) {
             .container {
                 padding: 15px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-container img {
+                height: 50px;
+            }
+
+            .header-container h1 {
+                font-size: 1.8em;
+                text-align: center;
+                width: 100%;
             }
 
             button {
                 width: 100%;
                 margin-bottom: 10px;
             }
+
+            .book-entry {
+                position: relative;
+                padding-top: 40px;
+            }
+            
+            .book-entry .form-group {
+                margin-bottom: 15px;
+            }
+            
+            .book-entry label {
+                margin-bottom: 5px;
+            }
+            
+            .remove-book {
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: auto;
+                padding: 5px 10px;
+                font-size: 12px;
+                margin-bottom: 10px;
+            }
+            
+            .add-book {
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .book-counter {
+                top: 5px;
+                right: 5px;
+                width: 20px;
+                height: 20px;
+                font-size: 12px;
+            }
+
+            .consent-box label {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+            
+            .consent-box input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+   <div class="container">
         <div class="header-container">
-            <img src="logo.png" alt="Logo Biblioteca">
+            <img src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" alt="Logo Biblioteca">
             <h1>Donazione alla Biblioteca Elsa Morante</h1>
         </div>
         
