@@ -9,20 +9,10 @@
 </head>
 <body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
-        
-        
-<div class="flex flex-col items-center justify-center mb-10 text-center space-y-4 px-4">
-    <img 
-        src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
-        alt="Logo Biblioteca" 
-        class="h-16 w-auto object-contain mb-3 md:h-16 sm:h-12" />
-    
-    <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center sm:text-xl md:text-3xl">
-        Donazione alla Biblioteca Elsa Morante
-    </h1>
-</div>
-
-
+        <div class="flex flex-col md:flex-row items-center justify-center gap-5 mb-8 text-center">
+            <img src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" alt="Logo Biblioteca" class="h-16 md:h-14 w-auto object-contain">
+            <h1 class="text-3xl md:text-4xl text-slate-700 leading-tight m-0">Donazione alla Biblioteca Elsa Morante</h1>
+        </div>
         
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
             Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
@@ -80,7 +70,7 @@
             bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
             bookCount++;
 
-            bookDiv.innerHTML = 
+            bookDiv.innerHTML = `
                 <div class="absolute -top-2 -left-2 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">${bookCount}</div>
                 
                 <div class="mb-5">
@@ -109,7 +99,7 @@
 
                 
                 <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
-            ;
+            `;
             document.getElementById('bookList').appendChild(bookDiv);
             updateBookCounters();
         }
@@ -162,20 +152,20 @@
                             if (numericValue.length === 4) {
                                 if (year < 1800 || year > currentYear) {
                                     numericValue = numericValue.slice(0, -1);
-                                    showWarning(e.target, L'anno deve essere compreso tra 1800 e ${currentYear});
+                                    showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
                                 }
                             } else if (numericValue.length > 4) {
                                 numericValue = numericValue.slice(0, 4);
                             } else {
                                 if (numericValue.length === 1 && (numericValue < '1')) {
                                     numericValue = '';
-                                    showWarning(e.target, L'anno deve essere compreso tra 1800 e ${currentYear});
+                                    showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
                                 } else if (numericValue.length === 2 && (numericValue < '18')) {
                                     numericValue = numericValue.slice(0, -1);
-                                    showWarning(e.target, L'anno deve essere compreso tra 1800 e ${currentYear});
+                                    showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
                                 } else if (numericValue.length === 3 && parseInt(numericValue) < 180) {
                                     numericValue = numericValue.slice(0, -1);
-                                    showWarning(e.target, L'anno deve essere compreso tra 1800 e ${currentYear});
+                                    showWarning(e.target, `L'anno deve essere compreso tra 1800 e ${currentYear}`);
                                 }
                             }
                         }
@@ -267,7 +257,7 @@
             worksheet.mergeCells('A5:B5');
             worksheet.mergeCells('C5:G5');
             worksheet.getCell('A5').value = 'Nome e Cognome:';
-            worksheet.getCell('C5').value = ${formData.nome} ${formData.cognome};
+            worksheet.getCell('C5').value = `${formData.nome} ${formData.cognome}`;
             
             
             
@@ -288,8 +278,8 @@
 
             // Applica stili ai dati del donatore
             for (let row = 5; row <= 8; row++) {
-                worksheet.getCell(A${row}).style = { ...dataStyle, font: { bold: true } }; // Etichetta in grassetto
-                worksheet.getCell(C${row}).style = dataStyle; // Dati formattati
+                worksheet.getCell(`A${row}`).style = { ...dataStyle, font: { bold: true } }; // Etichetta in grassetto
+                worksheet.getCell(`C${row}`).style = dataStyle; // Dati formattati
             }
 
             // Aggiungi la stringa "DICHIARAZIONE"
@@ -336,7 +326,7 @@
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx;
+    a.download = `donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx`;
     a.click();
     window.URL.revokeObjectURL(url);
 }
