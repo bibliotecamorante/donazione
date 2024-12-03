@@ -75,43 +75,43 @@
         let bookCount = 0;
 
  function createBookEntry() {
-            const bookDiv = document.createElement('div');
-            bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
-            bookCount++;
+    const bookDiv = document.createElement('div');
+    bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
+    bookCount++;
 
-            bookDiv.innerHTML = `
-                <div class="absolute -top-2 -left-2 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">${bookCount}</div>
-                
-                <div class="mb-5">
-                    <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
-                    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
-                </div>
-                <div class="mb-5">
-                    <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
-                    <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                </div>
-                <div class="mb-5">
-                    <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
-                    <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                </div>
-                <div class="mb-5">
-                    <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
-                    <input type="tel" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*">
-                </div>
-                <div class="mb-5">
-                    <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
-                    <input type="tel" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*" maxlength="13">
-                </div>
-                
-       <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600"
-        style="position: absolute; top: 2px; right: 2px; z-index: 10; color: #ff0000;" onclick="removeBook(this)">✖</button>
+    bookDiv.innerHTML = `
+        ${bookCount > 1 ? `
+            <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600"
+            style="position: absolute; top: 2px; right: 2px; z-index: 10; color: #ff0000;" onclick="removeBook(this)">✖</button>
+        ` : ''}
+        
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+            <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+        </div>
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
+            <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+        </div>
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">Editore:</label>
+            <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+        </div>
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
+            <input type="tel" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*">
+        </div>
+        <div class="mb-5">
+            <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
+            <input type="tel" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*" maxlength="13">
+        </div>
+        
+        <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
+    `;
+    document.getElementById('bookList').appendChild(bookDiv);
+    updateBookCounters();
+}
 
-                
-                <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
-            `;
-            document.getElementById('bookList').appendChild(bookDiv);
-            updateBookCounters();
-        }
 
         function removeBook(button) {
             button.parentElement.remove();
@@ -343,90 +343,116 @@
         
 
         // Event Listener per il form
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
-            event.preventDefault();
-            
-            const nome = document.getElementById('nome').value.trim();
-            const cognome = document.getElementById('cognome').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const tessera = document.getElementById('tessera').value.trim();
-            const telefono = document.getElementById('telefono').value.trim();
-            const acceptCheckbox = document.getElementById('accept');
-            
-            if (!nome || !cognome || !email) {
-             alert('Per favore compila tutti i campi obbligatori.');
-                return;
-            }
-            
-            if (!acceptCheckbox.checked) {
-                alert('Devi accettare i termini e le condizioni per procedere.');
-                return;
-            }
+document.getElementById('donationForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const tessera = document.getElementById('tessera').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const acceptCheckbox = document.getElementById('accept');
+    
+    if (!nome || !cognome || !email) {
+        alert('Per favore compila tutti i campi obbligatori.');
+        return;
+    }
+    
+    if (!acceptCheckbox.checked) {
+        alert('Devi accettare i termini e le condizioni per procedere.');
+        return;
+    }
 
-            const books = [];
-            const bookEntries = document.querySelectorAll('.book-entry');
-            
-            for (const bookDiv of bookEntries) {
-                const title = bookDiv.querySelector('.book-title').value.trim();
-                
-                if (!title) {
-                    alert('Per favore inserisci almeno il titolo per ogni libro.');
-                    return;
-                }
-                
-                const book = {
-                    title: title,
-                    author: bookDiv.querySelector('.book-author').value.trim(),
-                    publisher: bookDiv.querySelector('.book-publisher').value.trim(),
-                    year: bookDiv.querySelector('.book-year').value.trim(),
-                    isbn: bookDiv.querySelector('.book-isbn').value.trim()
-                };
-                books.push(book);
-            }
+    const books = [];
+    const bookEntries = document.querySelectorAll('.book-entry');
+    
+    for (const bookDiv of bookEntries) {
+        const title = bookDiv.querySelector('.book-title').value.trim();
+        
+        if (!title) {
+            alert('Per favore inserisci almeno il titolo per ogni libro.');
+            return;
+        }
+        
+        const book = {
+            title: title,
+            author: bookDiv.querySelector('.book-author').value.trim(),
+            publisher: bookDiv.querySelector('.book-publisher').value.trim(),
+            year: bookDiv.querySelector('.book-year').value.trim(),
+            isbn: bookDiv.querySelector('.book-isbn').value.trim()
+        };
+        books.push(book);
+    }
 
-            if (books.length === 0) {
-                alert('Aggiungi almeno un libro alla donazione.');
-                return;
-            }
-            
-            const formData = {
-                nome,
-                cognome,
-                email,
-                tessera,
-                telefono
-            };
-            
-            try {
-                // Mostra indicatore di caricamento
-                const submitButton = event.target.querySelector('button[type="submit"]');
-                const originalText = submitButton.textContent;
-                submitButton.disabled = true;
-                submitButton.textContent = 'Generazione documento in corso...';
-                
-                await generateExcel(formData, books);
-                
-                // Ripristina il bottone
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-                
-               // Reset form
-event.target.reset();
-const bookList = document.getElementById('bookList');
-bookList.innerHTML = '';
-bookCount = 0;
-createBookEntry();
+    if (books.length === 0) {
+        alert('Aggiungi almeno un libro alla donazione.');
+        return;
+    }
+    
+    const formData = {
+        nome,
+        cognome,
+        email,
+        tessera,
+        telefono
+    };
+    
+    // Mostra indicatore di caricamento
+    const submitButton = event.target.querySelector('button[type="submit"]');
+    const originalText = submitButton.textContent;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Generazione documento in corso...';
 
-            } catch (error) {
-                console.error('Errore durante la generazione del file Excel:', error);
-                alert('Si è verificato un errore durante la generazione del documento. Riprova più tardi.');
-                
-                // Ripristina il bottone in caso di errore
-                const submitButton = event.target.querySelector('button[type="submit"]');
-                submitButton.disabled = false;
-                submitButton.textContent = originalText;
-            }
-        });
+    // Genera il documento
+    await generateExcel(formData, books);
+    
+    // Ripristina il bottone
+    submitButton.disabled = false;
+    submitButton.textContent = originalText;
+
+    // Mostra il popup di invio email
+    showEmailPopup();
+    
+    // Reset form
+    event.target.reset();
+    const bookList = document.getElementById('bookList');
+    bookList.innerHTML = '';
+    bookCount = 0;
+    createBookEntry();
+});
+
+// Funzione per mostrare il popup
+function showEmailPopup() {
+    const popup = document.createElement('div');
+    popup.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center z-50';
+    popup.innerHTML = `
+        <div class="bg-white p-6 rounded-lg shadow-lg w-96 text-center">
+            <h2 class="text-xl font-semibold mb-4">Documento generato con successo!</h2>
+            <p class="mb-4">Il documento è stato scaricato correttamente. Invialo a: l.daniello@bibliotechediroma.it</p>
+            <button id="sendEmailBtn" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Invia a email</button>
+            <button id="closePopupBtn" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400 mt-3">Chiudi</button>
+        </div>
+    `;
+    document.body.appendChild(popup);
+    
+    // Gestione del pulsante "Invia a email"
+    document.getElementById('sendEmailBtn').addEventListener('click', function() {
+        window.location.href = `mailto:?subject=Donazione alla Biblioteca Elsa Morante&body=Allega il documento della tua donazione appena scaricato.`;
+        closePopup();
+    });
+    
+    // Gestione del pulsante "Chiudi"
+    document.getElementById('closePopupBtn').addEventListener('click', closePopup);
+}
+
+// Funzione per chiudere il popup
+function closePopup() {
+    const popup = document.querySelector('.fixed');
+    if (popup) {
+        popup.remove();
+    }
+}
+
 
         // Crea il primo libro quando la pagina si carica
         document.addEventListener('DOMContentLoaded', createBookEntry);
