@@ -10,17 +10,20 @@
 <body class="bg-gray-100 text-gray-800 leading-relaxed p-5">
     <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
         
-        <div class="flex flex-col items-center justify-center mb-10 text-center space-y-4 px-4">
-            <img 
-                src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
-                alt="Logo Biblioteca" 
-                class="h-16 w-auto object-contain mb-3 md:h-16 sm:h-12" />
-            
-            <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center sm:text-xl md:text-3xl">
-                Donazione alla Biblioteca Elsa Morante
-            </h1>
-        </div>
+        
+<div class="flex flex-col items-center justify-center mb-10 text-center space-y-4 px-4">
+    <img 
+        src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
+        alt="Logo Biblioteca" 
+        class="h-16 w-auto object-contain mb-3 md:h-16 sm:h-12" />
+    
+    <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center sm:text-xl md:text-3xl">
+        Donazione alla Biblioteca Elsa Morante
+    </h1>
+</div>
 
+
+        
         <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
             Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
         </div>
@@ -72,12 +75,12 @@
     <script>
         let bookCount = 0;
 
-        function createBookEntry() {
+ function createBookEntry() {
             const bookDiv = document.createElement('div');
             bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
             bookCount++;
 
-            bookDiv.innerHTML = `
+            bookDiv.innerHTML = 
                 <div class="absolute -top-2 -left-2 w-6 h-6 bg-blue-500 text-white rounded-full flex items-center justify-center text-sm font-bold">${bookCount}</div>
                 
                 <div class="mb-5">
@@ -101,23 +104,249 @@
                     <input type="tel" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" pattern="[0-9]*" maxlength="13">
                 </div>
                 
-                <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600"
-                    style="position: absolute; top: 2px; right: 2px; z-index: 10; color: #ff0000;" onclick="removeBook(this)">✖</button>
-            `;
-            
+       <button type="button" class="absolute top-2 right-2 px-3 py-2 text-white bg-transparent border-none text-2xl font-bold hover:bg-red-600"
+        style="position: absolute; top: 2px; right: 2px; z-index: 10; color: #ff0000;" onclick="removeBook(this)">✖</button>
+
+                
+                <button type="button" class="w-full px-4 py-3 bg-green-500 text-white rounded hover:bg-green-600 transition-colors mt-2" onclick="createBookEntry()">+ Aggiungi Libro</button>
+            ;
             document.getElementById('bookList').appendChild(bookDiv);
+            updateBookCounters();
         }
 
         function removeBook(button) {
-            const bookDiv = button.parentElement;
-            bookDiv.remove();
+            button.parentElement.remove();
             bookCount--;
+            updateBookCounters();
         }
+
+        function updateBookCounters() {
+            const bookEntries = document.querySelectorAll('.book-entry');
+            bookEntries.forEach((entry, index) => {
+                entry.querySelector('.book-counter').textContent = index + 1;
+            });
+        }
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const telefonoInput = document.getElementById('telefono');
+            telefonoInput.addEventListener('input', function(e) {
+                const originalValue = e.target.value;
+                e.target.value = originalValue.replace(/[^0-9]/g, '');
+                
+                if (originalValue !== e.target.value) {
+                    showWarning(this, 'Inserire solo numeri nel campo Telefono');
+                }
+            });
+
+            const emailInput = document.getElementById('email');
+            emailInput.addEventListener('input', function(e) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const originalValue = e.target.value;
+
+                if (originalValue && !emailRegex.test(originalValue)) {
+                    showWarning(this, 'Inserire un indirizzo email valido');
+                }
+            });
+
+            document.getElementById('bookList').addEventListener('input', function(e) {
+                if (e.target.classList.contains('book-year') || e.target.classList.contains('book-isbn')) {
+                    const originalValue = e.target.value;
+                    const currentYear = new Date().getFullYear();
+                    
+                    if (e.target.classList.contains('book-year')) {
+                        let numericValue = originalValue.replace(/[^0-9]/g, '');
+                        
+                        if (numericValue.length > 0) {
+                            const year = parseInt(numericValue);
+                            if (numericValue.length === 4) {
+                                if (year < 1800 || year > currentYear) {
+                                    numericValue = numericValue.slice(0, -1);
+                                    showWarning(e.target, L'anno deve essere compreso tra 1800 e ${currentYear});
+                                }
+                            } else if (numericValue.length > 4) {
+                                numericValue = numericValue.slice(0, 4);
+                            } else {
+                                if (numericValue.length === 1 && (numericValue < '1')) {
+                                    numericValue = '';
+                                    showWarning(e.target, L'anno deve essere compreso tra 1800 e ${currentYear});
+                                } else if (numericValue.length === 2 && (numericValue < '18')) {
+                                    numericValue = numericValue.slice(0, -1);
+                                    showWarning(e.target, L'anno deve essere compreso tra 1800 e ${currentYear});
+                                } else if (numericValue.length === 3 && parseInt(numericValue) < 180) {
+                                    numericValue = numericValue.slice(0, -1);
+                                    showWarning(e.target, L'anno deve essere compreso tra 1800 e ${currentYear});
+                                }
+                            }
+                        }
+                        e.target.value = numericValue;
+                    }
+                    
+                    if (e.target.classList.contains('book-isbn')) {
+                        const numericValue = originalValue.replace(/[^0-9]/g, '');
+                        
+                        if (numericValue.length > 13) {
+                            e.target.value = numericValue.slice(0, 13);
+                            showWarning(e.target, 'L\'ISBN può contenere massimo 13 cifre');
+                        } else {
+                            if (originalValue !== numericValue) {
+                                e.target.value = numericValue;
+                                showWarning(e.target, 'Inserire solo numeri nel campo ISBN');
+                            }
+                        }
+                    }
+                }
+            });
+
+            function showWarning(element, message) {
+                const existingWarning = element.nextElementSibling;
+                if (existingWarning && existingWarning.classList.contains('input-warning')) {
+                    existingWarning.remove();
+                }
+
+                const warning = document.createElement('div');
+                warning.textContent = message;
+                warning.className = 'input-warning';
+                
+                element.parentNode.insertBefore(warning, element.nextSibling);
+
+                setTimeout(() => {
+                    if (warning.parentNode) {
+                        warning.remove();
+                    }
+                }, 3000);
+            }
+        });
+
+        async function generateExcel(formData, books) {
+            const workbook = new ExcelJS.Workbook();
+            const worksheet = workbook.addWorksheet('Donazione');
+
+            const titleStyle = {
+                font: { size: 16, bold: true, color: { argb: '002060' } },
+                alignment: { horizontal: 'center' }
+            };
+            
+            const headerStyle = {
+                font: { bold: true, color: { argb: 'FFFFFF' }, size: 14 },
+                fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: '2F5496' } },
+                alignment: { horizontal: 'center', vertical: 'middle' },
+                border: {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                }
+            };
+
+            const dataStyle = {
+                font: { size: 14 },
+                alignment: { vertical: 'middle' },
+                border: {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                }
+            };
+
+            // Intestazione documento
+            worksheet.mergeCells('A2:G2');
+            const titleCell = worksheet.getCell('A2');
+            titleCell.value = 'DONAZIONE ALLA BIBLIOTECA ELSA MORANTE';
+            titleCell.style = titleStyle;
+
+            // Dati donatore
+            worksheet.mergeCells('A4:B4');
+            worksheet.mergeCells('C4:G4');
+            worksheet.getCell('A4').value = 'DATI DONATORE';
+            worksheet.getCell('A4').style = { ...headerStyle, alignment: { horizontal: 'left', vertical: 'middle' } };
+            worksheet.getCell('C4').style = headerStyle;
+
+            // Nome e Cognome, Tessera, Telefono, Email con formattazione separata
+            worksheet.mergeCells('A5:B5');
+            worksheet.mergeCells('C5:G5');
+            worksheet.getCell('A5').value = 'Nome e Cognome:';
+            worksheet.getCell('C5').value = ${formData.nome} ${formData.cognome};
+            
+            
+            
+            worksheet.mergeCells('A6:B6');
+            worksheet.mergeCells('C6:G6');
+            worksheet.getCell('A6').value = 'Tessera:';
+            worksheet.getCell('C6').value = formData.tessera || '---';
+            
+            worksheet.mergeCells('A7:B7');
+            worksheet.mergeCells('C7:G7');
+            worksheet.getCell('A7').value = 'Telefono:';
+            worksheet.getCell('C7').value = formData.telefono || '---';
+            
+            worksheet.mergeCells('A8:B8');
+            worksheet.mergeCells('C8:G8');
+            worksheet.getCell('A8').value = 'Email:';
+            worksheet.getCell('C8').value = formData.email;
+
+            // Applica stili ai dati del donatore
+            for (let row = 5; row <= 8; row++) {
+                worksheet.getCell(A${row}).style = { ...dataStyle, font: { bold: true } }; // Etichetta in grassetto
+                worksheet.getCell(C${row}).style = dataStyle; // Dati formattati
+            }
+
+            // Aggiungi la stringa "DICHIARAZIONE"
+            worksheet.mergeCells('A10:G10');
+            const declarationCell = worksheet.getCell('A10');
+            declarationCell.value = 'DICHIARAZIONE';
+            declarationCell.style = { ...headerStyle, font: { size: 14, bold: true }, fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'f39c12' } } };
+
+            // Testo dichiarazione
+            worksheet.mergeCells('A11:G14');
+            worksheet.getCell('A11').value = 'Con la presente dono alla Biblioteca le risorse documentarie elencate di seguito e autorizzo la biblioteca a destinarli all\'uso che riterrà più opportuno (acquisizione al patrimonio, scambio, dono, bookcrossing o scarto, nel caso in cui, a giudizio insindacabile della biblioteca, i materiali risultino inutilizzabili) senza alcun vincolo per la biblioteca stessa nei miei confronti.';
+            worksheet.getCell('A11').style = { ...dataStyle, alignment: { wrapText: true, vertical: 'middle' } };
+
+             // Intestazione tabella libri
+    const headers = ['N.', 'Titolo', 'Autore', 'Editore', 'Anno', 'ISBN'];
+    worksheet.getRow(16).values = headers;
+    worksheet.getRow(16).eachCell(cell => {
+        cell.style = headerStyle;
+    });
+
+    // Dati libri
+    books.forEach((book, index) => {
+        const row = worksheet.getRow(index + 17);
+        row.values = [index + 1, book.title, book.author, book.publisher, book.year, book.isbn];
+        row.eachCell(cell => {
+            cell.style = dataStyle;
+        });
+        row.height = 25;
+    });
+
+    // Imposta larghezza colonne aggiornate
+    worksheet.columns = [
+        { width: 4 },    // N.
+        { width: 50 },   // Titolo (ampiamente allargata)
+        { width: 30 },   // Autore
+        { width: 30 },   // Editore
+        { width: 12 },   // Anno
+        { width: 20 },   // ISBN (ampiamente allargata)
+    ];
+
+    // Genera il file
+    const buffer = await workbook.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = donazione_${formData.cognome}_${formData.nome}_${new Date().toLocaleDateString('it-IT').replace(/\//g, '-')}.xlsx;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+        
 
         // Event Listener per il form
         document.getElementById('donationForm').addEventListener('submit', async function(event) {
             event.preventDefault();
-
+            
             const nome = document.getElementById('nome').value.trim();
             const cognome = document.getElementById('cognome').value.trim();
             const email = document.getElementById('email').value.trim();
@@ -126,7 +355,7 @@
             const acceptCheckbox = document.getElementById('accept');
             
             if (!nome || !cognome || !email) {
-                alert('Per favore compila tutti i campi obbligatori.');
+             alert('Per favore compila tutti i campi obbligatori.');
                 return;
             }
             
@@ -151,35 +380,57 @@
                     author: bookDiv.querySelector('.book-author').value.trim(),
                     publisher: bookDiv.querySelector('.book-publisher').value.trim(),
                     year: bookDiv.querySelector('.book-year').value.trim(),
-                    isbn: bookDiv.querySelector('.book-isbn').value.trim(),
+                    isbn: bookDiv.querySelector('.book-isbn').value.trim()
                 };
-                
                 books.push(book);
             }
 
-            // Crea il documento Excel con i dati
-            const workbook = new ExcelJS.Workbook();
-            const worksheet = workbook.addWorksheet('Donazione Libri');
+            if (books.length === 0) {
+                alert('Aggiungi almeno un libro alla donazione.');
+                return;
+            }
             
-            worksheet.columns = [
-                { header: 'Titolo', key: 'title', width: 30 },
-                { header: 'Autore', key: 'author', width: 30 },
-                { header: 'Editore', key: 'publisher', width: 30 },
-                { header: 'Anno', key: 'year', width: 15 },
-                { header: 'ISBN', key: 'isbn', width: 20 },
-            ];
+            const formData = {
+                nome,
+                cognome,
+                email,
+                tessera,
+                telefono
+            };
             
-            books.forEach(book => worksheet.addRow(book));
-            
-            // Salva il file Excel
-            workbook.xlsx.writeBuffer().then(function(data) {
-                const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-                const link = document.createElement('a');
-                link.href = URL.createObjectURL(blob);
-                link.download = 'donazione_libri.xlsx';
-                link.click();
-            });
+            try {
+                // Mostra indicatore di caricamento
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                submitButton.disabled = true;
+                submitButton.textContent = 'Generazione documento in corso...';
+                
+                await generateExcel(formData, books);
+                
+                // Ripristina il bottone
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+                
+               // Reset form
+event.target.reset();
+const bookList = document.getElementById('bookList');
+bookList.innerHTML = '';
+bookCount = 0;
+createBookEntry();
+
+            } catch (error) {
+                console.error('Errore durante la generazione del file Excel:', error);
+                alert('Si è verificato un errore durante la generazione del documento. Riprova più tardi.');
+                
+                // Ripristina il bottone in caso di errore
+                const submitButton = event.target.querySelector('button[type="submit"]');
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+            }
         });
+
+        // Crea il primo libro quando la pagina si carica
+        document.addEventListener('DOMContentLoaded', createBookEntry);
     </script>
 </body>
 </html>
