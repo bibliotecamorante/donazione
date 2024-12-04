@@ -16,12 +16,11 @@
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
+            font-family: 'Space+Grotesk', sans-serif;
             margin: 0;
             font-size: 20px;
-            line-height: 30px;
+            line-height: 1.6;
             letter-spacing: normal;
-            word-spacing: 0px;
         }
         
         header {
@@ -33,7 +32,6 @@
             align-items: center;
             position: relative;
             flex-direction: column;
-            text-align: center;
         }
 
         .logo-container {
@@ -85,7 +83,8 @@
         
         main h1 {
             color: var(--primary);
-            text-align: center;
+            text-align: left;
+            margin-left: 0;
         }
         
         h2 {
@@ -115,11 +114,18 @@
             left: 0;
         }
         
+        footer {
+            background-color: var(--primary);
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        
         /* Media query per schermi più piccoli */
         @media (max-width: 768px) {
             body {
-                font-size: 16px;
-                line-height: 24px;
+                font-size: 18px;
+                line-height: 1.5;
             }
 
             .logo-container {
@@ -147,6 +153,12 @@
 
             main h1 {
                 font-size: 1.75rem;
+                margin-left: 0;
+            }
+
+            p, li {
+                color: #333;
+                font-weight: 400;
             }
         }
     </style>
@@ -175,8 +187,6 @@
 
     <main>
         <h1>Donazione di libri</h1>
-
-        
         <section>
             <h2>Criteri di Accettazione</h2>
             <p>
