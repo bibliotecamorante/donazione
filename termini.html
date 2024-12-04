@@ -33,14 +33,16 @@
             justify-content: center;
             align-items: center;
             position: relative;
+            flex-direction: column; /* Modifica per posizionare le icone sopra i loghi */
         }
         
         .social-icons {
             position: absolute;
-            top: 1rem;
-            right: 2rem;
+            top: 1rem; /* Posiziona le icone sopra */
             display: flex;
+            flex-direction: column; /* Posiziona le icone in verticale */
             gap: 1rem;
+            align-items: center;
         }
         
         .social-icons a {
@@ -58,13 +60,9 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
-        }
-        
-        header .container {
             display: flex;
-            align-items: center;
             justify-content: center;
-            gap: 2rem;
+            align-items: center;
             text-align: center;
             flex-wrap: wrap;
         }
@@ -75,7 +73,7 @@
         }
         
         header .logo-morante {
-            height: 140px; /* Aumentato a 100px */
+            height: 180px; /* Aumentato per una versione mobile più grande */
             filter: brightness(0) invert(1);
         }
         
@@ -166,17 +164,17 @@
             }
             
             header .logo-morante {
-                height: 100px; /* Aumentato per la versione mobile */
+                height: 180px; /* Aumentato per la versione mobile */
             }
             
             .social-icons {
                 position: absolute;
-                top: 1rem; /* Sposta le icone verso l'alto */
-                right: 2rem;
+                top: 1rem; /* Posiziona le icone sopra */
                 display: flex;
-                flex-direction: column; /* Posiziona le icone in colonna */
+                flex-direction: column; /* Posiziona le icone in verticale */
                 gap: 1rem;
                 align-items: center; /* Centra le icone orizzontalmente */
+                right: 0;
             }
             
             main {
@@ -207,8 +205,6 @@
             <img class="logo-morante" src="https://github.com/bibliotecamorante/donazione/raw/main/logomorante.png" alt="Logo Biblioteca Morante">
         </div>
     </header>
-
-    
 
     <main>
         <h1>Donazione Libri</h1>
