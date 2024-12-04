@@ -33,16 +33,17 @@
             justify-content: center;
             align-items: center;
             position: relative;
-            flex-direction: column; /* Modifica per posizionare le icone sopra i loghi */
+            flex-direction: column;
+            text-align: center;
         }
-        
+
         .social-icons {
             position: absolute;
-            top: 1rem; /* Posiziona le icone sopra */
+            top: 1rem;
             display: flex;
-            flex-direction: column; /* Posiziona le icone in verticale */
             gap: 1rem;
-            align-items: center;
+            justify-content: center;
+            width: 100%;
         }
         
         .social-icons a {
@@ -73,7 +74,7 @@
         }
         
         header .logo-morante {
-            height: 180px; /* Aumentato per una versione mobile più grande */
+            height: 180px;
             filter: brightness(0) invert(1);
         }
         
@@ -165,16 +166,6 @@
             
             header .logo-morante {
                 height: 180px; /* Aumentato per la versione mobile */
-            }
-            
-            .social-icons {
-                position: absolute;
-                top: 1rem; /* Posiziona le icone sopra */
-                display: flex;
-                flex-direction: column; /* Posiziona le icone in verticale */
-                gap: 1rem;
-                align-items: center; /* Centra le icone orizzontalmente */
-                right: 0;
             }
             
             main {
