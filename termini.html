@@ -154,7 +154,8 @@
         footer a:hover {
             border-bottom-color: #fff;
         }
-        
+
+        /* Media query per schermi più piccoli */
         @media (max-width: 768px) {
             header h1 {
                 font-size: 1.75rem;
@@ -165,15 +166,17 @@
             }
             
             header .logo-morante {
-                height: 80px; /* Aumentato anche per schermi più piccoli */
+                height: 100px; /* Aumentato per la versione mobile */
             }
             
             .social-icons {
-                position: relative;
-                justify-content: center;
-                padding: 1rem 0;
-                right: 0;
-                top: 0;
+                position: absolute;
+                top: 1rem; /* Sposta le icone verso l'alto */
+                right: 2rem;
+                display: flex;
+                flex-direction: column; /* Posiziona le icone in colonna */
+                gap: 1rem;
+                align-items: center; /* Centra le icone orizzontalmente */
             }
             
             main {
@@ -204,6 +207,8 @@
             <img class="logo-morante" src="https://github.com/bibliotecamorante/donazione/raw/main/logomorante.png" alt="Logo Biblioteca Morante">
         </div>
     </header>
+
+    
 
     <main>
         <h1>Donazione Libri</h1>
