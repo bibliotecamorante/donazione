@@ -275,11 +275,16 @@
            </p>
           
          <ol>
+            
+            
             <li>
-                Compila l'apposito 
-                <a href="https://bibliotecamorante.github.io/donazione/" 
-                   style="color: var(--primary); font-weight: bold;">modulo</a>.
-            </li>
+    Compila l'apposito 
+    <a href="https://bibliotecamorante.github.io/donazione/" 
+       target="_blank"
+       style="color: var(--primary); font-weight: bold;">modulo</a>.
+</li>
+
+            
             <li>
                 Clicca sul pulsante 
                 <span style="color: var(--primary); font-weight: bold;">Invia Donazione</span> 
@@ -300,5 +305,20 @@
    <footer>
        <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
    </footer>
+
+   
+<script>
+
+// Seleziona il link del modulo
+document.querySelector('a[href="https://bibliotecamorante.github.io/donazione/"]').addEventListener('click', function(event) {
+    event.preventDefault();
+    window.open(this.href, '_blank', 'noopener,noreferrer,location=yes,status=yes');
+    window.focus();
+});
+   
+</script>
+
+
+   
 </body>
 </html>
