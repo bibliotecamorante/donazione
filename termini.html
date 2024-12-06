@@ -77,7 +77,7 @@
            align-items: center;
            text-align: center;
            flex-wrap: wrap;
-           gap: 1rem; 
+           gap: 1rem;
        }
        
        header img {
@@ -89,15 +89,6 @@
            height: 180px;
            filter: none;
            max-width: 100%;
-       }
-       
-       header h1 {
-           color: var(--primary);
-           font-size: 2.5rem;
-           font-weight: 600;
-           margin: 0;
-           max-width: 800px;
-           line-height: 1.2;
        }
        
        main {
@@ -172,49 +163,70 @@
            border-bottom-color: #fff;
        }
 
-       @media (max-width: 768px) {
-   body {
-       font-size: 20px; /* Mantenere la dimensione originale */
-       line-height: 1.5;
-       font-family: 'Space Grotesk', sans-serif; /* Assicurare Space Grotesk */
-   }
-           
-           header {
-               padding: 1rem 0;
-           }
-           
-           header img {
-               height: 60px;
-           }
-           
-           header .logo-morante {
-               height: 180px;
-           }
-           
-           .container {
-               justify-content: center; 
-               gap: 1rem; 
-               padding: 0 1rem;
-           }
-           
-           .social-icons {
-               top: auto;
-               bottom: 1rem;
-               display: flex;
-               justify-content: center;
-               width: 100%;
-           }
+      
 
-           main {
-               margin: 1rem;
-               padding: 1.5rem;
-           }
-       }
+      
+
+      @media (max-width: 768px) {
+    body {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+    
+    header {
+        min-height: auto;
+        padding: 1rem 0; /* Increased padding to make header taller */
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .social-icons {
+        position: relative;
+        top: 0;
+        padding: 0.5rem 0; /* Increased padding */
+        margin: 0;
+        width: 100%;
+        background-color: var(--primary);
+    }
+    
+    .social-icons a {
+        font-size: 1.2rem; /* Made social icons smaller */
+    }
+    
+    .container {
+        padding: 0.5rem;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem; /* Increased gap between logos */
+        width: 100%;
+    }
+    
+    header img {
+        height: 37px; /* Biblioteche di Roma logo size */
+    }
+    
+    header .logo-morante {
+        height: 87px; /* Increased Morante logo size */
+    }
+    
+    main {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+}
+
+     
+      
+       
+
+
+
+
+      
    </style>
 </head>
 <body>
-
-   
    <header>
        <div class="social-icons">
            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
@@ -231,8 +243,10 @@
            </a>
        </div>
        <div class="container">
+          
            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
-           <img class="logo-morante" src="https://github.com/bibliotecamorante/donazione/raw/main/logomorante.png" alt="Logo Biblioteca Morante">
+           <img class="logo-morante" src="logomorante.png" alt="Logo Biblioteca Morante">
+
        </div>
    </header>
 
@@ -274,23 +288,19 @@
                Per valutare i titoli, ti preghiamo di seguire questi passaggi:
            </p>
           
-         <ol>
-            
-            
-            <li>
-    Compila l'apposito 
-    <a href="https://bibliotecamorante.github.io/donazione/" 
-       target="_blank"
-       style="color: var(--primary); font-weight: bold;">modulo</a>.
-</li>
-
-            
-            <li>
-                Clicca sul pulsante 
-                <span style="color: var(--primary); font-weight: bold;">Invia Donazione</span> 
-                per trasmettere automaticamente la tua richiesta alla biblioteca.
-            </li>
-         </ol>
+           <ol>
+               <li>
+                   Compila l'apposito 
+                   <a href="https://bibliotecamorante.github.io/donazione/" 
+                      target="_blank"
+                      style="color: var(--primary); font-weight: bold;">modulo</a>.
+               </li>
+               <li>
+                   Clicca sul pulsante 
+                   <span style="color: var(--primary); font-weight: bold;">Invia Donazione</span> 
+                   per trasmettere automaticamente la tua richiesta alla biblioteca.
+               </li>
+           </ol>
           
            <p>
                Le opere accettate entreranno a far parte del patrimonio della biblioteca e non potranno essere reclamate. La catalogazione seguirà i tempi stabiliti dalla biblioteca secondo le priorità interne.
@@ -305,19 +315,6 @@
    <footer>
        <p>Scopri di più su <a href="https://www.bibliotechediroma.it/opac/.do" target="_blank">Biblioteche di Roma</a></p>
    </footer>
-
-   
-<script>
-
-// Seleziona il link del modulo
-document.querySelector('a[href="https://bibliotecamorante.github.io/donazione/"]').addEventListener('click', function(event) {
-    event.preventDefault();
-    window.open(this.href, '_blank', 'noopener,noreferrer,location=yes,status=yes');
-    window.focus();
-});
-   
-</script>
-
 
    
 </body>
