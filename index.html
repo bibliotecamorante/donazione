@@ -13,13 +13,16 @@
 
 
             <img 
-        src="https://raw.githubusercontent.com/bibliotecamorante/donazione/main/logo.png" 
-        alt="Logo Biblioteca" 
-        class="h-16 w-auto object-contain mb-3 md:h-16 sm:h-12" />
+    src="loghi.png" 
+    alt="Logo Biblioteca" 
+    class="h-16 w-auto object-contain mb-3 md:h-16 sm:h-12" />
+
+
+
 
             
             <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-center sm:text-xl md:text-3xl">
-                Donazione alla Biblioteca Elsa Morante
+                Donazione di libri
             </h1>
         </div>
 
@@ -326,34 +329,71 @@
                 return;
             }
 
+           
+            
+            
+<!-- Inside the submit event listener, update the formattedBooks definition: -->
             const formattedBooks = books.map((book, index) => 
-                `<em>Libro ${index + 1}:</em><br>` +
-                `<strong>Titolo/Autore:</strong> ${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}<br>` +
-                `<strong>Editore:</strong> ${book.publisher}<br>` +
-                `<strong>Anno:</strong> ${book.year}<br>` +
-                `<strong>ISBN:</strong> ${book.isbn}<br><br>`
+                `<br><em>Libro ${index + 1}:</em><br>` +
+                `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
+                    <colgroup>
+                        <col style="width: 100px;">
+                        <col style="width: auto;">
+                    </colgroup>
+                    <tr>
+                        <td style="padding:5px; border:1px solid #ddd;"><strong>Tit/Aut:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
+                        <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
+                    </tr>
+                </table>`
             ).join('');
+
+
+
+
+
+            
 
             const submitButton = event.target.querySelector('button[type="submit"]');
             submitButton.disabled = true;
             submitButton.textContent = 'Invio in corso...';
 
-            try {
-                const response = await emailjs.send(
-                    'service_yepi8uu',
-                    'template_s1jmd7r', 
-                    {
-                        to_email: 'bibliotecamorante@gmail.com',
-                        from_name: `${nome} ${cognome}`,
-                        from_email: email,
-                        tessera: tessera || 'Non specificata',
-                        telefono: telefono || 'Non specificato',
-                        books: formattedBooks
-                    }
-                );
+            
 
-                console.log('Email inviata con successo:', response);
-                alert('La tua donazione è stata inviata con successo!');
+// Inside the form submit event listener, modify the emailjs.send configuration
+try {
+    const response = await emailjs.send(
+        'service_yepi8uu',
+        'template_s1jmd7r', 
+        {
+            to_email: 'bibliotecamorante@gmail.com',
+            from_name: `${nome} ${cognome}`,
+            from_email: email,            // This will use the email from the form
+            reply_to: email,              // Add reply_to parameter to ensure replies go to the donor
+            tessera: tessera || 'Non specificata',
+            telefono: telefono || 'Non specificato',
+            books: formattedBooks
+        },
+        'z6OeY42qSulJ-8EcS'              // Your public key
+    );
+
+    console.log('Email inviata con successo:', response);
+    alert('La tua donazione è stata inviata con successo!');
+    // Rest of the success handling code...
+
+
+            
                 event.target.reset();
                 document.getElementById('bookList').innerHTML = '';
                 bookCount = 0;
