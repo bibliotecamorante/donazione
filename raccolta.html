@@ -9,77 +9,80 @@
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #970a2c;
-        }
-        body {
-            font-family: "Space Grotesk", sans-serif;
-            font-size: 20px;
-            background-color: #f3f4f6;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        header {
-            background-color: var(--primary);
-            color: #fff;
-            padding: 2rem 0;
-            position: relative;
-        }
-        footer {
-            background-color: var(--primary);
-            color: #fff;
-            text-align: center;
-            padding: 1.5rem 0;
-        }
-        footer a {
-            color: #fff;
-            text-decoration: underline;
-        }
-        .social-icons {
-            position: absolute;
-            top: 1rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            width: 100%;
-        }
-        .social-icons a {
-            color: white;
-            font-size: 1.5rem;
-            transition: transform 0.3s ease;
-        }
-        .social-icons a:hover {
-            transform: scale(1.2);
-        }
-        .container-header {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-        .content-wrapper {
-            flex: 1;
-            width: 100%;
-            max-width: 700px; /* Slightly reduced */
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
-        .content-section {
-            max-width: none;
-            width: 100%;
-        }
-        .main-title {
-            font-size: 2rem; /* Reduced font size */
-            line-height: 1.2;
-        }
-    </style>
+
+
+<style>
+    :root {
+        --primary: #970a2c;
+    }
+    body {
+        font-family: "Space Grotesk", sans-serif;
+        font-size: 20px;
+        background-color: #f3f4f6;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+    }
+    header {
+        background-color: var(--primary);
+        color: #fff;
+        padding: 2rem 0;
+        position: relative;
+    }
+    footer {
+        background-color: var(--primary);
+        color: #fff;
+        text-align: center;
+        padding: 1.5rem 0;
+    }
+    footer a {
+        color: #fff;
+        text-decoration: underline;
+    }
+    .social-icons {
+        position: absolute;
+        top: 1rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        width: 100%;
+    }
+    .social-icons a {
+        color: white;
+        font-size: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+    .social-icons a:hover {
+        transform: scale(1.2);
+    }
+    .container-header {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+    .content-wrapper {
+        max-width: 1200px; /* Aumentato da 700px a 1200px */
+        width: 100%; /* Aggiunto per garantire larghezza massima */
+        margin: 2rem auto;
+        padding: 0 1rem;
+    }
+    .content-section {
+        max-width: none;
+        width: 100%;
+    }
+    .main-title {
+        font-size: 2rem; /* Ridotto per adattarsi meglio */
+        line-height: 1.2;
+    }
+</style>
+
+    
 </head>
 <body>
     <header>
