@@ -15,11 +15,31 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        :root {
-            --primary: #970a2c;
-            --text: #180207;
-            --bg: #f3f4f6;
-        }
+
+
+        
+:root {
+    --primary: #970a2c;
+    --secondary: #6b1c32;  /* Rosso più scuro */
+    --accent: #8c1c13;     /* Bordeaux */
+}
+
+/* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
+button[type="submit"] {
+    background-color: #970a2c !important;
+}
+
+/* Aggiorna i cerchietti numerati e il pulsante "Aggiungi Libro" con il colore rosso specificato */
+.book-counter {
+    background-color: #ff4347 !important;
+}
+
+.book-entry button[type="button"] {
+    background-color: #ff4347 !important;
+}
+
+
+        
         
         .top-banner {
             background-color: white;
