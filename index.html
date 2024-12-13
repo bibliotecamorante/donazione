@@ -266,61 +266,256 @@ button[type="submit"] {
 
 
        
+import React, { useState } from 'react';
+import { User, Mail, Phone, Bookmark, Calendar, BookOpen, Building, Hash, Plus, X } from 'lucide-react';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
-            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
-                Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
+const DonationForm = () => {
+  const [books, setBooks] = useState([{ id: 1 }]);
+  const [formError, setFormError] = useState('');
+
+  const addBook = () => {
+    const newId = books.length + 1;
+    setBooks([...books, { id: newId }]);
+  };
+
+  const removeBook = (id) => {
+    if (books.length > 1) {
+      setBooks(books.filter(book => book.id !== id));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setFormError('');
+    // Form validation would go here
+  };
+
+  return (
+    <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+      <Alert className="mb-6 bg-blue-50 border-blue-500">
+        <AlertDescription>
+          Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
+        </AlertDescription>
+      </Alert>
+
+      <form onSubmit={handleSubmit} noValidate>
+        <h3 className="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
+        
+        {/* Personal Information Fields */}
+        <div className="space-y-5">
+          {/* Nome */}
+          <div>
+            <label htmlFor="nome" className="block mb-1 text-slate-700 font-medium">Nome: *</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <User className="h-5 w-5 text-gray-400" />
+              </div>
+              <input 
+                type="text" 
+                id="nome" 
+                required 
+                className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+              />
             </div>
-            
-            <form id="donationForm" novalidate>
-                <!-- Rest of the form remains the same as in the original document -->
-                <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
-                
-                <div class="mb-5">
-                    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
-                    <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
-                </div>
-                
-                <div class="mb-5">
-                    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
-                    <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
-                </div>
-                
-                <div class="mb-5">
-                    <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
-                    <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                </div>
+          </div>
 
-                <div class="mb-5">
-                    <label for="telefono" class="block mb-1 text-slate-700 font-medium">Telefono:</label>
-                    <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
-                </div>
-                
-                <div class="mb-5">
-                    <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
-                    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
-                </div>
+          {/* Cognome */}
+          <div>
+            <label htmlFor="cognome" className="block mb-1 text-slate-700 font-medium">Cognome: *</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <User className="h-5 w-5 text-gray-400" />
+              </div>
+              <input 
+                type="text" 
+                id="cognome" 
+                required 
+                className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+          </div>
 
-                <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
-                <div id="bookList"></div>
-                
-                <div class="bg-gray-50 p-4 rounded mb-5">
-                    <label class="flex items-start gap-3">
-                        <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
-                        <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
-                    </label>
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
-                </div>
-                
-                <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
-                    Invia Donazione
-                </button>
-            </form>
+          {/* Tessera */}
+          <div>
+            <label htmlFor="tessera" className="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Bookmark className="h-5 w-5 text-gray-400" />
+              </div>
+              <input 
+                type="text" 
+                id="tessera" 
+                className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Telefono */}
+          <div>
+            <label htmlFor="telefono" className="block mb-1 text-slate-700 font-medium">Telefono:</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Phone className="h-5 w-5 text-gray-400" />
+              </div>
+              <input 
+                type="tel" 
+                id="telefono" 
+                className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+          </div>
+
+          {/* Email */}
+          <div>
+            <label htmlFor="email" className="block mb-1 text-slate-700 font-medium">Email: *</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Mail className="h-5 w-5 text-gray-400" />
+              </div>
+              <input 
+                type="email" 
+                id="email" 
+                required 
+                className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+              />
+            </div>
+          </div>
         </div>
+
+        <h3 className="text-xl text-slate-700 mt-8 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
+        
+        {/* Book Entries */}
+        {books.map((book, index) => (
+          <div key={book.id} className="relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5">
+            <div className="flex justify-between items-center mb-4">
+              <span className="flex items-center justify-center w-6 h-6 rounded-full bg-green-500 text-white font-semibold text-sm">
+                {index + 1}
+              </span>
+              {books.length > 1 && (
+                <button
+                  type="button"
+                  onClick={() => removeBook(book.id)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              )}
+            </div>
+
+            {/* Book Fields */}
+            <div className="space-y-5">
+              {/* Titolo */}
+              <div>
+                <label className="block mb-1 text-slate-700 font-medium">Titolo: *</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <BookOpen className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input 
+                    type="text" 
+                    required 
+                    className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Autore */}
+              <div>
+                <label className="block mb-1 text-slate-700 font-medium">Autore:</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <User className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input 
+                    type="text" 
+                    className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Editore */}
+              <div>
+                <label className="block mb-1 text-slate-700 font-medium">Editore:</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Building className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input 
+                    type="text" 
+                    className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* Anno */}
+              <div>
+                <label className="block mb-1 text-slate-700 font-medium">Anno:</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Calendar className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input 
+                    type="number" 
+                    min="1400" 
+                    max="2024"
+                    className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* ISBN */}
+              <div>
+                <label className="block mb-1 text-slate-700 font-medium">ISBN:</label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <Hash className="h-5 w-5 text-gray-400" />
+                  </div>
+                  <input 
+                    type="text" 
+                    maxLength="13"
+                    className="pl-10 w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Add Book Button */}
+        <button
+          type="button"
+          onClick={addBook}
+          className="w-full bg-green-500 text-white rounded py-2 px-4 hover:bg-green-600 transition-colors flex items-center justify-center gap-2 mb-6"
+        >
+          <Plus className="h-5 w-5" />
+          Aggiungi Libro
+        </button>
+
+        {/* Terms Checkbox */}
+        <div className="bg-gray-50 p-4 rounded mb-5">
+          <label className="flex items-start gap-3">
+            <input type="checkbox" required className="mt-1 h-4 w-4" />
+            <span>Ho letto e accetto <a href="#" className="text-blue-500 hover:underline">termini e condizioni</a></span>
+          </label>
+        </div>
+
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="w-full max-w-sm mx-auto block px-6 py-3 bg-red-700 text-white rounded hover:bg-red-800 transition-colors font-medium"
+        >
+          Invia Donazione
+        </button>
+      </form>
     </div>
+  );
+};
+
+export default DonationForm;
+
+
+    
 
 
 
