@@ -10,17 +10,17 @@
 
     <!-- Link to favicon -->
     <link rel="icon" href="favicon.png" type="image/png">
-
+    
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
+    
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    
     <style>
 
 
-
+        
 :root {
     --primary: #970a2c;
     --secondary: #6b1c32;  /* Rosso più scuro */
@@ -63,7 +63,7 @@ button[type="submit"] {
 
 
 
-
+        
 
 /* Stile per il pulsante di rimozione (x) */
 .book-entry > button[type="button"].remove-book-btn {
@@ -81,8 +81,8 @@ button[type="submit"] {
     color: #d9292e;
 }
 
-
-
+        
+        
         .top-banner {
             background-color: white;
             padding: 0.8rem 2rem; 
@@ -126,7 +126,7 @@ button[type="submit"] {
         .social-icons a:hover {
             transform: scale(1.2);
         }
-
+        
         header {
             background-color: var(--primary);
             color: #fff;
@@ -205,7 +205,7 @@ button[type="submit"] {
 }
 
 
-
+        
 
         .nav-icons a {
             color: #970a2c;
@@ -242,8 +242,8 @@ button[type="submit"] {
 
 
 
-
-
+        
+        
         header img {
             height: 70px;
             max-width: 100%;
@@ -275,12 +275,6 @@ button[type="submit"] {
         </div>
     </div>
 
-    <header>
-        <div class="container-header">
-            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
-            <img class="logo-morante" src="logomorante.png" alt="Logo Biblioteca Morante">
-        </div>
-    </header>
     
     
   <header>
@@ -295,7 +289,8 @@ button[type="submit"] {
 </header>
 
 
-
+    
+   
 
     <div class="content-wrapper">
         <div class="nav-icons">
@@ -308,7 +303,7 @@ button[type="submit"] {
         </div>
 
 
-
+        
 
 <div class="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md mt-2">
     <div class="flex flex-col mb-10 text-left space-y-4 px-4">
@@ -326,28 +321,28 @@ button[type="submit"] {
 
 
 
-
+       
 
             <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
                 Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
             </div>
-
+            
             <form id="donationForm" novalidate>
                 <!-- Rest of the form remains the same as in the original document -->
                 <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Dati Personali</h3>
-
+                
                 <div class="mb-5">
                     <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
                     <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
                     <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
                 </div>
-
+                
                 <div class="mb-5">
                     <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
                     <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
                     <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
                 </div>
-
+                
                 <div class="mb-5">
                     <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
                     <input type="text" id="tessera" name="tessera" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
@@ -358,7 +353,7 @@ button[type="submit"] {
                     <input type="tel" id="telefono" name="telefono" class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
                     <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
                 </div>
-
+                
                 <div class="mb-5">
                     <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
                     <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
@@ -367,7 +362,7 @@ button[type="submit"] {
 
                 <h3 class="text-xl text-slate-700 mt-6 mb-4 pb-2 border-b-2 border-gray-200">Libri da donare</h3>
                 <div id="bookList"></div>
-
+                
                 <div class="bg-gray-50 p-4 rounded mb-5">
                     <label class="flex items-start gap-3">
                         <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
@@ -375,7 +370,7 @@ button[type="submit"] {
                     </label>
                     <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
                 </div>
-
+                
                 <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
                     Invia Donazione
                 </button>
@@ -385,7 +380,7 @@ button[type="submit"] {
 
 
 
-
+    
 
     <script>
         // Initialize EmailJS
@@ -395,7 +390,7 @@ button[type="submit"] {
 
 
 
-
+        
 // Prima aggiungi questa funzione accanto alle altre funzioni di utility (dopo showGlobalErrorPopup)
 function showGlobalErrorPopup(message) {
     // Remove any existing error popups first
@@ -421,7 +416,7 @@ function showGlobalErrorPopup(message) {
 }
 
 
-
+        
 
 function showSuccessPopup(message) {
     // Rimuovi eventuali popup esistenti
@@ -450,14 +445,14 @@ function showLoadingOverlay() {
     const overlay = document.createElement('div');
     overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
     overlay.id = 'loadingOverlay';
-
+    
     const spinner = document.createElement('div');
     spinner.className = 'bg-white p-5 rounded-lg flex flex-col items-center';
     spinner.innerHTML = `
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
         <div class="text-white font-medium">Invio donazione in corso...</div>
     `;
-
+    
     overlay.appendChild(spinner);
     document.body.appendChild(overlay);
 }
@@ -470,7 +465,7 @@ function removeLoadingOverlay() {
 }
 
 
-
+        
 
 // Aggiungi questa nuova funzione subito dopo showGlobalErrorPopup
 function showSuccessPopup(message) {
@@ -497,7 +492,7 @@ function showSuccessPopup(message) {
 }
 
 
-
+        
 
         let bookCount = 0;
 
@@ -535,7 +530,7 @@ function showSuccessPopup(message) {
                             isValid = false;
                         }
                         break;
-
+                        
                     case 'email':
                         if (!value) {
                             showError(input, 'L\'email è obbligatoria');
@@ -556,7 +551,7 @@ function showSuccessPopup(message) {
         }
 
 
-
+        
 
        function validateBookField(input) {
     const value = input.value.trim();
@@ -567,7 +562,7 @@ function showSuccessPopup(message) {
         isValid = false;
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
-
+        
         // Allow partial input without showing error
         if (value) {
             // Check if input is currently being typed (less than 4 digits)
@@ -576,7 +571,7 @@ function showSuccessPopup(message) {
             }
 
             const year = parseInt(value);
-
+            
             // Validate fully entered year
             if (!Number.isInteger(year) || year < 1900 || year > currentYear) {
                 showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
@@ -597,11 +592,11 @@ function showSuccessPopup(message) {
 
     return isValid;
 }
+        
 
 
 
-
-
+        
         function createBookEntry() {
             const bookDiv = document.createElement('div');
             bookDiv.className = 'book-entry relative bg-gray-50 border border-gray-200 rounded-lg p-5 mb-5 hover:transform hover:-translate-y-1 transition-transform';
@@ -612,6 +607,7 @@ function showSuccessPopup(message) {
                     <span class="book-counter flex items-center justify-center w-6 h-6 rounded-full text-white font-semibold text-sm" style="background-color: rgb(34, 197, 94)">${bookCount}</span>
                     ${bookCount > 1 ? `
                         <button type="button" class="remove-book-btn" onclick="removeBook(this)">✖</button>
+
                     ` : ''}
                 </div>
                 
@@ -629,19 +625,36 @@ function showSuccessPopup(message) {
                     <input type="text" class="book-publisher w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
                 </div>
                
+
+
+
+
+
+
+
+
+
 <div class="mb-5">
-    <label class="block mb-1 text-slate-700 font-medium">Anno:</label>
-    <input type="number" min="1400" max="2024" class="book-year w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-    <p class="hidden error-message text-sm text-red-500 mt-1">Anno non valido</p>
-</div>
-<div class="mb-5">
-    <label class="block mb-1 text-slate-700 font-medium">ISBN:</label>
+    <div class="flex items-center gap-1">
+        <label class="block text-slate-700 font-medium">ISBN:</label>
+        <div class="flex items-center relative group">
+            <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
+            <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
+                <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
+                L'ISBN (International Standard Book Number) è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro vicino al codice a barre.
+            </div>
+        </div>
+    </div>
     <input type="tel" inputmode="numeric" class="book-isbn w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" maxlength="13">
     <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
 </div>
+
+
                 
                 
                 <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
+
             `;
 
             const inputs = bookDiv.querySelectorAll('input');
@@ -695,14 +708,14 @@ function showSuccessPopup(message) {
 
         document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
-
+    
     let isValid = true;
     const inputs = event.target.querySelectorAll('input');
-
+    
     // Reset global error message
     const existingPopups = document.querySelectorAll('.error-popup');
     existingPopups.forEach(popup => document.body.removeChild(popup));
-
+    
     // Validate all form fields
     inputs.forEach(input => {
         if (input.id) {
@@ -746,14 +759,14 @@ function showSuccessPopup(message) {
     const telefono = document.getElementById('telefono').value.trim();
 
     const books = [];
-
+    
     for (const bookDiv of bookEntries) {
         const title = bookDiv.querySelector('.book-title').value.trim();
         if (!title) {
             showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
             return;
         }
-
+        
         books.push({
             title: title,
             author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
@@ -814,7 +827,7 @@ function showSuccessPopup(message) {
         // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
-
+        
         // Reset del form
         event.target.reset();
         document.getElementById('bookList').innerHTML = '';
@@ -843,7 +856,7 @@ function showSuccessPopup(message) {
 });
 
 
-
+        
     </script>
 </body>
 </html>
