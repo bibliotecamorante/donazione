@@ -28,9 +28,20 @@
 }
 
 /* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
-button[type="submit"] {
-    background-color: #970a2c !important;
-}
+ button[type="submit"] {
+        background-color: #0078d7 !important; /* Azzurro intenso */
+        color: white; /* Testo in bianco per leggibilità */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+        background-color: #005a9e !important; /* Azzurro più scuro per effetto hover */
+    }
+
 
 
 
@@ -254,6 +265,27 @@ button[type="submit"] {
             filter: none;
             max-width: 100%;
         }
+
+
+
+footer {
+    box-shadow: 0 -2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+footer i {
+    font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+    footer .container {
+        text-align: center;
+    }
+}
+
+
+
+
+        
     </style>
 </head>
 <body>
@@ -857,9 +889,56 @@ function showSuccessPopup(message) {
         submitButton.textContent = 'Invia Donazione';
     }
 });
-
-
         
     </script>
+
+
+
+
+
+
+
+    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
+        <div class="mb-4 md:mb-0">
+            <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
+                <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10">
+            </a>
+        </div>
+        
+        <div class="flex flex-col md:flex-row md:space-x-8 space-y-2 md:space-y-0 text-center md:text-left text-sm">
+            <div class="flex items-center justify-center md:justify-start space-x-2">
+                <i class="fas fa-location-dot w-4"></i>
+                <span class="flex flex-col">
+                    <span>Via Adolfo Cozza 7</span>
+                    <span>Municipio X, 00121 Roma</span>
+                </span>
+            </div>
+            
+            <div class="flex items-center justify-center md:justify-start space-x-4">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-phone w-4"></i>
+                    <span>06 4546 0481 / 0483</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-clock w-4"></i>
+                    <span class="flex flex-col">
+                        <span>Lunedì-Venerdì 09:00-18:30</span>
+                        <span>Sabato 09:00-13:00</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+    
+
+
+
+    
 </body>
 </html>
