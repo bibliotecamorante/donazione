@@ -22,10 +22,12 @@
 
         
 :root {
-    --primary: #970a2c;
-    --secondary: #6b1c32;  /* Rosso più scuro */
-    --accent: #8c1c13;     /* Bordeaux */
+    --primary: #6b0a20;    /* Slightly darker red */
+    --secondary: #540f26;  /* Even darker red */
+    --accent: #700f0a;     /* Darker bordeaux */
 }
+
+        
 
 /* Sostituisci il pulsante di invio con il colore amaranto dell'intestazione */
  button[type="submit"] {
@@ -356,7 +358,7 @@ footer i {
        
 
             <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-6 rounded-r">
-                Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori
+                Compila il modulo per donare i tuoi libri alla biblioteca. I campi contrassegnati con * sono obbligatori. E' raccomandato compilare anche il campo ISBN per garantire una più accurata identificazione dei volumi.
             </div>
             
             <form id="donationForm" novalidate>
@@ -670,13 +672,13 @@ function showSuccessPopup(message) {
 
 <div class="mb-5">
     <div class="flex items-center gap-1">
-        <label class="block text-slate-700 font-medium">ISBN:</label>
+        <label class="block text-slate-700 font-medium">ISBN (raccomandato):</label>
         <div class="relative group -mt-1">
             <i class="fa-solid fa-circle-info text-gray-500 hover:text-gray-700 transition-colors text-sm"></i>
             <div class="invisible group-hover:visible absolute left-1/2 -translate-x-1/2 bottom-full mb-2 px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm rounded-lg w-64 shadow-lg z-10">
                 <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-8 border-transparent border-t-white"></div>
                 <div class="absolute left-1/2 -translate-x-1/2 bottom-0 translate-y-full w-0 h-0 border-[9px] border-transparent border-t-gray-200"></div>
-                L'ISBN (International Standard Book Number) è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro vicino al codice a barre.
+                L'ISBN (International Standard Book Number) è un codice numerico di 10 o 13 cifre che identifica univocamente un libro. Lo trovi sul retro del libro sopra al codice a barre o nella pagina del copyright.
             </div>
         </div>
     </div>
