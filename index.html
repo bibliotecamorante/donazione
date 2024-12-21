@@ -28,6 +28,28 @@
 }
 
 
+
+
+/* MODIFICA QUI - Sostituisci la vecchia classe required-asterisk con questa nuova versione */
+.required-asterisk {
+    color: #970a2c !important;
+    font-weight: 900 !important;
+    font-size: 1.25em !important;
+    display: inline-block !important;
+    margin-left: 4px !important;
+    vertical-align: middle !important;
+}
+
+/* Assicurati che il colore non venga sovrascritto */
+.text-slate-700 .required-asterisk {
+    color: #970a2c !important;
+}
+
+
+
+
+
+	    
  /* Update the section header style */
         .section-header {
             font-size: 1.5rem;
@@ -179,18 +201,20 @@
         }
         
         header {
-            background-color: var(--primary);
-            color: #fff;
-            padding: 2rem 0;
-            min-height: 4cm;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            flex-direction: column;
-            text-align: center;
-        }
+    background-color: var(--primary);
+    color: #fff;
+    padding: 2rem 0;
+    min-height: 4cm;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    flex-direction: column;
+    text-align: center;
+}
 
+
+	    
         .container-header {
             max-width: 1200px;
             margin: 0 auto;
@@ -205,6 +229,7 @@
 
 
 
+
  .content-wrapper {
     max-width: 900px;
     width: 100%;
@@ -214,6 +239,9 @@
     margin-top: 60px;
 }
 
+
+
+ 
 .nav-icons {
     position: absolute;
     top: -60px;
@@ -407,17 +435,18 @@ footer i {
                 <!-- Rest of the form remains the same as in the original document -->
                 <h3 class="section-header">Dati Personali</h3>
                 
-                <div class="mb-5">
-                    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome: *</label>
-                    <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
-                </div>
-                
-                <div class="mb-5">
-                    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome: *</label>
-                    <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
-                </div>
+
+<div class="mb-5">
+    <label for="nome" class="block mb-1 text-slate-700 font-medium">Nome<span class="required-asterisk">*</span></label>
+    <input type="text" id="nome" name="nome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+    <p class="hidden error-message text-sm text-red-500 mt-1">Il nome è obbligatorio</p>
+</div>
+
+<div class="mb-5">
+    <label for="cognome" class="block mb-1 text-slate-700 font-medium">Cognome<span class="required-asterisk">*</span></label>
+    <input type="text" id="cognome" name="cognome" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+    <p class="hidden error-message text-sm text-red-500 mt-1">Il cognome è obbligatorio</p>
+</div>
                 
                 <div class="mb-5">
                     <label for="tessera" class="block mb-1 text-slate-700 font-medium">Numero Tessera:</label>
@@ -430,11 +459,11 @@ footer i {
                     <p class="hidden error-message text-sm text-red-500 mt-1">Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)</p>
                 </div>
                 
-                <div class="mb-5">
-                    <label for="email" class="block mb-1 text-slate-700 font-medium">Email: *</label>
-                    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
-                </div>
+<div class="mb-5">
+    <label for="email" class="block mb-1 text-slate-700 font-medium">Email<span class="required-asterisk">*</span></label>
+    <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
+    <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
+</div>
 
                 <h3 class="section-header">Libri da donare</h3>
                 <div id="bookList"></div>
@@ -718,11 +747,12 @@ function createBookEntry() {
             <div class="search-results hidden mt-2 bg-white border border-gray-200 rounded-lg max-h-60 overflow-y-auto shadow-lg"></div>
         </div>
                 
-        <div class="mb-5">
-            <label class="block mb-1 text-slate-700 font-medium">Titolo: *</label>
-            <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
-            <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
-        </div>
+       <!-- Modified book entry template in createBookEntry() function -->
+<div class="mb-5">
+    <label class="block mb-1 text-slate-700 font-medium">Titolo<span class="required-asterisk">*</span></label>
+    <input type="text" class="book-title w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base" required>
+    <p class="hidden error-message text-sm text-red-500 mt-1">Il titolo è obbligatorio</p>
+</div>
         <div class="mb-5">
             <label class="block mb-1 text-slate-700 font-medium">Autore:</label>
             <input type="text" class="book-author w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
@@ -844,7 +874,7 @@ function createBookEntry() {
 
 	    
 
-// Add this new function to handle book selection
+<!-- Modified selectBook function -->
 function selectBook(element, bookData) {
     const bookEntry = element.closest('.book-entry');
     bookEntry.querySelector('.book-title').value = bookData.title;
@@ -853,9 +883,13 @@ function selectBook(element, bookData) {
     bookEntry.querySelector('.book-year').value = bookData.year;
     bookEntry.querySelector('.book-isbn').value = bookData.isbn;
     bookEntry.querySelector('.search-results').classList.add('hidden');
-    bookEntry.querySelector('.quick-search').value = '';
+    
+    // Hide the quick search section
+    const quickSearchSection = bookEntry.querySelector('.mb-5:has(.quick-search)');
+    if (quickSearchSection) {
+        quickSearchSection.style.display = 'none';
+    }
 }
-
 
 
 
