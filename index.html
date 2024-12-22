@@ -570,15 +570,16 @@ footer i {
 
     <script>
         // Initialize EmailJS
-        // Carica le variabili d'ambiente
-        const EMAILJS_SERVICE_ID = process.env.EMAILJS_SERVICE_ID;
-        const EMAILJS_TEMPLATE_ID = process.env.EMAILJS_TEMPLATE_ID;
-        const EMAILJS_PUBLIC_KEY = process.env.EMAILJS_PUBLIC_KEY;
+      // Rimuovere il caricamento delle variabili d'ambiente
+const EMAILJS_SERVICE_ID = 'service_yepi8uu';
+const EMAILJS_TEMPLATE_ID = 'template_s1jmd7r';
+const EMAILJS_PUBLIC_KEY = 'z6OeY42qSulJ-8EcS';
+const GOOGLE_BOOKS_API_KEY = 'AIzaSyCHJzsPtp8CfKeUag-vvyTxobwR_DmYink';
 
-        // Initialize EmailJS
-        (function() {
-            emailjs.init(EMAILJS_PUBLIC_KEY);
-        })();
+// Initialize EmailJS
+(function() {
+    emailjs.init(EMAILJS_PUBLIC_KEY);
+})();
 
 
 
@@ -883,10 +884,10 @@ function createBookEntry() {
 	
 	
 	
-// All'inizio del tuo JavaScript, dopo la dichiarazione delle altre variabili d'ambiente
-const GOOGLE_BOOKS_API_KEY = process.env.GOOGLE_BOOKS_API_KEY;
+// Dichiarazione diretta della API key di Google Books
+const GOOGLE_BOOKS_API_KEY = 'AIzaSyCHJzsPtp8CfKeUag-vvyTxobwR_DmYink';
 
-// Modifica la funzione performSearch
+// Funzione di ricerca modificata
 const performSearch = async () => {
     const query = searchInput.value.trim();
     if (!query) {
