@@ -887,6 +887,11 @@ function createBookEntry() {
 // Dichiarazione diretta della API key di Google Books
 const GOOGLE_BOOKS_API_KEY = 'AIzaSyCHJzsPtp8CfKeUag-vvyTxobwR_DmYink';
 
+
+
+
+
+	
 // Funzione di ricerca modificata
 const performSearch = async () => {
     const query = searchInput.value.trim();
@@ -932,31 +937,30 @@ const performSearch = async () => {
         resultsDiv.innerHTML = '<div class="p-3 text-red-600">Errore durante la ricerca</div>';
         resultsDiv.classList.remove('hidden');
     }
-};
-	
+};	
 
 
 
 
 
 	
-    // Add input event with debounce
-    searchInput.addEventListener('input', () => {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(performSearch, 300); // Delay of 300ms
-    });
+// Event listeners per la ricerca
+searchInput.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(performSearch, 300); // Delay di 300ms
+});
 
-    searchBtn.addEventListener('click', performSearch);
-    searchInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') performSearch();
-    });
+searchBtn.addEventListener('click', performSearch);
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') performSearch();
+});
 
-    // Close results when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.quick-search') && !e.target.closest('.search-results')) {
-            resultsDiv.classList.add('hidden');
-        }
-    });
+// Chiudi i risultati quando si clicca fuori
+document.addEventListener('click', (e) => {
+    if (!e.target.closest('.quick-search') && !e.target.closest('.search-results')) {
+        resultsDiv.classList.add('hidden');
+    }
+});
 
     const inputs = bookDiv.querySelectorAll('input');
     inputs.forEach(input => {
