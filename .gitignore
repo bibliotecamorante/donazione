@@ -1,4 +1,4 @@
-# Config files with sensitive data
+#  Config files with sensitive data
 
 # Environment variables
 .env
