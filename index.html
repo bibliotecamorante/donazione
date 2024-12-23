@@ -842,7 +842,7 @@ function createBookEntry() {
             <p class="hidden error-message text-sm text-red-500 mt-1">ISBN non valido</p>
         </div>
         
-        <button type="button" class="add-book-btn" onclick="createBookEntry()">+ Aggiungi Libro</button>
+         <button type="button" class="add-book-btn">+ Aggiungi Libro</button>
     `;
 
     // Add search functionality with debounce
@@ -1006,15 +1006,17 @@ function resetBookFields(button) {
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            createBookEntry();
+    // Initialize with one book entry
+    createBookEntry();
 
-            const inputs = document.querySelectorAll('input');
-            inputs.forEach(input => {
-                if (input.id) {
-                    input.addEventListener('input', () => validateField(input));
-                    input.addEventListener('blur', () => validateField(input));
-                }
-            });
+    // Get all buttons with class 'add-book-btn'
+    const addBookBtns = document.querySelectorAll('.add-book-btn');
+    
+    // Add event listener to each button
+    addBookBtns.forEach(button => {
+        button.addEventListener('click', createBookEntry);
+    });
+});
         });
 
 
