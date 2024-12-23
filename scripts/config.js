@@ -1,4 +1,4 @@
-// a config.js
+// config.js
 const config = {
     emailjs: {
         serviceId: 'service_yepi8uu',
