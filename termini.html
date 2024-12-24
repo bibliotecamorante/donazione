@@ -39,9 +39,9 @@
            word-spacing: 0px;
        }
        
-       .top-banner {
+  .top-banner {
     background-color: white;
-    padding: 0.5rem 2rem; /* Ridotto da 0.8rem a 0.5rem */
+    padding: 0.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -71,8 +71,8 @@
 header {
     background-color: var(--primary);
     color: #fff;
-    padding: 6rem 0; /* Aumentato significativamente da 4.5rem a 6rem */
-    min-height: 9cm; /* Aumentato significativamente da 7cm a 9cm */
+    padding: 6rem 0 !important; /* Aggiunto !important */
+    min-height: 9cm !important; /* Aggiunto !important */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -82,9 +82,11 @@ header {
 }
 
        .container-header {
+         padding: 3rem 0;
+         min-height: 9cm;
            max-width: 1200px;
            margin: 0 auto;
-           padding: 0 2rem;
+           
            display: flex;
            justify-content: center;
            align-items: center;
@@ -92,6 +94,16 @@ header {
            flex-wrap: wrap;
            gap: 1rem;
        }
+
+/* Modifichiamo la media query */
+@media (max-width: 768px) {
+    header {
+        min-height: 9cm !important;
+        padding: 6rem 0 !important;
+    }
+}
+
+      
 
        .library-name {
            display: flex;
