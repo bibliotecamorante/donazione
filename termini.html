@@ -41,19 +41,27 @@
        
        .top-banner {
            background-color: white;
+           padding: 0.8rem 2rem; 
            display: flex;
            justify-content: space-between;
            align-items: center;
-           height: 70px; /* Altezza fissa */
-           padding: 0 2rem;
-           overflow: hidden; /* Nasconde contenuti in eccesso */
+           height: 60px; /* Altezza fissa per il banner */
        }
 
-       .roma-logo {
-           max-height: 70px; /* Impedisce alle immagini di espandersi */
-           display: block; /* Evita spazio extra sotto l'immagine */
-           border: none; /* Elimina qualsiasi bordo */
-       }
+       .top-banner a {
+    border-bottom: none; /* Rimuove la linea di sottolineatura di default */
+    display: flex; /* Per allineare meglio l'immagine */
+    align-items: center;
+}
+
+.top-banner a:hover {
+    border-bottom: none; /* Previene la comparsa della linea al hover */
+}
+
+.roma-logo {
+    height: 40px;
+    display: block; /* Rimuove eventuali spazi extra */
+}
 
        .social-icons {
            display: flex;
@@ -112,62 +120,68 @@
            vertical-align: middle;
        }
 
-       .content-wrapper {
-           max-width: 900px;
-           width: 100%;
-           margin: 2rem auto;
-           padding: 0 1rem;
-           position: relative;
-           margin-top: 60px;
-       }
+     
 
-       .nav-icons {
-           position: absolute;
-           top: -60px;
-           left: 50%;
-           transform: translateX(-50%);
-           display: flex;
-           align-items: center;
-           gap: 3rem;
-           padding-top: 20px;
-           visibility: visible;
-           opacity: 1;
-       }
-       
-       @media (max-width: 1400px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 300px));
-           }
-       }
+      .content-wrapper {
+    max-width: 900px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    position: relative;
+    margin-top: 60px;
+}
 
-       @media (max-width: 1200px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 200px));
-           }
-       }
+.nav-icons {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%); /* Semplificato il transform */
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    padding-top: 20px;
+    visibility: visible;
+    opacity: 1;
+}
+      
 
-       @media (max-width: 992px) {
-           .nav-icons {
-               transform: translateX(calc(-50% - 100px));
-           }
-       }
+@media (max-width: 1400px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 300px));
+    }
+}
 
-       @media (max-width: 768px) {
-           .nav-icons {
-               position: relative;
-               left: 0;
-               top: 0;
-               transform: none;
-               justify-content: flex-start;
-           }
-       }
+@media (max-width: 1200px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 200px));
+    }
+}
 
-       .nav-icons a {
-           display: flex;
-           align-items: center;
-           visibility: visible;
-           opacity: 1;
-       }
+@media (max-width: 992px) {
+    .nav-icons {
+        transform: translateX(calc(-50% - 100px));
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-icons {
+        position: relative;
+        left: 0;
+        top: 0;
+        transform: none;
+        justify-content: flex-start;
+    }
+}
+
+
+
+      
+    .nav-icons a {
+    display: flex;
+    align-items: center;
+    visibility: visible;
+    opacity: 1;
+}
 
        .nav-icons a:hover {
            transform: scale(1.1);
@@ -257,57 +271,105 @@
            border-bottom-color: var(--primary);
        }
 
-       footer {
-           background-color: var(--primary);
-           color: #fff;
-           padding: 1.5rem 0;
-       }
 
-       footer .container {
-           display: flex;
-           flex-wrap: wrap;
-           justify-content: space-between;
-           align-items: center;
-           gap: 1rem;
-       }
 
-       footer img {
-           height: 35px;
-           max-width: 100%;
-           margin-right: 1rem;
-       }
 
-       footer .info {
-           display: flex;
-           flex-wrap: wrap;
-           justify-content: space-between;
-           align-items: center;
-           gap: 1.5rem;
-           font-size: 0.85rem;
-       }
 
-       footer .info > div {
-           display: flex;
-           align-items: center;
-           gap: 0.5rem;
-           line-height: 1.4;
-       }
+footer {
+    background-color: var(--primary);
+    color: #fff;
+    padding: 1.5rem 0; /* Altezza ridotta */
+}
 
-       footer .info span.block {
-           display: block;
-       }
+footer .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem; /* Spaziatura minima */
+}
 
-       footer i {
-           font-size: 1rem;
-       }
+footer img {
+    height: 35px; /* Logo leggermente più piccolo */
+    max-width: 100%;
+    margin-right: 1rem; /* Spaziatura tra logo e stringhe */
+}
 
-       @media (max-width: 768px) {
-           footer .info {
+footer .info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem; /* Minore spazio tra blocchi di testo */
+    font-size: 0.85rem; /* Testo ridotto */
+}
+
+footer .info > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    line-height: 1.4; /* Migliore leggibilità */
+}
+
+footer .info span.block {
+    display: block; /* Forza il rientro a capo per indirizzi e orari */
+}
+
+footer i {
+    font-size: 1rem; /* Icone ridimensionate */
+}
+
+@media (max-width: 768px) {
+    footer .info {
+        flex-direction: column; /* Layout verticale su schermi piccoli */
+        align-items: flex-start;
+    }
+}
+      
+      
+           
+           header {
+               min-height: auto;
+               padding: 1rem 0;
+               display: flex;
                flex-direction: column;
-               align-items: flex-start;
+           }
+           
+           .nav-icons {
+               position: relative;
+               top: 0;
+               left: 0;
+               padding: 0.5rem 0;
+               justify-content: center;
+           }
+           
+           .container {
+               padding: 0.5rem;
+               flex-direction: row;
+               justify-content: center;
+               align-items: center;
+               gap: 1.5rem;
+               width: 100%;
+           }
+           
+           header img {
+               height: 37px;
+           }
+           
+           header .logo-morante {
+               height: 87px;
+           }
+           
+           main {
+               margin: 1rem;
+               padding: 1.5rem;
+           }
+
+           .footer-info {
+               flex-direction: column;
            }
        }
-       
+
        @media print {
            .top-banner, header, .nav-icons, footer {
                display: none;
@@ -325,8 +387,8 @@
 <body>
    <div class="top-banner">
         <a href="https://culture.roma.it/">
-            <img src="roma.png" alt="Logo Roma" class="roma-logo">
-        </a>
+        <img src="roma.png" alt="Logo Roma" class="roma-logo">
+         </a>
         <div class="social-icons">
             <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
                 <i class="fab fa-facebook"></i>
@@ -346,10 +408,10 @@
   <header>
     <div class="container-header">
         <a href="https://www.bibliotechediroma.it/opac/.do">
-            <img src="logobianco.png" alt="Logo Biblioteche di Roma">
+            <img src="logobianco.png" alt="Logo Biblioteche di Roma" style="height: 70px; max-width: 100%;">
         </a>
         <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2">
-            <img src="logomorante.png" alt="Logo Biblioteca Morante" class="logo-morante">
+            <img src="logomorante.png" alt="Logo Biblioteca Morante" style="height: 180px; max-width: 100%;">
         </a>
     </div>
   </header>
@@ -364,8 +426,8 @@
             </a>
         </div>
 
-     
-        <main>           
+        <main>
+            
            
           <div class="library-name">
     <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
