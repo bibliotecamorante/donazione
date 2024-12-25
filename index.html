@@ -416,7 +416,58 @@ footer i {
 
         
     </style>
+
+
+
+<script>
+const emailValidator = {
+    validateSyntax(email) {
+        const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+        return emailRegex.test(email);
+    }
+};
+
+function showError(input, message) {
+    const errorElement = input.parentElement.querySelector('.error-message');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.classList.remove('hidden');
+        input.classList.add('border-red-500');
+        input.classList.remove('border-gray-300', 'focus:border-blue-500');
+    }
+}
+
+function hideError(input) {
+    const errorElement = input.parentElement.querySelector('.error-message');
+    if (errorElement) {
+        errorElement.classList.add('hidden');
+        input.classList.remove('border-red-500');
+        input.classList.add('border-gray-300', 'focus:border-blue-500');
+    }
+}
+
+
+</script>
+	
+
+	
 </head>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('email').addEventListener('blur', (e) => {
+        const email = e.target.value.trim();
+        if (!email) return;
+        
+        if (!emailValidator.validateSyntax(email)) {
+            showError(e.target, 'Formato email non valido');
+        } else {
+            hideError(e.target);
+        }
+    });
+});
+</script>
+	
 <body>
     <div class="top-banner">
 	    
@@ -531,6 +582,10 @@ footer i {
     <input type="email" id="email" name="email" required class="w-full px-3 py-2 border-2 border-gray-300 rounded focus:border-blue-500 focus:outline-none text-base">
     <p class="hidden error-message text-sm text-red-500 mt-1">Inserire un indirizzo email valido</p>
 </div>
+
+
+
+		    
 
                 <h3 class="section-header">Libri da donare</h3>
                 <div id="bookList"></div>
@@ -666,24 +721,7 @@ function removeLoadingOverlay() {
 
         let bookCount = 0;
 
-        function showError(input, message) {
-            const errorElement = input.parentElement.querySelector('.error-message');
-            if (errorElement) {
-                errorElement.textContent = message;
-                errorElement.classList.remove('hidden');
-                input.classList.add('border-red-500');
-                input.classList.remove('border-gray-300', 'focus:border-blue-500');
-            }
-        }
-
-        function hideError(input) {
-            const errorElement = input.parentElement.querySelector('.error-message');
-            if (errorElement) {
-                errorElement.classList.add('hidden');
-                input.classList.remove('border-red-500');
-                input.classList.add('border-gray-300', 'focus:border-blue-500');
-            }
-        }
+        
 
         function validateField(input) {
             const value = input.value.trim();
@@ -701,15 +739,17 @@ function removeLoadingOverlay() {
                         }
                         break;
                         
-                    case 'email':
-                        if (!value) {
-                            showError(input, 'L\'email è obbligatoria');
-                            isValid = false;
-                        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                            showError(input, 'Inserire un indirizzo email valido');
-                            isValid = false;
-                        }
-                        break;
+           case 'email':
+    if (!value) {
+        showError(input, 'L\'email è obbligatoria');
+        isValid = false;
+    } else if (!emailValidator.validateSyntax(value)) {
+        showError(input, 'Formato email non valido');
+        isValid = false;
+    }
+    break;
+
+				
                 }
             }
 
@@ -1286,9 +1326,6 @@ const response = await emailjs.send(
 </footer>
 
 
-
-
-    
 
 
 
