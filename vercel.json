@@ -26,11 +26,20 @@
   "functions": {
     "api/rateLimiter.js": {
       "memory": 1024,
-      "maxDuration": 10
+      "maxDuration": 10,
+      "runtime": "edge"
     },
     "api/submit.js": {
       "memory": 1024,
       "maxDuration": 10
     }
-  }
+  },
+  "routes": [
+    {
+      "src": "/api/rateLimiter",
+      "methods": ["POST", "OPTIONS"],
+      "dest": "/api/rateLimiter.js",
+      "runtime": "edge"
+    }
+  ]
 }
