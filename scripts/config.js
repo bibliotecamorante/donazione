@@ -1,3 +1,4 @@
+// scripts/config.js
 const config = {
   emailjs: {
     serviceId: window?.env?.EMAILJS_SERVICE_ID || 'service_yepi8uu',
@@ -17,6 +18,7 @@ const config = {
     email: window?.env?.LIBRARY_EMAIL || 'bibliotecamorante@gmail.com'
   },
   api: {
+    baseUrl: 'https://donazione-rmr192ag1-bibliotecamorantes-projects.vercel.app',
     rateLimiter: '/api/rateLimiter'
   }
 };
