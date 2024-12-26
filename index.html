@@ -1210,7 +1210,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         showLoadingOverlay();
 
         // Check rate limit before sending email
-        const rateLimitResponse = await fetch('https://donazione-delta.vercel.app/api/rateLimiter', {
+   const rateLimitResponse = await fetch('https://donazione-delta.vercel.app/api/rateLimiter', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json'
