@@ -48,7 +48,7 @@ export default async function handler(req) {
       now - new Date(timestamp) < 24 * 60 * 60 * 1000
     )
 
-    if (recentDonations.length >= 1) {
+    if (recentDonations.length >= 2) {
       const oldestDonation = new Date(Math.min(...recentDonations.map(d => new Date(d))))
       return new Response(JSON.stringify({
         error: 'Rate limit exceeded',
