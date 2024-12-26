@@ -438,22 +438,38 @@ const emailValidator = {
     }
 };
 
+// Funzione per mostrare gli errori
 function showError(input, message) {
     const errorElement = input.parentElement.querySelector('.error-message');
     if (errorElement) {
         errorElement.textContent = message;
         errorElement.classList.remove('hidden');
-        input.classList.add('border-red-500');
-        input.classList.remove('border-gray-300', 'focus:border-blue-500');
+        
+        // Se è una checkbox, aggiungi una classe di errore al contenitore
+        if (input.type === 'checkbox') {
+            input.closest('.bg-gray-50').classList.add('border-red-500', 'bg-red-50');
+            input.classList.add('border-red-500');
+        } else {
+            input.classList.add('border-red-500');
+            input.classList.remove('border-gray-300', 'focus:border-blue-500');
+        }
     }
 }
 
+// Funzione per nascondere gli errori
 function hideError(input) {
     const errorElement = input.parentElement.querySelector('.error-message');
     if (errorElement) {
         errorElement.classList.add('hidden');
-        input.classList.remove('border-red-500');
-        input.classList.add('border-gray-300', 'focus:border-blue-500');
+        
+        // Se è una checkbox, rimuovi la classe di errore dal contenitore
+        if (input.type === 'checkbox') {
+            input.closest('.bg-gray-50').classList.remove('border-red-500', 'bg-red-50');
+            input.classList.remove('border-red-500');
+        } else {
+            input.classList.remove('border-red-500');
+            input.classList.add('border-gray-300', 'focus:border-blue-500');
+        }
     }
 }
 
@@ -738,8 +754,15 @@ function validateField(input) {
     const value = input.value.trim();
     let isValid = true;
 
+   // Gestione specifica per checkbox
     if (input.type === 'checkbox') {
-        return validateCheckbox(input);
+        if (!input.checked) {
+            showError(input, 'Devi accettare i termini e condizioni');
+            return false;
+        } else {
+            hideError(input);
+            return true;
+        }
     }
 
     if (input.hasAttribute('required') && !value) {
@@ -771,17 +794,15 @@ function validateField(input) {
 
     return isValid;
 }
-function validateCheckbox(checkbox) {
-    if (!checkbox.checked) {
-        showError(checkbox, 'Devi accettare i termini e condizioni');
-        checkbox.parentElement.classList.add('checkbox-error');
-        return false;
-    } else {
-        hideError(checkbox);
-        checkbox.parentElement.classList.remove('checkbox-error');
-        return true;
+// Aggiungi event listener per la checkbox
+document.addEventListener('DOMContentLoaded', function() {
+    const acceptCheckbox = document.getElementById('accept');
+    if (acceptCheckbox) {
+        acceptCheckbox.addEventListener('change', function() {
+            validateField(this);
+        });
     }
-}
+});
 
         
 
