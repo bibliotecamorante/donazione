@@ -427,23 +427,13 @@ const emailValidator = {
     }
 };
 
-// Update the error handling functions
 function showError(input, message) {
-    if (!input) {
-        // Show global error if no input is provided
-        showGlobalErrorPopup(message);
-        return;
-    }
-    
-    const errorElement = input.parentElement?.querySelector('.error-message');
+    const errorElement = input.parentElement.querySelector('.error-message');
     if (errorElement) {
         errorElement.textContent = message;
         errorElement.classList.remove('hidden');
         input.classList.add('border-red-500');
         input.classList.remove('border-gray-300', 'focus:border-blue-500');
-    } else {
-        // Fallback to global error if error element not found
-        showGlobalErrorPopup(message);
     }
 }
 
@@ -1142,94 +1132,154 @@ window.resetBookFields = function(button) {
 	    
 
 
-// Add form submission handler
-document.getElementById('donationForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+    event.preventDefault();
     
-    showLoadingOverlay();
+    let isValid = true;
+    const inputs = event.target.querySelectorAll('input');
     
-    try {
-        const email = document.getElementById('email').value;
-        
-        // Check rate limit first
-        const rateLimitResponse = await fetch(config.api.rateLimiter, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email })
-        });
-        
-        const rateLimitData = await rateLimitResponse.json();
-        
-        if (!rateLimitResponse.ok) {
-            if (rateLimitResponse.status === 429) {
-                const nextAvailable = new Date(rateLimitData.nextAvailable);
-                const formattedDate = nextAvailable.toLocaleString();
-                throw new Error(`È possibile effettuare una sola donazione al giorno. Potrai effettuare la prossima donazione dopo ${formattedDate}`);
+    // Reset global error message
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+    
+    // Validate all form fields
+    inputs.forEach(input => {
+        if (input.id) {
+            if (!validateField(input)) {
+                isValid = false;
             }
-            throw new Error(rateLimitData.error || 'Si è verificato un errore durante la verifica del limite di richieste');
+        }
+    });
+
+    // Validate book fields
+    const bookEntries = document.querySelectorAll('.book-entry');
+    bookEntries.forEach(entry => {
+        const bookInputs = entry.querySelectorAll('input');
+        bookInputs.forEach(input => {
+            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                if (!validateBookField(input)) {
+                    isValid = false;
+                }
+            }
+        });
+    });
+
+    // Validate checkbox
+    const acceptCheckbox = document.getElementById('accept');
+    if (!acceptCheckbox.checked) {
+        showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
+        isValid = false;
+    } else {
+        hideError(acceptCheckbox);
+    }
+
+    if (!isValid) {
+        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
+        return;
+    }
+
+    const nome = document.getElementById('nome').value.trim();
+    const cognome = document.getElementById('cognome').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const tessera = document.getElementById('tessera').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+
+    const books = [];
+    
+    for (const bookDiv of bookEntries) {
+        const title = bookDiv.querySelector('.book-title').value.trim();
+        if (!title) {
+            showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
+            return;
         }
         
-        // Collect form data
-        const formData = {
-            nome: document.getElementById('nome').value,
-            cognome: document.getElementById('cognome').value,
-            email: email,
-            tessera: document.getElementById('tessera').value,
-            telefono: document.getElementById('telefono').value,
-            books: Array.from(document.querySelectorAll('.book-entry')).map(entry => ({
-                title: entry.querySelector('.book-title').value,
-                author: entry.querySelector('.book-author').value || 'Non specificato',
-                publisher: entry.querySelector('.book-publisher').value || 'Non specificato',
-                year: entry.querySelector('.book-year').value || 'Non specificato',
-                isbn: entry.querySelector('.book-isbn').value || 'Non specificato'
-            })),
-            notes: document.getElementById('notes').value.trim()
-        };
+        books.push({
+            title: title,
+            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
+            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
+            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
+            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
+        });
+    }
 
-        // Send email using EmailJS
-        await emailjs.send(
-            config.emailjs.serviceId,
-            config.emailjs.templateId,
-            {
-                to_email: config.library.email,
-                from_name: `${formData.nome} ${formData.cognome}`,
-                from_email: formData.email,
-                reply_to: formData.email,
-                tessera: formData.tessera || 'Non specificata',
-                telefono: formData.telefono || 'Non specificato',
-                books: formData.books.map((book, index) => 
-                    `<br><em>Libro ${index + 1}:</em><br>` +
-                    `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px;">
-                        <tr><td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
-                            <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author}</td></tr>
-                        <tr><td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
-                            <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td></tr>
-                        <tr><td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
-                            <td style="padding:5px; border:1px solid #ddd;">${book.year}</td></tr>
-                        <tr><td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
-                            <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td></tr>
-                    </table>`
-                ).join(''),
-                notes: formData.notes || 'Nessuna nota aggiuntiva'
-            },
-            config.emailjs.publicKey
-        );
-        
+    if (books.length === 0) {
+        showGlobalErrorPopup('Aggiungi almeno un libro alla donazione.');
+        return;
+    }
+
+    const formattedBooks = books.map((book, index) => 
+        `<br><em>Libro ${index + 1}:</em><br>` +
+        `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
+            <colgroup>
+                <col style="width: 100px;">
+                <col style="width: auto;">
+            </colgroup>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
+            </tr>
+            <tr>
+                <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
+                <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
+            </tr>
+        </table>`).join('');
+
+    showLoadingOverlay(); // Mostra subito il loading overlay
+
+    try {
+  // Update the emailjs.send portion of the submit event listener
+const response = await emailjs.send(
+    config.emailjs.serviceId,
+    config.emailjs.templateId,
+    {
+        to_email: config.library.email,
+        from_name: `${nome} ${cognome}`,
+        from_email: email,
+        reply_to: email,
+        tessera: tessera || 'Non specificata',
+        telefono: telefono || 'Non specificato',
+        books: formattedBooks,
+        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+    },
+    config.emailjs.publicKey
+);
+
+        // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
-        // Reset form
-        this.reset();
+        // Reset del form
+        event.target.reset();
         document.getElementById('bookList').innerHTML = '';
         bookCount = 0;
         createBookEntry();
-        
+
+        // Reset degli errori
+        const errorMessages = document.querySelectorAll('.error-message');
+        errorMessages.forEach(msg => msg.classList.add('hidden'));
+        const inputFields = document.querySelectorAll('input');
+        inputFields.forEach(input => {
+            input.classList.remove('border-red-500');
+            input.classList.add('border-gray-300', 'focus:border-blue-500');
+        });
+
     } catch (error) {
-        console.error('Submission error:', error);
         removeLoadingOverlay();
-        showGlobalErrorPopup(error.message || 'Si è verificato un errore durante l\'invio. Riprova più tardi.');
+        console.error('Errore dettagliato durante l\'invio:', error);
+        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
+        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
+    } finally {
+        const submitButton = event.target.querySelector('button[type="submit"]');
+        submitButton.disabled = false;
+        submitButton.textContent = 'Invia Donazione';
     }
 });
         
