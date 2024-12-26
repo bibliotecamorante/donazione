@@ -1132,7 +1132,7 @@ window.resetBookFields = function(button) {
 	    
 
 
-document.getElementById('donationForm').addEventListener('submit', async function(event) {
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
     let isValid = true;
@@ -1232,33 +1232,27 @@ document.getElementById('donationForm').addEventListener('submit', async functio
             </tr>
         </table>`).join('');
 
-    showLoadingOverlay();
+    showLoadingOverlay(); // Mostra subito il loading overlay
 
     try {
-        // Invio alla nuova API invece che direttamente a EmailJS
-        const response = await fetch('/api/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                to_email: config.library.email,
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                reply_to: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books: formattedBooks,
-                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            })
-        });
+  // Update the emailjs.send portion of the submit event listener
+const response = await emailjs.send(
+    config.emailjs.serviceId,
+    config.emailjs.templateId,
+    {
+        to_email: config.library.email,
+        from_name: `${nome} ${cognome}`,
+        from_email: email,
+        reply_to: email,
+        tessera: tessera || 'Non specificata',
+        telefono: telefono || 'Non specificato',
+        books: formattedBooks,
+        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+    },
+    config.emailjs.publicKey
+);
 
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.error || 'Errore durante l\'invio');
-        }
-
+        // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
@@ -1280,7 +1274,7 @@ document.getElementById('donationForm').addEventListener('submit', async functio
     } catch (error) {
         removeLoadingOverlay();
         console.error('Errore dettagliato durante l\'invio:', error);
-        const errorMessage = error.message || 'Errore sconosciuto durante l\'invio';
+        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
         showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
     } finally {
         const submitButton = event.target.querySelector('button[type="submit"]');
@@ -1288,6 +1282,8 @@ document.getElementById('donationForm').addEventListener('submit', async functio
         submitButton.textContent = 'Invia Donazione';
     }
 });
+        
+    </script>
 
 
 
@@ -1330,6 +1326,9 @@ document.getElementById('donationForm').addEventListener('submit', async functio
 </footer>
 
 
+
+
+    
 
 
 
