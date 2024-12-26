@@ -411,7 +411,14 @@ footer i {
     }
 }
 
+.checkbox-error input[type="checkbox"] {
+    border-color: #ef4444;
+    background-color: #fef2f2;
+}
 
+.checkbox-error span {
+    color: #ef4444;
+}
 
 
         
@@ -432,8 +439,10 @@ function showError(input, message) {
     if (errorElement) {
         errorElement.textContent = message;
         errorElement.classList.remove('hidden');
-        input.classList.add('border-red-500');
-        input.classList.remove('border-gray-300', 'focus:border-blue-500');
+        if (input.type !== 'checkbox') {  // Aggiungi questo controllo
+            input.classList.add('border-red-500');
+            input.classList.remove('border-gray-300', 'focus:border-blue-500');
+        }
     }
 }
 
@@ -441,8 +450,10 @@ function hideError(input) {
     const errorElement = input.parentElement.querySelector('.error-message');
     if (errorElement) {
         errorElement.classList.add('hidden');
-        input.classList.remove('border-red-500');
-        input.classList.add('border-gray-300', 'focus:border-blue-500');
+        if (input.type !== 'checkbox') {  // Aggiungi questo controllo
+            input.classList.remove('border-red-500');
+            input.classList.add('border-gray-300', 'focus:border-blue-500');
+        }
     }
 }
 
@@ -727,6 +738,12 @@ function removeLoadingOverlay() {
             const value = input.value.trim();
             let isValid = true;
 
+
+if (input.type === 'checkbox') {
+    return validateCheckbox(input);
+}
+
+		
             if (input.hasAttribute('required') && !value) {
                 showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
                 isValid = false;
@@ -760,7 +777,17 @@ function removeLoadingOverlay() {
             return isValid;
         }
 
-
+function validateCheckbox(checkbox) {
+    if (!checkbox.checked) {
+        showError(checkbox, 'Devi accettare i termini e condizioni');
+        checkbox.parentElement.classList.add('checkbox-error');
+        return false;
+    } else {
+        hideError(checkbox);
+        checkbox.parentElement.classList.remove('checkbox-error');
+        return true;
+    }
+}
         
 
        function validateBookField(input) {
