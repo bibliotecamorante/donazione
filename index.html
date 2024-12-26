@@ -411,17 +411,7 @@ footer i {
     }
 }
 
-.invalid-checkbox {
-    outline: 2px solid #ef4444;
-    border-radius: 4px;
-}
 
-.checkbox-error {
-    color: #ef4444;
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-    display: block;
-}
 
 
         
@@ -620,13 +610,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 		    
-               <div class="bg-gray-50 p-4 rounded mb-5">
-    <label class="flex items-start gap-3">
-        <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
-        <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
-    </label>
-    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e le condizioni</p>
-</div>
+                <div class="bg-gray-50 p-4 rounded mb-5">
+                    <label class="flex items-start gap-3">
+                        <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
+                        <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
+                    </label>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
+                </div>
                 
                 <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
                     Invia Donazione
@@ -733,61 +723,42 @@ function removeLoadingOverlay() {
 
         
 
-    function validateField(input) {
-    const value = input.value.trim();
-    let isValid = true;
+        function validateField(input) {
+            const value = input.value.trim();
+            let isValid = true;
 
-    if (input.id === 'accept') {
-        if (!input.checked) {
-            input.classList.add('invalid-checkbox');
-            const errorMsg = input.parentElement.nextElementSibling;
-            errorMsg.textContent = 'Devi accettare i termini e condizioni';
-            errorMsg.classList.remove('hidden');
-            isValid = false;
-        } else {
-            input.classList.remove('invalid-checkbox');
-            const errorMsg = input.parentElement.nextElementSibling;
-            errorMsg.classList.add('hidden');
-        }
-        return isValid;
-    }
-
-    if (input.hasAttribute('required') && !value) {
-        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+            if (input.hasAttribute('required') && !value) {
+                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+                isValid = false;
+            } else {
+                switch (input.id) {
+                    case 'telefono':
+                        if (value && !/^[0-9]{6,15}$/.test(value)) {
+                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                            isValid = false;
+                        }
+                        break;
+                        
+           case 'email':
+    if (!value) {
+        showError(input, 'L\'email è obbligatoria');
         isValid = false;
-    } else {
-        switch (input.id) {
-            case 'telefono':
-                if (value && !/^[0-9]{6,15}$/.test(value)) {
-                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                    isValid = false;
+    } else if (!emailValidator.validateSyntax(value)) {
+        showError(input, 'Formato email non valido');
+        isValid = false;
+    }
+    break;
+
+				
                 }
-                break;
-            case 'email':
-                if (!value) {
-                    showError(input, 'L\'email è obbligatoria');
-                    isValid = false;
-                } else if (!emailValidator.validateSyntax(value)) {
-                    showError(input, 'Formato email non valido');
-                    isValid = false;
-                }
-                break;
-            case 'accept':
-                if (!input.checked) {
-                    showError(input, 'Devi accettare i termini e condizioni');
-                    isValid = false;
-                }
-                break;
+            }
+
+            if (isValid) {
+                hideError(input);
+            }
+
+            return isValid;
         }
-    }
-
-    if (isValid) {
-        hideError(input);
-    }
-
-    return isValid;
-}
-
 
 
         
@@ -1161,25 +1132,22 @@ window.resetBookFields = function(button) {
 	    
 
 
-document.getElementById('donationForm').addEventListener('submit', async (event) => {
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
-
-    // Validate all fields
-    const fields = document.querySelectorAll('input[required], #accept');
+    
     let isValid = true;
-
-
-// Check checkbox specifically
-    const acceptCheckbox = document.getElementById('accept');
-    if (!acceptCheckbox.checked) {
-        validateField(acceptCheckbox);
-        isValid = false;
-    }
-	
-
-    fields.forEach(field => {
-        if (!validateField(field)) {
-            isValid = false;
+    const inputs = event.target.querySelectorAll('input');
+    
+    // Reset global error message
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+    
+    // Validate all form fields
+    inputs.forEach(input => {
+        if (input.id) {
+            if (!validateField(input)) {
+                isValid = false;
+            }
         }
     });
 
