@@ -1132,81 +1132,54 @@ window.resetBookFields = function(button) {
 	    
 
 
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
-    
+
+    // Validate all fields
+    const fields = document.querySelectorAll('input[required], #accept');
     let isValid = true;
-    const inputs = event.target.querySelectorAll('input');
-    
-    // Reset global error message
-    const existingPopups = document.querySelectorAll('.error-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
-    
-    // Validate all form fields
-    inputs.forEach(input => {
-        if (input.id) {
-            if (!validateField(input)) {
-                isValid = false;
-            }
+
+    fields.forEach(field => {
+        if (!validateField(field)) {
+            isValid = false;
         }
     });
 
-    // Validate book fields
-    const bookEntries = document.querySelectorAll('.book-entry');
-    bookEntries.forEach(entry => {
-        const bookInputs = entry.querySelectorAll('input');
-        bookInputs.forEach(input => {
-            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
-                if (!validateBookField(input)) {
-                    isValid = false;
-                }
-            }
-        });
+    // Validate books
+    const bookFields = document.querySelectorAll('.book-title[required]');
+    bookFields.forEach(field => {
+        if (!validateBookField(field)) {
+            isValid = false;
+        }
     });
-
-    // Validate checkbox
-    const acceptCheckbox = document.getElementById('accept');
-    if (!acceptCheckbox.checked) {
-        showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
-        isValid = false;
-    } else {
-        hideError(acceptCheckbox);
-    }
 
     if (!isValid) {
-        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
+        showGlobalErrorPopup('Per favore, correggi gli errori evidenziati');
         return;
     }
 
-    const nome = document.getElementById('nome').value.trim();
-    const cognome = document.getElementById('cognome').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const tessera = document.getElementById('tessera').value.trim();
-    const telefono = document.getElementById('telefono').value.trim();
+    // Get form data
+    const nome = document.getElementById('nome').value;
+    const cognome = document.getElementById('cognome').value;
+    const email = document.getElementById('email').value;
+    const tessera = document.getElementById('tessera').value;
+    const telefono = document.getElementById('telefono').value;
 
+    // Get books data
     const books = [];
-    
-    for (const bookDiv of bookEntries) {
-        const title = bookDiv.querySelector('.book-title').value.trim();
-        if (!title) {
-            showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
-            return;
+    document.querySelectorAll('.book-entry').forEach(bookDiv => {
+        const title = bookDiv.querySelector('.book-title').value;
+        const author = bookDiv.querySelector('.book-author').value || 'Non specificato';
+        const publisher = bookDiv.querySelector('.book-publisher').value || 'Non specificato';
+        const year = bookDiv.querySelector('.book-year').value || 'Non specificato';
+        const isbn = bookDiv.querySelector('.book-isbn').value || 'Non specificato';
+
+        if (title) {
+            books.push({ title, author, publisher, year, isbn });
         }
-        
-        books.push({
-            title: title,
-            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
-            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
-            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
-            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
-        });
-    }
+    });
 
-    if (books.length === 0) {
-        showGlobalErrorPopup('Aggiungi almeno un libro alla donazione.');
-        return;
-    }
-
+    // Format books for email
     const formattedBooks = books.map((book, index) => 
         `<br><em>Libro ${index + 1}:</em><br>` +
         `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
@@ -1230,52 +1203,68 @@ window.resetBookFields = function(button) {
                 <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
                 <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
             </tr>
-        </table>`).join('');
-
-    showLoadingOverlay(); // Mostra subito il loading overlay
+        </table>`
+    ).join('');
 
     try {
-  // Update the emailjs.send portion of the submit event listener
-const response = await emailjs.send(
-    config.emailjs.serviceId,
-    config.emailjs.templateId,
-    {
-        to_email: config.library.email,
-        from_name: `${nome} ${cognome}`,
-        from_email: email,
-        reply_to: email,
-        tessera: tessera || 'Non specificata',
-        telefono: telefono || 'Non specificato',
-        books: formattedBooks,
-        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-    },
-    config.emailjs.publicKey
-);
+        showLoadingOverlay();
 
-        // Rimuovi il loading overlay prima di mostrare il popup di successo
+        // Check rate limit before sending email
+        const rateLimitResponse = await fetch('/api/rateLimiter', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+
+        const rateLimitData = await rateLimitResponse.json();
+        
+        if (!rateLimitResponse.ok) {
+            if (rateLimitResponse.status === 429) {
+                const nextAvailable = new Date(rateLimitData.nextAvailable);
+                const hours = Math.ceil((nextAvailable - new Date()) / (1000 * 60 * 60));
+                throw new Error(`Puoi inviare una sola donazione al giorno. Riprova tra ${hours} ore.`);
+            }
+            throw new Error('Errore durante il controllo del limite di richieste');
+        }
+
+        // Send email if rate limit check passes
+        const response = await emailjs.send(
+            config.emailjs.serviceId,
+            config.emailjs.templateId,
+            {
+                to_email: config.library.email,
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks,
+                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+            },
+            config.emailjs.publicKey
+        );
+
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
-        // Reset del form
+        // Reset form
         event.target.reset();
         document.getElementById('bookList').innerHTML = '';
         bookCount = 0;
         createBookEntry();
 
-        // Reset degli errori
+        // Reset errors
         const errorMessages = document.querySelectorAll('.error-message');
-        errorMessages.forEach(msg => msg.classList.add('hidden'));
-        const inputFields = document.querySelectorAll('input');
-        inputFields.forEach(input => {
-            input.classList.remove('border-red-500');
-            input.classList.add('border-gray-300', 'focus:border-blue-500');
+        errorMessages.forEach(msg => {
+            msg.classList.add('hidden');
         });
 
     } catch (error) {
         removeLoadingOverlay();
-        console.error('Errore dettagliato durante l\'invio:', error);
-        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
-        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
+        showGlobalErrorPopup(error.message);
+        console.error('Submission error:', error);
     } finally {
         const submitButton = event.target.querySelector('button[type="submit"]');
         submitButton.disabled = false;
