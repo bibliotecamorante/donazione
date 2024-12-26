@@ -11,6 +11,7 @@ export const config = {
 }
 
 export default async function handler(req) {
+  // Gestione CORS preflight
   if (req.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,
@@ -23,10 +24,11 @@ export default async function handler(req) {
     })
   }
 
+  // Verifica metodo HTTP
   if (req.method !== 'POST') {
     return new Response(JSON.stringify({ 
       error: 'Method not allowed',
-      details: `Expected POST, got ${req.method}`
+      details: 'Only POST requests are allowed'
     }), {
       status: 405,
       headers: {
@@ -36,81 +38,107 @@ export default async function handler(req) {
     })
   }
 
+  const corsHeaders = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': 'https://bibliotecamorante.github.io',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  }
+
   try {
-    // Parse the request body
-    const body = await req.json().catch(e => {
-      throw new Error(`Failed to parse request body: ${e.message}`)
-    })
+    // Ottieni IP del client
+    const ip = req.headers.get('x-real-ip') || 
+               req.headers.get('x-forwarded-for')?.split(',')[0] ||
+               'unknown-ip'
 
-    // Check if email is present
-    if (!body.email) {
-      throw new Error('Email is required in request body')
-    }
-
-    const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for')?.split(',')[0]
-    if (!ip) {
-      throw new Error('Could not determine IP address')
-    }
-
-    const ipKey = `donation:ip:${ip}`
-    
-    // Add debug logging
-    console.log(`Processing request for IP: ${ip}`)
-    
-    const lastDonations = await redis.get(ipKey).catch(e => {
-      throw new Error(`Redis get failed: ${e.message}`)
-    }) || '[]'
-    
-    console.log(`Last donations for ${ip}:`, lastDonations)
-    
-    const donations = JSON.parse(lastDonations)
-    const now = new Date()
-    const recentDonations = donations.filter(timestamp => 
-      now - new Date(timestamp) < 24 * 60 * 60 * 1000
-    )
-
-    console.log(`Recent donations count: ${recentDonations.length}`)
-
-    if (recentDonations.length >= 2) {
-      const oldestDonation = new Date(Math.min(...recentDonations.map(d => new Date(d))))
-      return new Response(JSON.stringify({
-        error: 'Rate limit exceeded',
-        nextAvailable: new Date(oldestDonation.getTime() + 24 * 60 * 60 * 1000).toISOString()
+    if (ip === 'unknown-ip') {
+      return new Response(JSON.stringify({ 
+        error: 'Invalid request',
+        message: 'Could not determine client IP address' 
       }), {
-        status: 429,
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'https://bibliotecamorante.github.io'
-        }
+        status: 400,
+        headers: corsHeaders
       })
     }
 
-    recentDonations.push(now.toISOString())
-    await redis.set(ipKey, JSON.stringify(recentDonations), { ex: 24 * 60 * 60 }).catch(e => {
-      throw new Error(`Redis set failed: ${e.message}`)
-    })
+    // Chiave per Redis
+    const ipKey = `donation:ip:${ip}`
+    
+    // Ottieni donazioni precedenti
+    let lastDonations = []
+    try {
+      const storedDonations = await redis.get(ipKey)
+      if (storedDonations) {
+        lastDonations = JSON.parse(storedDonations)
+      }
+    } catch (redisError) {
+      console.error('Redis get error:', redisError)
+      return new Response(JSON.stringify({
+        error: 'Database error',
+        message: 'Error checking donation history'
+      }), {
+        status: 500,
+        headers: corsHeaders
+      })
+    }
 
-    return new Response(JSON.stringify({ 
+    // Verifica limite donazioni nelle ultime 24 ore
+    const now = new Date()
+    const oneDayAgo = new Date(now.getTime() - (24 * 60 * 60 * 1000))
+    
+    const recentDonations = lastDonations.filter(timestamp => 
+      new Date(timestamp) > oneDayAgo
+    )
+
+    if (recentDonations.length >= 2) {
+      const oldestDonation = new Date(Math.min(...recentDonations.map(d => new Date(d))))
+      const nextAvailable = new Date(oldestDonation.getTime() + (24 * 60 * 60 * 1000))
+      
+      return new Response(JSON.stringify({
+        error: 'Rate limit exceeded',
+        message: 'Too many donation attempts',
+        nextAvailable: nextAvailable.toISOString()
+      }), {
+        status: 429,
+        headers: corsHeaders
+      })
+    }
+
+    // Aggiorna lista donazioni
+    recentDonations.push(now.toISOString())
+    
+    try {
+      await redis.set(ipKey, JSON.stringify(recentDonations), {
+        ex: 24 * 60 * 60 // Scade dopo 24 ore
+      })
+    } catch (redisError) {
+      console.error('Redis set error:', redisError)
+      return new Response(JSON.stringify({
+        error: 'Database error',
+        message: 'Error updating donation history'
+      }), {
+        status: 500,
+        headers: corsHeaders
+      })
+    }
+
+    return new Response(JSON.stringify({
       success: true,
-      remainingRequests: 2 - recentDonations.length
+      remaining: 2 - recentDonations.length
     }), {
       status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://bibliotecamorante.github.io'
-      }
+      headers: corsHeaders
     })
+
   } catch (error) {
-    console.error('Rate limiter error:', error.message, error.stack)
-    return new Response(JSON.stringify({ 
-      error: 'Internal server error',
+    console.error('Rate limiter general error:', error)
+    return new Response(JSON.stringify({
+      error: 'Server error',
+      message: 'An unexpected error occurred',
       details: error.message
     }), {
       status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': 'https://bibliotecamorante.github.io'
-      }
+      headers: corsHeaders
     })
   }
 }
