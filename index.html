@@ -411,18 +411,7 @@ footer i {
     }
 }
 
-/* Stili per la checkbox con errore */
-.checkbox-error input[type="checkbox"] {
-    border-color: #ef4444;
-    background-color: #fef2f2;
-}
 
-.checkbox-error .error-message {
-    display: block;
-    color: #ef4444;
-    margin-top: 0.25rem;
-    font-size: 0.875rem;
-}
 
 
         
@@ -438,38 +427,22 @@ const emailValidator = {
     }
 };
 
-// Funzione per mostrare gli errori
 function showError(input, message) {
     const errorElement = input.parentElement.querySelector('.error-message');
     if (errorElement) {
         errorElement.textContent = message;
         errorElement.classList.remove('hidden');
-        
-        // Se è una checkbox, aggiungi una classe di errore al contenitore
-        if (input.type === 'checkbox') {
-            input.closest('.bg-gray-50').classList.add('border-red-500', 'bg-red-50');
-            input.classList.add('border-red-500');
-        } else {
-            input.classList.add('border-red-500');
-            input.classList.remove('border-gray-300', 'focus:border-blue-500');
-        }
+        input.classList.add('border-red-500');
+        input.classList.remove('border-gray-300', 'focus:border-blue-500');
     }
 }
 
-// Funzione per nascondere gli errori
 function hideError(input) {
     const errorElement = input.parentElement.querySelector('.error-message');
     if (errorElement) {
         errorElement.classList.add('hidden');
-        
-        // Se è una checkbox, rimuovi la classe di errore dal contenitore
-        if (input.type === 'checkbox') {
-            input.closest('.bg-gray-50').classList.remove('border-red-500', 'bg-red-50');
-            input.classList.remove('border-red-500');
-        } else {
-            input.classList.remove('border-red-500');
-            input.classList.add('border-gray-300', 'focus:border-blue-500');
-        }
+        input.classList.remove('border-red-500');
+        input.classList.add('border-gray-300', 'focus:border-blue-500');
     }
 }
 
@@ -750,59 +723,43 @@ function removeLoadingOverlay() {
 
         
 
-function validateField(input) {
-    const value = input.value.trim();
-    let isValid = true;
+        function validateField(input) {
+            const value = input.value.trim();
+            let isValid = true;
 
-   // Gestione specifica per checkbox
-    if (input.type === 'checkbox') {
-        if (!input.checked) {
-            showError(input, 'Devi accettare i termini e condizioni');
-            return false;
-        } else {
-            hideError(input);
-            return true;
-        }
-    }
-
-    if (input.hasAttribute('required') && !value) {
-        showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+            if (input.hasAttribute('required') && !value) {
+                showError(input, `Il campo ${input.previousElementSibling.textContent.replace(':', '')} è obbligatorio`);
+                isValid = false;
+            } else {
+                switch (input.id) {
+                    case 'telefono':
+                        if (value && !/^[0-9]{6,15}$/.test(value)) {
+                            showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
+                            isValid = false;
+                        }
+                        break;
+                        
+           case 'email':
+    if (!value) {
+        showError(input, 'L\'email è obbligatoria');
         isValid = false;
-    } else {
-        switch (input.id) {
-            case 'telefono':
-                if (value && !/^[0-9]{6,15}$/.test(value)) {
-                    showError(input, 'Il numero di telefono deve contenere solo numeri (da 6 a 15 cifre)');
-                    isValid = false;
+    } else if (!emailValidator.validateSyntax(value)) {
+        showError(input, 'Formato email non valido');
+        isValid = false;
+    }
+    break;
+
+				
                 }
-                break;
-            case 'email':
-                if (!value) {
-                    showError(input, 'L\'email è obbligatoria');
-                    isValid = false;
-                } else if (!emailValidator.validateSyntax(value)) {
-                    showError(input, 'Formato email non valido');
-                    isValid = false;
-                }
-                break;
+            }
+
+            if (isValid) {
+                hideError(input);
+            }
+
+            return isValid;
         }
-    }
 
-    if (isValid) {
-        hideError(input);
-    }
-
-    return isValid;
-}
-// Aggiungi event listener per la checkbox
-document.addEventListener('DOMContentLoaded', function() {
-    const acceptCheckbox = document.getElementById('accept');
-    if (acceptCheckbox) {
-        acceptCheckbox.addEventListener('change', function() {
-            validateField(this);
-        });
-    }
-});
 
         
 
@@ -1173,46 +1130,83 @@ window.resetBookFields = function(button) {
 	    
 
 	    
-document.getElementById('donationForm').addEventListener('submit', async (event) => {
+
+
+        document.getElementById('donationForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     
     let isValid = true;
-    const requiredInputs = event.target.querySelectorAll('[required]');
+    const inputs = event.target.querySelectorAll('input');
     
-    requiredInputs.forEach(input => {
-        if (!validateField(input)) {
-            isValid = false;
+    // Reset global error message
+    const existingPopups = document.querySelectorAll('.error-popup');
+    existingPopups.forEach(popup => document.body.removeChild(popup));
+    
+    // Validate all form fields
+    inputs.forEach(input => {
+        if (input.id) {
+            if (!validateField(input)) {
+                isValid = false;
+            }
         }
     });
-    
-    // Validazione specifica per la checkbox
+
+    // Validate book fields
+    const bookEntries = document.querySelectorAll('.book-entry');
+    bookEntries.forEach(entry => {
+        const bookInputs = entry.querySelectorAll('input');
+        bookInputs.forEach(input => {
+            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
+                if (!validateBookField(input)) {
+                    isValid = false;
+                }
+            }
+        });
+    });
+
+    // Validate checkbox
     const acceptCheckbox = document.getElementById('accept');
-    if (!validateCheckbox(acceptCheckbox)) {
+    if (!acceptCheckbox.checked) {
+        showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
         isValid = false;
+    } else {
+        hideError(acceptCheckbox);
     }
-    
+
     if (!isValid) {
-        showGlobalErrorPopup('Per favore, correggi gli errori nel form prima di inviare.');
+        showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
 
-    // Raccogli i dati del form
     const nome = document.getElementById('nome').value.trim();
     const cognome = document.getElementById('cognome').value.trim();
     const email = document.getElementById('email').value.trim();
     const tessera = document.getElementById('tessera').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
-    
-    // Raccogli i dati dei libri
-    const books = Array.from(document.querySelectorAll('.book-entry')).map(entry => ({
-        title: entry.querySelector('.book-title').value,
-        author: entry.querySelector('.book-author').value || 'Non specificato',
-        publisher: entry.querySelector('.book-publisher').value || 'Non specificato',
-        year: entry.querySelector('.book-year').value || 'Non specificato',
-        isbn: entry.querySelector('.book-isbn').value || 'Non specificato'
-    }));
 
-    // Formatta i libri per l'email
+    const books = [];
+    
+    for (const bookDiv of bookEntries) {
+        const title = bookDiv.querySelector('.book-title').value.trim();
+        if (!title) {
+            showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
+            return;
+        }
+        
+        books.push({
+            title: title,
+            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
+            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
+            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
+            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
+        });
+    }
+
+    if (books.length === 0) {
+        showGlobalErrorPopup('Aggiungi almeno un libro alla donazione.');
+        return;
+    }
+
     const formattedBooks = books.map((book, index) => 
         `<br><em>Libro ${index + 1}:</em><br>` +
         `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
@@ -1236,28 +1230,29 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
                 <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
                 <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
             </tr>
-        </table>`
-    ).join('');
+        </table>`).join('');
 
-    showLoadingOverlay();
+    showLoadingOverlay(); // Mostra subito il loading overlay
 
     try {
-        const response = await emailjs.send(
-            config.emailjs.serviceId,
-            config.emailjs.templateId,
-            {
-                to_email: config.library.email,
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                reply_to: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books: formattedBooks,
-                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            },
-            config.emailjs.publicKey
-        );
+  // Update the emailjs.send portion of the submit event listener
+const response = await emailjs.send(
+    config.emailjs.serviceId,
+    config.emailjs.templateId,
+    {
+        to_email: config.library.email,
+        from_name: `${nome} ${cognome}`,
+        from_email: email,
+        reply_to: email,
+        tessera: tessera || 'Non specificata',
+        telefono: telefono || 'Non specificato',
+        books: formattedBooks,
+        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+    },
+    config.emailjs.publicKey
+);
 
+        // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
@@ -1270,20 +1265,23 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         // Reset degli errori
         const errorMessages = document.querySelectorAll('.error-message');
         errorMessages.forEach(msg => msg.classList.add('hidden'));
-        
+        const inputFields = document.querySelectorAll('input');
+        inputFields.forEach(input => {
+            input.classList.remove('border-red-500');
+            input.classList.add('border-gray-300', 'focus:border-blue-500');
+        });
+
     } catch (error) {
-        console.error('Error:', error);
         removeLoadingOverlay();
-        showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Per favore riprova più tardi.');
+        console.error('Errore dettagliato durante l\'invio:', error);
+        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
+        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
     } finally {
         const submitButton = event.target.querySelector('button[type="submit"]');
         submitButton.disabled = false;
         submitButton.textContent = 'Invia Donazione';
     }
-
-
 });
-
         
     </script>
 
