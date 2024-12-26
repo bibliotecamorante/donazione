@@ -9,7 +9,7 @@
         },
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://donazione-delta.vercel.app"
+          "value": "*"
         },
         {
           "key": "Access-Control-Allow-Methods",
