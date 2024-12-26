@@ -24,6 +24,10 @@
   ],
   "buildCommand": "npm run build",
   "functions": {
+    "api/rateLimiter.js": {
+      "memory": 1024,
+      "maxDuration": 10
+    },
     "api/submit.js": {
       "memory": 1024,
       "maxDuration": 10
