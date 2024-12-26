@@ -34,12 +34,27 @@ export default async function handler(req) {
   }
 
   try {
-    const body = await req.json()
-    const email = body.email
+    const ip = req.headers.get('x-real-ip') || req.headers.get('x-forwarded-for')?.split(',')[0]
+    if (!ip) {
+      throw new Error('Could not determine IP address')
+    }
 
-    if (!email) {
-      return new Response(JSON.stringify({ error: 'Email is required' }), {
-        status: 400,
+    const ipKey = `donation:ip:${ip}`
+    const lastDonations = await redis.get(ipKey) || '[]'
+    const donations = JSON.parse(lastDonations)
+    
+    const now = new Date()
+    const recentDonations = donations.filter(timestamp => 
+      now - new Date(timestamp) < 24 * 60 * 60 * 1000
+    )
+
+    if (recentDonations.length >= 1) {
+      const oldestDonation = new Date(Math.min(...recentDonations.map(d => new Date(d))))
+      return new Response(JSON.stringify({
+        error: 'Rate limit exceeded',
+        nextAvailable: new Date(oldestDonation.getTime() + 24 * 60 * 60 * 1000).toISOString()
+      }), {
+        status: 429,
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': 'https://bibliotecamorante.github.io'
@@ -47,28 +62,8 @@ export default async function handler(req) {
       })
     }
 
-    const userKey = `donation:${email}`
-    const lastDonation = await redis.get(userKey)
-
-    if (lastDonation) {
-      const lastDate = new Date(lastDonation)
-      const now = new Date()
-
-      if (now - lastDate < 24 * 60 * 60 * 1000) {
-        return new Response(JSON.stringify({
-          error: 'Rate limit exceeded',
-          nextAvailable: new Date(lastDate.getTime() + 24 * 60 * 60 * 1000).toISOString()
-        }), {
-          status: 429,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': 'https://bibliotecamorante.github.io'
-          }
-        })
-      }
-    }
-
-    await redis.set(userKey, new Date().toISOString(), { ex: 24 * 60 * 60 })
+    recentDonations.push(now.toISOString())
+    await redis.set(ipKey, JSON.stringify(recentDonations), { ex: 24 * 60 * 60 })
 
     return new Response(JSON.stringify({ success: true }), {
       status: 200,
