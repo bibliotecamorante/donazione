@@ -1,4 +1,3 @@
-// scripts/config.js
 const config = {
   emailjs: {
     serviceId: window?.env?.EMAILJS_SERVICE_ID || 'service_yepi8uu',
@@ -46,6 +45,33 @@ config.fetchWithCORS = async (url, options = {}) => {
   }
 
   return response.json();
+};
+
+// Function to handle rate-limiting API request
+config.handleRateLimit = async (email) => {
+  try {
+    showLoadingOverlay();
+    
+    const rateLimitResponse = await fetch(
+      `${config.api.baseUrl}/api/rateLimiter`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Origin': window.location.origin
+        },
+        body: JSON.stringify({ email })
+      }
+    );
+
+    const data = await rateLimitResponse.json();
+    return data;
+  } catch (error) {
+    console.error('Error handling rate limit:', error);
+    throw error;
+  } finally {
+    hideLoadingOverlay();  // Assuming you have a function to hide the loading overlay
+  }
 };
 
 export default config;
