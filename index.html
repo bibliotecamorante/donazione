@@ -749,6 +749,15 @@ function removeLoadingOverlay() {
     }
     break;
 
+
+case 'accept':
+                if (!input.checked) {
+                    showError(input, 'Devi accettare i termini e condizioni');
+                    isValid = false;
+                }
+                break;
+
+				
 				
                 }
             }
@@ -1138,6 +1147,15 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
     // Validate all fields
     const fields = document.querySelectorAll('input[required], #accept');
     let isValid = true;
+
+
+// Check checkbox specifically
+    const acceptCheckbox = document.getElementById('accept');
+    if (!acceptCheckbox.checked) {
+        validateField(acceptCheckbox);
+        isValid = false;
+    }
+	
 
     fields.forEach(field => {
         if (!validateField(field)) {
