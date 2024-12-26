@@ -1265,7 +1265,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
                 const hours = Math.ceil((nextAvailable - new Date()) / (1000 * 60 * 60));
                 throw new Error(`Puoi inviare una sola donazione al giorno. Riprova tra ${hours} ore.`);
             }
-            throw new Error('Attenzione, hai raggiunto il limite di invii giornalieri. Grazie per la tua comprensione!');
+            throw new Error('Errore durante il controllo del limite di richieste');
         }
 
         // Send email if rate limit check passes
