@@ -837,6 +837,61 @@ function validateField(input) {
 
 
 
+
+function showGlobalErrorPopup(message) {
+    const existingPopup = document.querySelector('.error-popup');
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+
+    const popup = document.createElement('div');
+    popup.className = 'error-popup fixed top-4 right-4 bg-red-500 text-white px-6 py-4 rounded shadow-lg z-50';
+    popup.innerHTML = `
+        <span class="block font-bold mb-1">Errore!</span>
+        <span class="block">${message}</span>
+    `;
+
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 5000);
+}
+
+function showSuccessPopup(message) {
+    const popup = document.createElement('div');
+    popup.className = 'success-popup fixed top-4 right-4 bg-green-500 text-white px-6 py-4 rounded shadow-lg z-50';
+    popup.innerHTML = `
+        <span class="block font-bold mb-1">Successo!</span>
+        <span class="block">${message}</span>
+    `;
+
+    document.body.appendChild(popup);
+    setTimeout(() => popup.remove(), 5000);
+}
+
+function showLoadingOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'loadingOverlay';
+    overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    overlay.innerHTML = `
+        <div class="bg-white p-6 rounded-lg flex flex-col items-center">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-500 mb-3"></div>
+            <div class="text-gray-800 font-medium">Invio donazione in corso...</div>
+        </div>
+    `;
+    document.body.appendChild(overlay);
+}
+
+function removeLoadingOverlay() {
+    const overlay = document.getElementById('loadingOverlay');
+    if (overlay) {
+        overlay.remove();
+    }
+}
+
+
+
+
+
+	
         
     window.createBookEntry = function() {
     const bookDiv = document.createElement('div');
@@ -1246,65 +1301,67 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
         </table>`
     ).join('');
 
-    try {
-        showLoadingOverlay();
 
-        // Check rate limit before sending email
-   const rateLimitResponse = await fetch('https://donazione-delta.vercel.app/api/rateLimiter', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email })
-});
+
+
+
+	try {
+    showLoadingOverlay();
+    
+    // Verifica del rate limit
+    const rateLimitResponse = await fetch('https://donazione-delta.vercel.app/api/rateLimiter', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (!rateLimitResponse.ok) {
         const rateLimitData = await rateLimitResponse.json();
-        
-       if (!rateLimitResponse.ok) {
-    if (rateLimitResponse.status === 429) {
-        const nextAvailable = new Date(rateLimitData.nextAvailable);
-        const hours = Math.ceil((nextAvailable - new Date()) / (1000 * 60 * 60));
-        throw new Error(`Puoi inviare massimo due donazioni al giorno. Riprova tra ${hours} ore.`);
+        if (rateLimitResponse.status === 429) {
+            const nextAvailable = new Date(rateLimitData.nextAvailable);
+            const hours = Math.ceil((nextAvailable - new Date()) / (1000 * 60 * 60));
+            throw new Error(`Puoi inviare massimo due donazioni al giorno. Riprova tra ${hours} ore.`);
+        }
+        throw new Error('Errore durante il controllo del limite di richieste');
     }
-    throw new Error('Errore durante il controllo del limite di richieste');
+
+    // Invio email
+    const response = await emailjs.send(
+        config.emailjs.serviceId,
+        config.emailjs.templateId,
+        {
+            to_email: config.library.email,
+            from_name: `${nome} ${cognome}`,
+            from_email: email,
+            reply_to: email,
+            tessera: tessera || 'Non specificata',
+            telefono: telefono || 'Non specificato',
+            books: formattedBooks,
+            notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+        },
+        config.emailjs.publicKey
+    );
+
+    removeLoadingOverlay();
+    showSuccessPopup('La tua donazione è stata inviata con successo!');
+    
+    // Reset form
+    form.reset();
+    document.getElementById('bookList').innerHTML = '';
+    bookCount = 0;
+    createBookEntry();
+
+    // Reset errori
+    document.querySelectorAll('.error-message').forEach(msg => msg.classList.add('hidden'));
+
+} catch (error) {
+    removeLoadingOverlay();
+    showGlobalErrorPopup(error.message || 'Si è verificato un errore durante l'invio della donazione');
+    console.error('Submission error:', error);
 }
-
-        // Send email if rate limit check passes
-        const response = await emailjs.send(
-            config.emailjs.serviceId,
-            config.emailjs.templateId,
-            {
-                to_email: config.library.email,
-                from_name: `${nome} ${cognome}`,
-                from_email: email,
-                reply_to: email,
-                tessera: tessera || 'Non specificata',
-                telefono: telefono || 'Non specificato',
-                books: formattedBooks,
-                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-            },
-            config.emailjs.publicKey
-        );
-
-        removeLoadingOverlay();
-        showSuccessPopup('La tua donazione è stata inviata con successo!');
-        
-        // Reset form
-        event.target.reset();
-        document.getElementById('bookList').innerHTML = '';
-        bookCount = 0;
-        createBookEntry();
-
-        // Reset errors
-        const errorMessages = document.querySelectorAll('.error-message');
-        errorMessages.forEach(msg => {
-            msg.classList.add('hidden');
-        });
-
-    } catch (error) {
-        removeLoadingOverlay();
-        showGlobalErrorPopup(error.message);
-        console.error('Submission error:', error);
-    } finally {
+    
+    finally {
         const submitButton = event.target.querySelector('button[type="submit"]');
         submitButton.disabled = false;
         submitButton.textContent = 'Invia Donazione';
