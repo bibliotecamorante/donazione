@@ -440,16 +440,45 @@ input[type="checkbox"]:checked::before {
     clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
 }
 
-/* Updated error popup style with more vivid red */
+/* Updated error popup style */
 .error-popup {
     @apply fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg;
-    background-color: #ff3333; /* More vivid red */
+    background-color: #ef4444;
     color: white;
     z-index: 50;
     animation: slideDown 0.5s ease-out;
 }
 	    
-        
+
+// Add CSS to remove spinners from number input
+const style = document.createElement('style');
+style.textContent = `
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+    }
+`;
+document.head.appendChild(style);
+
+
+	    // Add this style to remove spinner arrows
+const style = document.createElement('style');
+style.textContent = `
+    input[type="number"].book-year::-webkit-inner-spin-button,
+    input[type="number"].book-year::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"].book-year {
+        -moz-appearance: textfield;
+    }
+`;
+document.head.appendChild(style);
+	    
     </style>
 
 
@@ -484,7 +513,9 @@ function hideError(input) {
 
 </script>
 	
-
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 	
 </head>
 
@@ -585,6 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             
             <form id="donationForm" novalidate>
+		    <div id="error-root"></div>
                 <!-- Rest of the form remains the same as in the original document -->
                 <h3 class="section-header">Dati Personali</h3>
                 
@@ -681,19 +713,16 @@ document.addEventListener('DOMContentLoaded', () => {
         
 // Prima aggiungi questa funzione accanto alle altre funzioni di utility (dopo showGlobalErrorPopup)
 function showGlobalErrorPopup(message) {
-    // Remove any existing error popups first
     const existingPopups = document.querySelectorAll('.error-popup');
     existingPopups.forEach(popup => document.body.removeChild(popup));
 
-    // Create a popup div
     const popup = document.createElement('div');
-    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
-    popup.innerHTML = `
-        <strong class="font-bold">Ops!</strong>
-        <span class="block sm:inline">${message}</span>
-    `;
+    popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg';
+    popup.style.backgroundColor = '#ef4444';
+    popup.style.color = 'white';
+    popup.style.zIndex = '50';
+    popup.innerHTML = message;
 
-    // Auto-remove after 5 seconds
     setTimeout(() => {
         if (document.body.contains(popup)) {
             document.body.removeChild(popup);
@@ -707,19 +736,16 @@ function showGlobalErrorPopup(message) {
         
 
 function showSuccessPopup(message) {
-    // Rimuovi eventuali popup esistenti
     const existingPopups = document.querySelectorAll('.success-popup');
     existingPopups.forEach(popup => document.body.removeChild(popup));
 
-    // Crea il div del popup
     const popup = document.createElement('div');
-    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50 shadow-lg';
-    popup.innerHTML = `
-        <strong class="font-bold">Successo!</strong>
-        <span class="block sm:inline">${message}</span>
-    `;
+    popup.className = 'success-popup fixed top-4 left-1/2 transform -translate-x-1/2 px-6 py-4 rounded shadow-lg';
+    popup.style.backgroundColor = '#22c55e';
+    popup.style.color = 'white';
+    popup.style.zIndex = '50';
+    popup.innerHTML = message;
 
-    // Rimuovi automaticamente dopo 5 secondi
     setTimeout(() => {
         if (document.body.contains(popup)) {
             document.body.removeChild(popup);
@@ -815,19 +841,9 @@ function validateBookField(input) {
     } else if (input.classList.contains('book-year')) {
         const currentYear = new Date().getFullYear();
         
-        // Allow partial input without showing error
         if (value) {
-            // Check if input is currently being typed (less than 4 digits)
-            if (value.length < 4) {
-                return true; // Don't validate while typing
-            }
-
-            const year = parseInt(value);
-            
-            // Validate fully entered year
-            if (!Number.isInteger(year) || year < 1900 || year > currentYear) {
+            if (value.length !== 4 || !Number.isInteger(Number(value)) || Number(value) < 1900 || Number(value) > currentYear) {
                 showError(input, `L'anno deve essere un numero di 4 cifre compreso tra 1900 e ${currentYear}`);
-                input.value = value.slice(0, 4); // Tronca a 4 cifre
                 isValid = false;
             }
         }
@@ -844,6 +860,20 @@ function validateBookField(input) {
 
     return isValid;
 }
+
+// Add this style to remove spinner arrows
+const style = document.createElement('style');
+style.textContent = `
+    input[type="number"].book-year::-webkit-inner-spin-button,
+    input[type="number"].book-year::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input[type="number"].book-year {
+        -moz-appearance: textfield;
+    }
+`;
+document.head.appendChild(style);
         
 
 function validateCheckbox(checkbox) {
@@ -1366,7 +1396,12 @@ window.resetBookFields = function(button) {
 
     
 
-
+<script type="module">
+  import ErrorNotification from './ErrorNotification.js';
+  
+  const root = ReactDOM.createRoot(document.getElementById('error-root'));
+  root.render(React.createElement(ErrorNotification));
+</script>
 
     
 </body>
