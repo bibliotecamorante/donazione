@@ -412,7 +412,33 @@ footer i {
 }
 
 
+/* Stile per la checkbox */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 2px solid #000;
+    border-radius: 0.25rem;
+    margin-right: 0.5rem;
+    display: grid;
+    place-content: center;
+}
 
+input[type="checkbox"]:checked {
+    background-color: #0078d7;
+    border-color: #0078d7;
+}
+
+input[type="checkbox"]:checked::before {
+    content: "";
+    width: 0.65em;
+    height: 0.65em;
+    transform: scale(1);
+    background-color: white;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
 
         
     </style>
@@ -615,7 +641,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <input type="checkbox" id="accept" name="accept" required class="w-5 h-5 mt-1">
                         <span>Ho letto e accetto <a href="termini.html" target="_blank" class="text-blue-500 hover:underline">termini e condizioni</a></span>
                     </label>
-                    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare i termini e condizioni</p>
+                    <p class="hidden error-message text-sm text-red-500 mt-1">Devi accettare termini e le condizioni</p>
                 </div>
                 
                 <button type="submit" class="w-full max-w-sm mx-auto block px-6 py-3 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors font-medium text-base">
@@ -638,6 +664,9 @@ document.addEventListener('DOMContentLoaded', () => {
         emailjs.init(config.emailjs.publicKey);
     })();
 
+	document.getElementById('accept').addEventListener('change', function() {
+    validateCheckbox(this);
+});
 
 
         
@@ -651,7 +680,7 @@ function showGlobalErrorPopup(message) {
     const popup = document.createElement('div');
     popup.className = 'error-popup fixed top-4 left-1/2 transform -translate-x-1/2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50 shadow-lg';
     popup.innerHTML = `
-        <strong class="font-bold">Errore!</strong>
+        <strong class="font-bold">Ops!</strong>
         <span class="block sm:inline">${message}</span>
     `;
 
@@ -804,7 +833,28 @@ function removeLoadingOverlay() {
 }
         
 
-
+function validateCheckbox(checkbox) {
+    const errorElement = checkbox.parentElement.nextElementSibling;
+    
+    if (!checkbox.checked) {
+        // Usando border invece di outline per evitare lo spazio
+        checkbox.style.border = '2px solid #ef4444';
+        
+        if (errorElement && errorElement.classList.contains('error-message')) {
+            errorElement.classList.remove('hidden');
+            errorElement.textContent = 'Devi accettare i termini e le condizioni';
+        }
+        return false;
+    } else {
+        // Rimuoviamo lo stile del bordo rosso quando la checkbox è selezionata
+        checkbox.style.border = '';
+        
+        if (errorElement && errorElement.classList.contains('error-message')) {
+            errorElement.classList.add('hidden');
+        }
+        return true;
+    }
+}
 
         
     window.createBookEntry = function() {
@@ -1132,81 +1182,62 @@ window.resetBookFields = function(button) {
 	    
 
 
-        document.getElementById('donationForm').addEventListener('submit', async function(event) {
+    document.getElementById('donationForm').addEventListener('submit', async (event) => {
     event.preventDefault();
     
     let isValid = true;
-    const inputs = event.target.querySelectorAll('input');
     
-    // Reset global error message
-    const existingPopups = document.querySelectorAll('.error-popup');
-    existingPopups.forEach(popup => document.body.removeChild(popup));
-    
-    // Validate all form fields
-    inputs.forEach(input => {
-        if (input.id) {
-            if (!validateField(input)) {
-                isValid = false;
-            }
+    // Validate required fields
+    const requiredFields = event.target.querySelectorAll('[required]');
+    requiredFields.forEach(field => {
+        if (!validateField(field)) {
+            isValid = false;
         }
     });
-
-    // Validate book fields
+    
+    // Validate books
     const bookEntries = document.querySelectorAll('.book-entry');
     bookEntries.forEach(entry => {
-        const bookInputs = entry.querySelectorAll('input');
-        bookInputs.forEach(input => {
-            if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
-                if (!validateBookField(input)) {
-                    isValid = false;
-                }
+        const inputs = entry.querySelectorAll('input');
+        inputs.forEach(input => {
+            if (!validateBookField(input)) {
+                isValid = false;
             }
         });
     });
-
-    // Validate checkbox
+    
+    // Validate terms checkbox
     const acceptCheckbox = document.getElementById('accept');
-    if (!acceptCheckbox.checked) {
-        showError(acceptCheckbox, 'Devi accettare i termini e condizioni');
+    if (!validateCheckbox(acceptCheckbox)) {
         isValid = false;
-    } else {
-        hideError(acceptCheckbox);
     }
 
-    if (!isValid) {
+	       if (!isValid) {
         showGlobalErrorPopup('Per favore, compila correttamente tutti i campi obbligatori.');
         return;
     }
-
+ 
+    // Get form data
     const nome = document.getElementById('nome').value.trim();
     const cognome = document.getElementById('cognome').value.trim();
     const email = document.getElementById('email').value.trim();
     const tessera = document.getElementById('tessera').value.trim();
     const telefono = document.getElementById('telefono').value.trim();
 
+    // Get books data
     const books = [];
-    
-    for (const bookDiv of bookEntries) {
-        const title = bookDiv.querySelector('.book-title').value.trim();
-        if (!title) {
-            showError(bookDiv.querySelector('.book-title'), 'Il titolo è obbligatorio');
-            return;
-        }
-        
-        books.push({
-            title: title,
-            author: bookDiv.querySelector('.book-author').value.trim() || 'Non specificato',
-            publisher: bookDiv.querySelector('.book-publisher').value.trim() || 'Non specificato',
-            year: bookDiv.querySelector('.book-year').value.trim() || 'Non specificato',
-            isbn: bookDiv.querySelector('.book-isbn').value.trim() || 'Non specificato'
-        });
-    }
+    bookEntries.forEach(entry => {
+        const book = {
+            title: entry.querySelector('.book-title').value.trim() || 'Non specificato',
+            author: entry.querySelector('.book-author').value.trim() || 'Non specificato',
+            publisher: entry.querySelector('.book-publisher').value.trim() || 'Non specificato',
+            year: entry.querySelector('.book-year').value.trim() || 'Non specificato',
+            isbn: entry.querySelector('.book-isbn').value.trim() || 'Non specificato'
+        };
+        books.push(book);
+    });
 
-    if (books.length === 0) {
-        showGlobalErrorPopup('Aggiungi almeno un libro alla donazione.');
-        return;
-    }
-
+    // Format books for email
     const formattedBooks = books.map((book, index) => 
         `<br><em>Libro ${index + 1}:</em><br>` +
         `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
@@ -1230,57 +1261,49 @@ window.resetBookFields = function(button) {
                 <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
                 <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
             </tr>
-        </table>`).join('');
+        </table>`
+    ).join('');
 
-    showLoadingOverlay(); // Mostra subito il loading overlay
+    showLoadingOverlay();
 
     try {
-  // Update the emailjs.send portion of the submit event listener
-const response = await emailjs.send(
-    config.emailjs.serviceId,
-    config.emailjs.templateId,
-    {
-        to_email: config.library.email,
-        from_name: `${nome} ${cognome}`,
-        from_email: email,
-        reply_to: email,
-        tessera: tessera || 'Non specificata',
-        telefono: telefono || 'Non specificato',
-        books: formattedBooks,
-        notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
-    },
-    config.emailjs.publicKey
-);
+        const response = await emailjs.send(
+            config.emailjs.serviceId,
+            config.emailjs.templateId,
+            {
+                to_email: config.library.email,
+                from_name: `${nome} ${cognome}`,
+                from_email: email,
+                reply_to: email,
+                tessera: tessera || 'Non specificata',
+                telefono: telefono || 'Non specificato',
+                books: formattedBooks,
+                notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
+            },
+            config.emailjs.publicKey
+        );
 
-        // Rimuovi il loading overlay prima di mostrare il popup di successo
         removeLoadingOverlay();
         showSuccessPopup('La tua donazione è stata inviata con successo!');
         
-        // Reset del form
+        // Reset form
         event.target.reset();
         document.getElementById('bookList').innerHTML = '';
         bookCount = 0;
         createBookEntry();
 
-        // Reset degli errori
+        // Reset errors
         const errorMessages = document.querySelectorAll('.error-message');
-        errorMessages.forEach(msg => msg.classList.add('hidden'));
-        const inputFields = document.querySelectorAll('input');
-        inputFields.forEach(input => {
-            input.classList.remove('border-red-500');
-            input.classList.add('border-gray-300', 'focus:border-blue-500');
+        errorMessages.forEach(msg => {
+            msg.classList.add('hidden');
         });
-
-    } catch (error) {
-        removeLoadingOverlay();
-        console.error('Errore dettagliato durante l\'invio:', error);
-        const errorMessage = error.text || error.message || 'Errore sconosciuto durante l\'invio';
-        showGlobalErrorPopup(`Si è verificato un errore durante l'invio: ${errorMessage}`);
-    } finally {
-        const submitButton = event.target.querySelector('button[type="submit"]');
-        submitButton.disabled = false;
-        submitButton.textContent = 'Invia Donazione';
-    }
+   } catch (error) {
+    console.error('Error:', error);
+    removeLoadingOverlay();
+    showGlobalErrorPopup('Si è verificato un errore durante l\'invio. Riprova più tardi.');
+} finally {
+    removeLoadingOverlay();
+}
 });
         
     </script>
