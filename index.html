@@ -929,10 +929,23 @@ function validateCheckbox(checkbox) {
  
 
         <div class="mb-5">
-            <label class="flex items-center gap-2 text-blue-600 font-medium mb-2">
-                <i class="fas fa-book-open text-lg"></i>
-                Ricerca Rapida Libri
-            </label>
+	
+<div class="flex items-center gap-2 mb-2">
+    <label class="flex items-center gap-2 text-blue-600 font-medium">
+        <i class="fas fa-book-open text-lg"></i>
+        Search & click
+        <span class="text-gray-500 text-sm font-normal">(opzionale)</span>
+    </label>
+    <div class="relative group">
+        <i class="fas fa-info-circle text-blue-400 hover:text-blue-600 cursor-help"></i>
+        <div class="invisible group-hover:visible absolute left-0 top-6 w-72 p-3 bg-white border border-gray-200 rounded-lg shadow-lg z-10 text-sm text-gray-700">
+            <div class="absolute -top-2 left-2 w-4 h-4 bg-white border-t border-l border-gray-200 transform rotate-45"></div>
+            Cerca, seleziona e... boom! La scheda si completa al volo! Se preferisci, puoi inserire i dati manualmente. 
+        </div>
+    </div>
+</div>
+
+
             <div class="flex gap-2">
                 <input type="text" 
                     class="quick-search w-full px-3 py-2 border-2 border-gray-300 rounded-l focus:border-blue-500 focus:outline-none text-base" 
