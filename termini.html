@@ -117,6 +117,7 @@
 }
 
 .library-name a {
+   position: relative;
     border-bottom: none; /* Rimuove la sottolineatura esistente */
 }
 
@@ -130,6 +131,24 @@
            width: 22px;
            vertical-align: middle;
        }
+
+    
+.library-name a.tooltip-library:hover::before {
+  content: "Clicca qui per vedere gli appuntamenti della biblioteca";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 2px 6px; /* Ridotto ulteriormente il padding verticale */
+  background-color: #fff;
+  color: #333;
+  border-radius: 3px; /* Ridotto il raggio per armonizzare con l'altezza */
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Ombra meno pronunciata */
+  white-space: nowrap;
+  z-index: 1000;
+  font-size: 12px; /* Ridotta la dimensione del font */
+  margin-bottom: 5px;
+}
 
      
 
@@ -410,7 +429,9 @@ footer i {
     align-items: center;
     gap: 10px;
     margin: 20px 0;
+    position: relative; /* Necessario per posizionare la tooltip */
 }
+
 
 /* Stile aggiornato per il controllo audio */
 .audio-control {
@@ -427,7 +448,37 @@ footer i {
     border-radius: 50%;
     padding: 0;
     transition: background-color 0.3s ease;
+    position: relative; /* Per il posizionamento relativo della tooltip */
 }
+
+
+.audio-control .tooltip {
+    position: absolute;
+    bottom: 120%; /* Posiziona sopra il pulsante */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff; /* Sfondo bianco */
+    color: #333; /* Testo grigio */
+    padding: 0.5rem 1rem; /* Padding per spazio interno */
+    border-radius: 8px;
+    font-size: 0.8rem;
+    white-space: nowrap; /* Evita il taglio del testo */
+    max-width: 200px; /* Limita la larghezza massima */
+    border: 1px solid #ddd; /* Bordo sottile */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombra leggera */
+}
+
+.audio-control:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+      
 
 .audio-control:hover {
     background-color: #800624; /* Versione più scura del colore primario */
@@ -455,7 +506,6 @@ footer i {
 /* Aggiorna il colore del testo "ascolta l'audio" per mantenerlo coordinato */
 .audio-label {
     color: var(--primary);
-    cursor: pointer;
     font-size: 0.85rem;
 }
 
@@ -504,25 +554,93 @@ footer i {
     background: rgba(151, 10, 44, 0.5);
     pointer-events: none;
 }
+
+
+
+      
+      
+/* Base tooltip container */
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Base tooltip style */
+.tooltip-container::after {
+    content: "Questo link si apre in una nuova finestra";
+    position: absolute;
+    background-color: white;
+    color: #666;
+    padding: 4px 12px;
+    line-height: 1.3;
+    border-radius: 4px;
+    font-size: 13px;
+    font-style: italic;
+    white-space: nowrap;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    border: 1px solid #ddd;
+    z-index: 100000;
+}
+
+/* Show tooltip on hover */
+.tooltip-container:hover::after {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Social icons tooltips */
+.social-icons .tooltip-container::after {
+    bottom: -40px;
+    left: -150% !important;  /* Spostato molto più a sinistra */
+    transform: translateX(-50%);
+    top: auto;
+    background-color: white !important;
+}
+
+/* Specific targeting for Roma logo tooltip */
+.top-banner > a.tooltip-container::after {
+    bottom: -40px !important;
+    top: auto !important;
+    left: 85% !important;
+    transform: translateX(-50%) !important;
+    position: absolute !important;
+    background-color: white !important;
+    height: 24px !important;
+    line-height: 1 !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Top banner positioning */
+.top-banner {
+    position: relative;
+    z-index: 1;
+}
+
+
       
    </style>
 </head>
 <body>
    <div class="top-banner">
-        <a href="https://culture.roma.it/">
-        <img src="roma.png" alt="Logo Roma" class="roma-logo">
-         </a>
+        <a href="https://culture.roma.it/" class="tooltip-container">
+            <img src="roma.png" alt="Logo Roma" class="roma-logo">
+        </a>
         <div class="social-icons">
-            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook">
+            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook" class="tooltip-container">
                 <i class="fab fa-facebook"></i>
             </a>
-            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram">
+            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram" class="tooltip-container">
                 <i class="fab fa-instagram"></i>
             </a>
-            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X">
+            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X" class="tooltip-container">
                 <i class="fab fa-x-twitter"></i>
             </a>
-            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube">
+            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube" class="tooltip-container">
                 <i class="fab fa-youtube"></i>
             </a>
         </div>
@@ -552,15 +670,11 @@ footer i {
         <main>
             
            
-          <div class="library-name">
-    <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-       target="_blank" 
-       title="Visualizza la posizione sulla mappa">
-        <img src="location.svg" alt="Location">
-    </a>
-    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank">
-        Biblioteca Elsa Morante
-    </a>
+<div class="library-name">
+  <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank">
+    <img src="location.svg" alt="Location">
+  </a>
+  <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" class="tooltip-library"> Biblioteca Elsa Morante </a>
 </div>
 
 
@@ -568,12 +682,15 @@ footer i {
 <!-- Add this right after the library-name div in your HTML -->
 <div class="text-controls">
 <div class="audio-control-container">
-    <button class="audio-control" id="audioControl">
-        <i class="fas fa-headphones"></i>
-        <i class="fas fa-play"></i>
-    </button>
-    <span class="audio-label">Ascolta l'audio</span>
+  <button class="audio-control" id="audioControl">
+    <i class="fas fa-headphones"></i>
+    <i class="fas fa-play"></i>
+    <span class="tooltip">Ascolta l'audio</span>
+  </button>
+  <span class="audio-label">Ascolta l'audio</span>
 </div>
+
+
   
    
 <div class="waveform-container">
@@ -683,9 +800,10 @@ footer i {
    <footer>
     <div class="container mx-auto px-4">
         <!-- Logo -->
-        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" rel="noopener noreferrer">
-            <img src="footermorante.png" alt="Logo Biblioteca Morante">
-        </a>
+       <img src="footermorante.png" alt="Logo Biblioteca Morante" style="cursor: pointer;" 
+    onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
+
+
         
         <!-- Informazioni -->
         <div class="info">
@@ -864,6 +982,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
       
 </script>
 
