@@ -524,6 +524,7 @@ document.head.appendChild(style);
     width: max-content;
     padding: 3px 8px; /* Ridotto il padding per una tooltip più compatta */
     font-size: 12px; /* Font più piccolo per una tooltip più snella */
+    font-style: italic; /* Impostato il testo in corsivo */
 }
 
 
@@ -539,6 +540,7 @@ document.head.appendChild(style);
     width: max-content;
     padding: 5px 10px; /* Aumentato il padding per maggiore altezza */
     font-size: 14px; /* Aumentato il font per aumentare l'altezza */
+    font-style: italic; /* Impostato il testo in corsivo */
 }
 
 
@@ -549,7 +551,32 @@ document.head.appendChild(style);
     z-index: 1;
 }
 
-	    
+
+
+
+.biblioteca-link {
+    color: #970a2c;
+    transition: color 0.3s;
+    position: relative;
+}
+
+.biblioteca-link:hover::before {
+    content: "Clicca qui per vedere gli appuntamenti della biblioteca";
+    position: absolute;
+    top: -40px; /* Tooltip sopra il link */
+    left: 0;
+    background: white;
+    border: 1px solid #ddd;
+    padding: 2px 10px; /* Padding ridotto per altezza più contenuta */
+    white-space: nowrap;
+    z-index: 1000;
+    color: grey; /* Colore grigio del testo */
+    font-size: 14px; /* Testo leggermente ridotto */
+}
+
+
+
+
 	    
     </style>
 
@@ -665,9 +692,11 @@ document.addEventListener('DOMContentLoaded', () => {
                        title="Visualizza la posizione sulla mappa">
                         <img src="location.svg" alt="Posizione" class="h-5 w-5 text-gray-600">
                     </a>
-                    <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank">
-                       Biblioteca Elsa Morante
-                    </a>
+                   <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
+   target="_blank"
+   class="biblioteca-link">
+   Biblioteca Elsa Morante
+</a>
 
                 </div>
                 <h1 class="text-3xl md:text-4xl text-slate-700 font-bold leading-tight text-left">
