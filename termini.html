@@ -295,19 +295,24 @@
            margin-bottom: 1.7rem; /* Ridotto da 1.8rem */
        }
        
-       a {
-           color: var(--primary);
-           text-decoration: none;
-           border-bottom: 1px solid transparent;
-           transition: border-color 0.3s;
-       }
-       
-       a:hover {
-           border-bottom-color: var(--primary);
-       }
+    a {
+    color: var(--primary);
+    text-decoration: none; /* Rimuove la sottolineatura per tutti i link */
+    border-bottom: none; /* Rimuove eventuali bordi inferiori */
+    transition: color 0.3s ease; /* Transizione per un effetto più fluido */
+}
+
+a:hover {
+    color: #e57373 !important; /* Rosso chiaro, Cambia il colore al passaggio del mouse */
+    text-decoration: none !important; /* Assicura che non venga sottolineato */
+    border-bottom: none; /* Rimuove eventuali bordi aggiuntivi */
+}
 
 
-
+/* Escludi i link all'interno delle icone social */
+.social-icons a:hover {
+    color: var(--primary) !important; /* Mantiene il colore originale */
+}
 
 
 footer {
@@ -621,19 +626,30 @@ footer i {
     z-index: 1;
 }
 
-.tooltip-library:hover {
-    color: #d64f70; /* Un rosso più chiaro */
+
+
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+}
+
+a:hover {
+    text-decoration: none;
+    color: #c0c0c0;
 }
 
 
+      
       
    </style>
 </head>
 <body>
    <div class="top-banner">
-        <a href="https://culture.roma.it/" class="tooltip-container">
-            <img src="roma.png" alt="Logo Roma" class="roma-logo">
-        </a>
+        <a href="https://culture.roma.it/" class="tooltip-container" target="_blank" rel="noopener noreferrer">
+    <img src="roma.png" alt="Logo Roma" class="roma-logo">
+</a>
+
         <div class="social-icons">
             <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook" class="tooltip-container">
                 <i class="fab fa-facebook"></i>
