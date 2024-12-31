@@ -263,27 +263,30 @@ footer a {
     align-items: center !important;
 }
 
+
+        
 @media print {
+    /* Modifica dello stile del bottone di stampa */
     .print-button {
         color: var(--primary);
     }
 
+    /* Impostazioni generali della pagina */
     body {
         background: white;
         font-size: 11pt;
         color: black;
         margin: 0;
         padding: 0;
+        line-height: 1.4;
     }
 
-    .top-banner, .nav-icons, .social-icons, footer {
+    /* Nascondere elementi non necessari per la stampa */
+    .top-banner, .nav-icons, .social-icons, footer, header {
         display: none !important;
     }
 
-    header {
-        display: none !important;
-    }
-
+    /* Aggiustamenti alla struttura del contenuto */
     .content-wrapper {
         margin: 0;
         padding: 0;
@@ -293,6 +296,7 @@ footer a {
         margin-top: 0;
     }
 
+    /* Gestione delle sezioni interne, evitando i break di pagina indesiderati */
     .content-section > div {
         break-inside: avoid;
         page-break-inside: avoid;
@@ -302,6 +306,7 @@ footer a {
         margin-bottom: 0.5cm;
     }
 
+    /* Modifiche ai titoli */
     h1 {
         font-size: 16pt;
         color: black !important;
@@ -314,21 +319,25 @@ footer a {
         margin-bottom: 0.3cm;
     }
 
+    /* Margine per i paragrafi */
     p {
         margin-bottom: 0.2cm;
     }
 
+    /* Colore dei link durante la stampa */
     a {
         text-decoration: none;
         color: black;
     }
 
+    /* Aggiunta dell'URL al link solo se il link non è uno di quelli esclusi */
     a[href]::after {
         content: " (" attr(href) ")";
         font-size: 8pt;
         font-style: italic;
     }
 
+    /* Escludere URL visibili per determinati link */
     a[href^="https://www.bibliotechediroma.it"]::after,
     a[href^="https://www.facebook.com"]::after,
     a[href^="https://www.instagram.com"]::after,
@@ -337,8 +346,20 @@ footer a {
         content: "";
     }
 
+    /* Nascondere elementi con classi specifiche per evitare che interferiscano con la stampa */
     .flex.items-center.mb-4 {
         display: none !important;
+    }
+
+    /* Gestione del comportamento della pagina nelle interruzioni */
+    .content-wrapper, .content-section, .content-section > div {
+        page-break-after: always;
+    }
+
+    /* Regolazione per l'elemento a livello di documento */
+    * {
+        orphans: 3;
+        widows: 3;
     }
 }
 
