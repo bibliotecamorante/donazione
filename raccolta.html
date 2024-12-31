@@ -18,8 +18,26 @@
     --primary: #970a2c;
 }
 
+
+
+ * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+
+
+        
 body {
     font-family: "Space Grotesk", sans-serif;
+    font-weight: 500; /* Imposta il peso del font a 500 */
     font-size: 20px;
     background-color: #f3f4f6;
     display: flex;
@@ -27,21 +45,33 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
     width: 100%;
+    overflow-x: hidden;
+    position: relative;
 }
 
+        /* Escludere il footer dal peso 500 */
+footer, footer * {
+    font-weight: normal; /* Imposta il peso normale per il testo nel footer */
+}
+
+ p {
+        font-size: 22px; /* Impostato a 20px */
+    }
+        
 .top-banner {
     background-color: white;
-    padding: 0.8rem 2rem; 
+    padding: 0.8rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    max-width: 100%;
     position: relative;
     z-index: 1;
     box-sizing: border-box;
 }
+
 
 .roma-logo {
     height: 40px;
@@ -64,7 +94,7 @@ body {
 }
 
 header {
-    background-color: var(--primary);
+    background-color: #970a2c;
     color: #fff;
     padding: 2rem 0;
     width: 100%;
@@ -73,7 +103,7 @@ header {
 .container-header {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 2rem;
+    padding: 0 1rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -83,10 +113,11 @@ header {
 }
 
 .content-wrapper {
+    width: 100%;
     max-width: 900px;
     width: 100%;
-    margin: 2rem auto;
-    padding: 0 1rem;
+    margin: 0 auto;
+    padding: 1rem;
     position: relative;
     margin-top: 60px;
     box-sizing: border-box;
@@ -99,7 +130,8 @@ header {
     transform: translateX(calc(-50% - 400px));
     display: flex;
     align-items: center;
-    gap: 3rem;
+    gap: 1.5rem;
+    padding: 1rem 0;
     padding-top: 20px;
 }
 
@@ -136,6 +168,7 @@ header {
 }
 
 .content-section {
+    width: 100%;
     margin-top: 40px;
 }
 
@@ -144,15 +177,20 @@ header {
 }
 
 footer {
-    background-color: var(--primary);
-    color: #fff;
+    background-color: #970a2c;
+    color: white;
     text-align: center;
-    padding: 1.8rem 0;
+    padding: 2rem 1rem;
     width: 100%;
-    margin-top: auto;
+    margin-top: 2rem;
     box-sizing: border-box;
 }
 
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
 footer a {
     color: #fff;
     text-decoration: underline;
@@ -304,6 +342,10 @@ footer a {
     }
 }
 
+
+        
+
+
 @media (max-width: 1400px) {
     .nav-icons {
         transform: translateX(calc(-50% - 300px));
@@ -322,24 +364,49 @@ footer a {
     }
 }
 
-@media (max-width: 768px) {
-    .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
-    }
-    
-    .content-wrapper {
-        padding: 0 0.5rem;
-    }
-    
-    .top-banner {
-        padding: 0.8rem 1rem;
-    }
-}
+ @media (max-width: 768px) {
+            body {
+                
+            }
 
+            .top-banner {
+                padding: 0.5rem;
+            }
+
+            .roma-logo {
+                height: 30px;
+            }
+
+            .social-icons {
+                gap: 0.5rem;
+            }
+
+            .social-icons a {
+                font-size: 1.2rem;
+            }
+
+            .container-header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .container-header img {
+                max-width: 100%;
+                height: auto;
+            }
+
+            .content-wrapper {
+                padding: 0.5rem;
+            }
+
+            .nav-icons {
+                padding: 0.5rem 0;
+            }
+
+            footer {
+                padding: 1rem;
+            }
+        }
 
 
 
@@ -423,17 +490,15 @@ a:hover {
 
     
 
-    <div class="content-wrapper">
-        
-        
-        <div class="nav-icons">
-    <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Indietro">
-        <img src="left.svg" alt="Indietro" style="height: 22px; width: 22px;">
-    </a>
-    <a href="https://www.bibliotechediroma.it/opac/.do" title="Home">
-        <img src="home.svg" alt="Home" style="height: 22px; width: 22px;">
-    </a>
-</div>
+<div class="content-wrapper">
+    <div class="nav-icons">
+        <a href="https://www.bibliotechediroma.it/opac/news/donazioni/33158" title="Indietro">
+            <img src="left.svg" alt="Indietro" style="height: 22px; width: 22px;">
+        </a>
+        <a href="https://www.bibliotechediroma.it/opac/.do" title="Home">
+            <img src="home.svg" alt="Home" style="height: 22px; width: 22px;">
+        </a>
+    </div>
 
         
 
@@ -442,7 +507,7 @@ a:hover {
 
 
         
-      <div class="flex items-center mb-4" style="color: #970a2c;">
+     <div class="flex items-center mb-4" style="color: #970a2c;">
         <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
            target="_blank" 
            title="Visualizza la posizione sulla mappa">
@@ -457,6 +522,7 @@ a:hover {
        Biblioteca Elsa Morante
       </a>
       </div>
+
 
         
         <h1 class="text-3xl font-bold text-left" style="color: #970a2c;">Centri di Raccolta per Donazione Libri e Audiovisivi</h1>
