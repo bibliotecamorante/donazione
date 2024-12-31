@@ -542,7 +542,6 @@ footer i {
 .waveform-bar.played {
     background: #970a2c;
 }
-
 .time-display {
     display: flex;
     justify-content: space-between;
@@ -550,15 +549,7 @@ footer i {
     margin-top: 5px;
 }
 
-.progress-line {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 2px;
-    background: rgba(151, 10, 44, 0.5);
-    pointer-events: none;
-}
+
 
 
 
@@ -640,6 +631,15 @@ a:hover {
 }
 
 
+@media (max-width: 768px) {
+    .tooltip-container::before,
+    .tooltip-container::after,
+    .tooltip-library:hover::before,
+    .tooltip {
+        display: none !important;
+    }
+} 
+
       
       
    </style>
@@ -715,7 +715,6 @@ a:hover {
    
 <div class="waveform-container">
     <div class="waveform-bars"></div>
-    <div class="progress-line"></div>
     <div class="time-display">
         <span id="currentTime">0:00</span>
         <span id="totalTime">0:00</span>
@@ -874,8 +873,8 @@ function calculateTotalDuration() {
 
 function createWaveform() {
     const container = document.querySelector('.waveform-bars');
-    container.innerHTML = '';
-    const numberOfBars = 200;
+    // Riduciamo il numero di barre da creare
+    const numberOfBars = 50; // Prima era probabilmente > 100
 
     for (let i = 0; i < numberOfBars; i++) {
         const bar = document.createElement('div');
@@ -897,9 +896,6 @@ function updateWaveform(progress) {
             bar.classList.remove('played');
         }
     });
-
-    const progressLine = document.querySelector('.progress-line');
-    progressLine.style.left = `${progress * 100}%`;
 }
 
 function setupSpeech() {
