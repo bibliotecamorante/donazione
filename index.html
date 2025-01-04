@@ -618,7 +618,21 @@ document.head.appendChild(style);
         min-height: 40px; /* Reduced minimum height */
     }
 	    
-	    
+
+@media screen and (max-width: 768px) {
+    .nav-icons {
+        padding: 0.5rem 1rem; /* Riduce il padding verticale solo su mobile */
+    }
+    
+    .content-wrapper {
+        margin-top: -0.5rem; /* Riduce lo spazio sopra il wrapper del contenuto */
+    }
+    
+    /* Aggiusta lo spazio dopo il banner per mobile */
+    .top-banner + header {
+        margin-bottom: 0.5rem; /* Riduce lo spazio dopo l'header su mobile */
+    }
+}
     </style>
 
 
