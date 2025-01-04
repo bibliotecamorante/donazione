@@ -196,13 +196,66 @@
     }
 }
 
+/* Reset delle regole generali per mobile */
 @media (max-width: 768px) {
+    /* Sistema il layout complessivo */
+    .content-wrapper {
+        margin-top: 60px !important;  /* Aumenta lo spazio per le icone di navigazione */
+        padding: 0 1rem !important;
+        position: relative !important;
+    }
+
+    /* Posiziona le icone di navigazione */
     .nav-icons {
-        position: relative;
-        left: 0;
-        top: 0;
-        transform: none;
-        justify-content: flex-start;
+        position: absolute !important;
+        left: 1rem !important;
+        top: -40px !important;  /* Aggiustato per evitare sovrapposizione con il banner */
+        transform: none !important;
+        padding: 0 !important;
+        justify-content: flex-start !important;
+        gap: 1.5rem !important;
+        z-index: 10 !important;
+        width: auto !important;
+        display: flex !important;
+    }
+
+    /* Sistema il separatore tra le icone */
+    .nav-icons a:first-child::after {
+        content: '';
+        position: absolute !important;
+        right: -0.75rem !important;
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        height: 16px !important;
+        width: 1px !important;
+        background-color: rgba(128, 128, 128, 0.3) !important;
+        display: block !important;
+    }
+
+    /* Mantieni le dimensioni delle icone */
+    .nav-icons img {
+        height: 22px !important;
+        width: 22px !important;
+        display: block !important;
+    }
+
+    /* Sistema il posizionamento dell'header */
+    header {
+        position: relative !important;
+        padding: 1rem 0 !important;
+        min-height: auto !important;
+        margin-bottom: 1rem !important;
+    }
+
+    /* Aggiusta il contenitore principale */
+    main {
+        margin-top: 2rem !important;  /* Aumenta lo spazio tra le icone e il contenuto */
+    }
+
+    /* Sistema la library-name per mantenere lo spazio corretto */
+    .library-name {
+        margin-top: 1rem !important;
+        margin-bottom: 1.5rem !important;
     }
 }
 
