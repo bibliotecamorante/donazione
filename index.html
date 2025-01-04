@@ -621,18 +621,25 @@ document.head.appendChild(style);
 
 @media screen and (max-width: 768px) {
     .nav-icons {
-        padding: 0.75rem 1rem; /* Aumentato da 0.5rem a 0.75rem per più spazio */
+        padding: 0.75rem 1rem; /* Spazio per le icone di navigazione */
+        margin-bottom: -0.5rem; /* Riduce lo spazio sotto le icone */
     }
     
     .content-wrapper {
-        margin-top: -0.25rem; /* Ridotto il margine negativo per creare più spazio */
+        margin-top: -0.25rem;
     }
     
     /* Aggiusta lo spazio dopo il banner per mobile */
     .top-banner + header {
-        margin-bottom: 0.75rem; /* Aumentato da 0.5rem a 0.75rem per più spazio */
+        margin-bottom: 0.75rem;
+    }
+
+    /* Riduce lo spazio superiore del contenitore principale su mobile */
+    .max-w-4xl.mx-auto.bg-white.p-8.rounded-lg.mt-2 {
+        margin-top: 0.5rem; /* Ridotto da 2 (0.5rem) */
     }
 }
+	
     </style>
 
 
