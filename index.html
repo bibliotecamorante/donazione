@@ -1609,10 +1609,10 @@ window.resetBookFields = function(button) {
 
 
 
-    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
+ <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
     <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
         <div class="mb-4 md:mb-0">
-             <!-- Logo -->
+            <!-- Logo -->
             <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
                  style="cursor: pointer;" 
                  onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
@@ -1630,7 +1630,9 @@ window.resetBookFields = function(button) {
             <div class="flex items-center justify-center md:justify-start space-x-4">
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-phone w-4"></i>
-                    <span>06 4546 0481 / 0483</span>
+                    <a href="tel:+390645460481" class="hover:underline">
+                        <span>06 4546 0481 / 0483</span>
+                    </a>
                 </div>
                 <div class="flex items-center space-x-2">
                     <i class="fas fa-clock w-4"></i>
@@ -1643,6 +1645,7 @@ window.resetBookFields = function(button) {
         </div>
     </div>
 </footer>
+
 
 
 
