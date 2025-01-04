@@ -3,6 +3,7 @@
 <head>
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#970a2c">
    <meta name="description" content="Termini e condizioni per donazioni di libri ad Ostia.">
 
    <title>Termini donazione</title>
@@ -30,11 +31,12 @@
        }
        
        body {
+
+          font-weight: 500; /* Imposta il peso del font a 500 */
            background-color: var(--bg);
            color: var(--text);
            font-family: 'Space Grotesk', sans-serif;
-           font-weight: 500; /* Imposta il peso del font a 500 */
-           font-size: 20px; /* Ridotto da 22px */
+           font-size: 22px; /* Ridotto da 22px */
            line-height: 32px; /* Ridotto da 34px */
            letter-spacing: normal;
            word-spacing: 0px;
@@ -263,6 +265,9 @@
        
        main h1 {
            color: var(--primary);
+           font-size: 2rem; /* Ridotto da un valore precedente */
+        margin-bottom: 1.5rem; /* Riduce la distanza sotto il titolo */
+    line-height: 1.2; /* Rende il titolo meno alto */
        }
        
        h2 {
@@ -316,57 +321,121 @@ a:hover {
 }
 
 
+
+      
+
 footer {
     background-color: var(--primary);
-    color: #fff;
-    padding: 1.5rem 0; /* Altezza ridotta */
+    color: #FFFFFF;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 14px;
+    font-weight: 400;
+    padding: 2.5rem 0; /* Aumentato da 1.5rem a 2.5rem per maggiore altezza */
 }
 
 footer .container {
+    width: 80%; /* Ridotto da 95% a 80% per aumentare i margini laterali */
+    margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem; /* Spaziatura minima */
+    gap: 2rem;
 }
 
 footer img {
-    height: 35px; /* Logo leggermente più piccolo */
+    height: 35px;
     max-width: 100%;
-    margin-right: 1rem; /* Spaziatura tra logo e stringhe */
+    cursor: pointer;
 }
 
 footer .info {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1.5rem; /* Minore spazio tra blocchi di testo */
-    font-size: 0.85rem; /* Testo ridotto */
+    gap: 3.5rem;
+    font-size: 0.85rem;
+    color: #FFFFFF;
 }
 
-footer .info > div {
+footer .info div {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.5rem;
-    line-height: 1.4; /* Migliore leggibilità */
 }
 
-footer .info span.block {
-    display: block; /* Forza il rientro a capo per indirizzi e orari */
+footer .info i {
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    margin-top: 0.2rem;
 }
 
-footer i {
-    font-size: 1rem; /* Icone ridimensionate */
+footer .info span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    line-height: 1.2;
 }
 
+footer .info div:nth-child(2) span {
+    flex-direction: row;
+    gap: 0.3rem;
+    white-space: nowrap;
+}
+
+footer .info a {
+    color: #FFFFFF !important;
+    text-decoration: none;
+}
+
+footer .info .block {
+    display: block;
+    margin: 0;
+}
+
+/* Mantieni le regole mobili ma ripristina la larghezza del container per schermi piccoli */
 @media (max-width: 768px) {
+    footer {
+        padding: 2rem 0; /* Mantiene un padding più contenuto per mobile */
+    }
+
+    footer .container {
+        width: 95%; /* Ripristina la larghezza originale per schermi piccoli */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
     footer .info {
-        flex-direction: column; /* Layout verticale su schermi piccoli */
-        align-items: flex-start;
+        flex-direction: column;
+        gap: 1rem;
+        align-items: center;
+    }
+
+    footer .info div {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    footer .info div:nth-child(1) {
+        flex-direction: row;
+        justify-content: center;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    footer .info div:nth-child(2),
+    footer .info div:nth-child(3) {
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    footer .info div:nth-child(2) span,
+    footer .info div:nth-child(3) span {
+        display: inline-block;
     }
 }
-      
       
            
            header {
@@ -423,6 +492,8 @@ footer i {
                margin: 0;
            }
        }
+
+
 
 
 
@@ -640,8 +711,67 @@ a:hover {
         display: none !important;
     }
 } 
-
       
+
+/* Aggiungi questo CSS dopo lo stile esistente, prima della chiusura del tag style */
+
+@media screen and (max-width: 767px) {
+    /* Modifica dell'header per mobile */
+    header {
+        background-color: #970a2c;  /* amaranto */
+        height: 130px;               /* altezza dimezzata */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Gestione dei loghi nell'header */
+    .container-header {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Nascondi il logo Morante su mobile */
+    .container-header img[src="logomorante.png"] {
+        display: none;
+    }
+
+    /* Ridimensiona il logo bianco per mobile */
+    .container-header img[src="logobianco.png"] {
+        height: 35px;  /* Altezza dimezzata rispetto ai 70px originali */
+        width: auto;
+        max-width: 100%;
+    }
+}   
+
+       @media (max-width: 768px) {
+            .top-banner {
+                padding: 0.5rem 1rem; /* Ridurre il padding verticale */
+                min-height: 40px; /* Ridurre l'altezza minima per la versione mobile */
+            }
+        }
+
+
+@media (max-width: 768px) {
+    .top-banner {
+        padding: 0.4rem 1rem; /* Reduced padding */
+        min-height: 45px; /* Reduced minimum height */
+    }
+    
+    .roma-logo {
+        height: 35px; /* Reduced logo size */
+    }
+    
+    /* Rimosso il codice che modificava le dimensioni delle icone social */
+    .social-icons {
+        gap: 1rem; /* Mantenuto il gap originale */
+    }
+}
+
+
+
       
    </style>
 </head>
@@ -792,8 +922,8 @@ a:hover {
 
                 <h2>Ulteriori Informazioni</h2>
                 <p>
-                    Settore Adulti: <a href="mailto:l.daniello@bibliotechediroma.it">l.daniello@bibliotechediroma.it</a><br>
-                    Settore Ragazzi: <a href="mailto:f.ferri@bibliotechediroma.it">f.ferri@bibliotechediroma.it</a>
+                    Sezione Adulti: <a href="mailto:l.daniello@bibliotechediroma.it">l.daniello@bibliotechediroma.it</a><br>
+                    Sezione Ragazzi: <a href="mailto:f.ferri@bibliotechediroma.it">f.ferri@bibliotechediroma.it</a>
                 </p>
 
 
@@ -817,32 +947,36 @@ a:hover {
 
 
 
-   <footer>
-    <div class="container mx-auto px-4">
-        <!-- Logo -->
-       <img src="footermorante.png" alt="Logo Biblioteca Morante" style="cursor: pointer;" 
-    onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
-
-
-        
-        <!-- Informazioni -->
+<footer>
+    <div class="container">
+        <img src="footermorante.png" alt="Logo Biblioteca Morante" 
+             style="cursor: pointer;" 
+             onclick="window.open('https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2', '_blank');">
         <div class="info">
             <div>
                 <i class="fas fa-location-dot"></i>
-                <span>Via Adolfo Cozza 7<span class="block">Municipio X, 00121 Roma</span></span>
+                <span>
+                    Via Adolfo Cozza 7
+                    <span class="block">Municipio X, 00121 Roma</span>
+                </span>
             </div>
             <div>
                 <i class="fas fa-phone"></i>
-                <span>06 4546 0481</span>
+                <span>
+                    <a href="tel:+390645460481">06 4546 0481</a> / 
+                    <a href="tel:+390645460483">0483</a>
+                </span>
             </div>
             <div>
                 <i class="fas fa-clock"></i>
-                <span>Lunedì-Venerdì 09:00-18:30<span class="block">Sabato 09:00-13:00</span></span>
+                <span>
+                    Lunedì-Venerdì 09:00-18:30
+                    <span class="block">Sabato 09:00-13:00</span>
+                </span>
             </div>
         </div>
     </div>
 </footer>
-
 
 
    
