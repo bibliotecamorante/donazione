@@ -109,15 +109,27 @@
     min-height: 70px; /* Ridotto da 120px */
 }
 
-      .library-name {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text);
-    font-size: 1.1rem; /* Ridotto da 1.4rem */
-    margin-bottom: 1rem;
+/* Updated library name container styles */
+.library-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* This spreads out the children */
+  width: 100%;
+  margin-bottom: 1rem;
 }
 
+/* Left side of library name containing location and name */
+.library-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Audio control styles updated for right alignment */
+.text-controls {
+  position: relative;
+}
+      
 .library-name a {
    position: relative;
     border-bottom: none; /* Rimuove la sottolineatura esistente */
@@ -204,39 +216,45 @@
         position: relative !important;
     }
 
-    /* Posiziona le icone di navigazione */
-    .nav-icons {
-        position: absolute !important;
-        left: 1rem !important;
-        top: -40px !important;  /* Aggiustato per evitare sovrapposizione con il banner */
-        transform: none !important;
-        padding: 0 !important;
-        justify-content: flex-start !important;
-        gap: 1.5rem !important;
-        z-index: 10 !important;
-        width: auto !important;
-        display: flex !important;
-    }
-
+  /* Posiziona le icone di navigazione */
+  .nav-icons {
+    position: absolute !important;
+    left: 1rem !important;
+    top: -40px !important;
+    transform: none !important;
+    padding: 0 !important;
+    justify-content: flex-start !important;
+    gap: 1.5rem !important;
+    z-index: 10 !important;
+    width: auto !important;
+    display: flex !important;
+    visibility: visible !important; /* Assicura che le icone siano visibili */
+    opacity: 1 !important; /* Assicura che le icone siano completamente opache */
+  }
+   
     /* Sistema il separatore tra le icone */
-    .nav-icons a:first-child::after {
-        content: '';
-        position: absolute !important;
-        right: -0.75rem !important;
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        height: 16px !important;
-        width: 1px !important;
-        background-color: rgba(128, 128, 128, 0.3) !important;
-        display: block !important;
-    }
+  .nav-icons a:first-child::after {
+    content: '' !important;
+    position: absolute !important;
+    right: -0.75rem !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    height: 16px !important;
+    width: 1px !important;
+    background-color: rgba(128, 128, 128, 0.3) !important;
+    display: block !important;
+    visibility: visible !important; /* Assicura che il separatore sia visibile */
+    opacity: 1 !important; /* Assicura che il separatore sia completamente opaco */
+  }
 
     /* Mantieni le dimensioni delle icone */
-    .nav-icons img {
-        height: 22px !important;
-        width: 22px !important;
-        display: block !important;
-    }
+  .nav-icons img {
+    height: 22px !important;
+    width: 22px !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
 
     /* Sistema il posizionamento dell'header */
     header {
@@ -262,10 +280,10 @@
 
       
     .nav-icons a {
-    display: flex;
-    align-items: center;
-    visibility: visible;
-    opacity: 1;
+    display: flex !important;
+    align-items: center !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     text-decoration: none;
     border-bottom: none;
        
@@ -318,6 +336,7 @@
        main h1 {
            color: var(--primary);
            font-size: 2rem; /* Ridotto da un valore precedente */
+          margin-top: 3rem;
         margin-bottom: 1.5rem; /* Riduce la distanza sotto il titolo */
     line-height: 1.2; /* Rende il titolo meno alto */
        }
@@ -554,11 +573,13 @@ footer .info .block {
             
 /* Audio control button styles */
 .audio-control-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 20px 0;
-    position: relative; /* Necessario per posizionare la tooltip */
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 
@@ -816,9 +837,174 @@ a:hover {
     }
 }
 
+/* Mobile optimization */
+@media (max-width: 768px) {
+  .library-name {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
 
+  .audio-control-container {
+    position: relative;
+    right: auto;
+    top: auto;
+    align-self: flex-start;
+  }
+
+  .library-info {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .tooltip-library {
+    font-size: 1.1rem; /* Slightly smaller font for mobile */
+    line-height: 1.3;
+  }
+
+  main h1 {
+    margin-top: 2rem; /* Reduced top margin for mobile */
+  }
+
+  .audio-control {
+    width: 32px; /* Slightly smaller button for mobile */
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .audio-label {
+    font-size: 0.8rem; /* Smaller text for mobile */
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 480px) {
+  .library-name {
+    margin-bottom: 1.5rem;
+  }
+
+  .library-info {
+    gap: 0.3rem; /* Reduced gap for very small screens */
+  }
+
+  .audio-control-container {
+    gap: 8px;
+  }
+
+  .tooltip-library {
+    font-size: 1rem;
+  }
+}
 
       
+/* Tablet optimization (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .content-wrapper {
+    position: relative;
+    padding-top: 2rem;
+  }
+  
+  .nav-icons {
+    transform: none !important; 
+    position: absolute;
+    top: 0;
+    left: 1rem !important;
+    gap: 2rem;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10;
+  }
+
+.nav-icons a:first-child::after {
+    right: -1rem;
+    height: 16px;
+  }
+
+  .nav-icons img {
+    height: 20px;
+    width: 20px;
+    display: block !important;
+  }
+
+
+
+
+   
+
+  /* Audio controls adjustments */
+  .audio-control-container {
+    gap: 8px;
+    right: 1rem;
+  }
+
+  .audio-control {
+    width: 34px;
+    height: 34px;
+    font-size: 18px;
+  }
+
+  .audio-label {
+    font-size: 0.9rem;
+  }
+
+  /* Adjust spacing for better layout */
+  .library-name {
+    margin-bottom: 1.5rem;
+    padding-right: 1rem;
+  }
+
+  .library-info {
+    gap: 0.4rem;
+  }
+}
+
+/* Small tablet optimization (600px - 767px) */
+/* Small tablet optimization (600px - 767px) */
+@media (min-width: 600px) and (max-width: 767px) {
+  .content-wrapper {
+    position: relative;
+    padding-top: 2rem;
+  }
+
+  .nav-icons {
+    position: absolute;
+    top: 0;
+    left: 1rem;
+    gap: 1.5rem;
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 10;
+  }
+
+  .nav-icons img {
+    height: 18px;
+    width: 18px;
+    display: block !important;
+  }
+
+  .nav-icons a:first-child::after {
+    right: -0.75rem;
+    height: 14px;
+  }
+
+  .audio-control-container {
+    gap: 6px;
+    right: 0.75rem;
+  }
+
+  .audio-control {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .audio-label {
+    font-size: 0.85rem;
+  }
+} 
    </style>
 </head>
 <body>
@@ -867,25 +1053,24 @@ a:hover {
         <main>
             
            
-<div class="library-name">
-  <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank">
-    <img src="location.svg" alt="Location">
-  </a>
-  <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" class="tooltip-library"> Biblioteca Elsa Morante </a>
-</div>
-
-
-           
-<!-- Add this right after the library-name div in your HTML -->
-<div class="text-controls">
-<div class="audio-control-container">
-  <button class="audio-control" id="audioControl">
-    <i class="fas fa-headphones"></i>
-    <i class="fas fa-play"></i>
-    <span class="tooltip">Ascolta l'audio</span>
-  </button>
-  <span class="audio-label">Ascolta l'audio</span>
-</div>
+ <div class="library-name">
+    <div class="library-info">
+      <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank">
+        <img src="location.svg" alt="Location">
+      </a>
+      <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" target="_blank" class="tooltip-library">
+        Biblioteca Elsa Morante
+      </a>
+    </div>
+    <div class="audio-control-container">
+      <button class="audio-control" id="audioControl">
+        <i class="fas fa-headphones"></i>
+        <i class="fas fa-play"></i>
+        <span class="tooltip">Ascolta l'audio</span>
+      </button>
+      <span class="audio-label">Ascolta l'audio</span>
+    </div>
+  </div>
 
 
   
