@@ -492,6 +492,7 @@ footer .info .block {
         flex-direction: column;
         align-items: center;
         text-align: center;
+       justify-content: center; /* Mantiene il logo e le info centrati */
     }
 
     footer .info {
@@ -1023,6 +1024,21 @@ a:hover {
     font-size: 0.85rem;
   }
 } 
+
+/* Tablet (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  footer .container {
+    width: 95%;
+    justify-content: center;
+   
+  }
+  
+  footer .info {
+    justify-content: center;
+  }
+}
+
+      
    </style>
 </head>
 <body>
