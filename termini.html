@@ -35,7 +35,7 @@
            background-color: var(--bg);
            color: var(--text);
            font-family: 'Space Grotesk', sans-serif;
-           font-size: 22px; /* Ridotto da 22px */
+           font-size: 20px; /* Ridotto da 22px */
            line-height: 32px; /* Ridotto da 34px */
            letter-spacing: normal;
            word-spacing: 0px;
@@ -353,7 +353,8 @@
        
        main h1 {
            color: var(--primary);
-           font-size: 2rem; /* Ridotto da un valore precedente */
+  font-size: 32px;
+  font-weight: 400;
           margin-top: 3rem;
         margin-bottom: 1.5rem; /* Riduce la distanza sotto il titolo */
     line-height: 1.2; /* Rende il titolo meno alto */
@@ -361,7 +362,7 @@
        
        h2 {
            color: var(--primary);
-           font-size: 1.7rem; /* Ridotto da 1.8rem */
+           font-size: 20px; /* Ridotto da 1.8rem */
            margin-bottom: 2rem;
            padding-bottom: 0.5rem;
            border-bottom: 2px solid var(--primary);
@@ -370,12 +371,14 @@
        ul {
            list-style-type: none;
            padding-left: 0;
+           margin-bottom: 1.2rem; 
        }
        
        ul li {
-           padding: 0.7rem 0; /* Ridotto da 0.7rem */
+           padding: 0.4rem 0; /* Ridotto da 0.7rem */
            position: relative;
            padding-left: 1.5rem;
+           line-height: 1.6;
        }
        
        ul li::before {
@@ -387,6 +390,8 @@
        }
        
        p {
+           margin-bottom: 1.2rem; /* Standardized spacing for all paragraphs */
+           line-height: 1.6; /* Standardized line height */
            margin-bottom: 1.7rem; /* Ridotto da 1.8rem */
        }
        
