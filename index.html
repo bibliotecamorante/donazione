@@ -28,7 +28,17 @@
     --accent: #700f0a;     /* Darker bordeaux */
 }
 
+.location-icon {
+    transition: all 0.3s ease;
+    /* Rosso molto scuro, quasi bordeaux */
+    filter: invert(9%) sepia(38%) saturate(6611%) hue-rotate(345deg) brightness(63%) contrast(99%);
+}
 
+.location-icon:hover {
+    /* Rosso brillante e luminoso */
+    filter: invert(21%) sepia(99%) saturate(7402%) hue-rotate(356deg) brightness(141%) contrast(124%);
+    transform: scale(1.1);  /* Aggiunto un leggero effetto di ingrandimento */
+}
 
 /* Stile base per tutti gli input */
 input[type="text"],
