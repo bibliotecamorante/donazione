@@ -284,75 +284,75 @@ footer a {
 
         
 
- @media print {
-    .print-button {
-        color: var(--primary);
-    }
-    body {
-        background: white;
-        font-size: 9pt;
-        color: black;
-        margin: 0;
-        padding: 0;
-    }
-    .top-banner, .nav-icons, .social-icons, footer {
-        display: none !important;
-    }
-    header {
-        display: none !important;
-    }
-    .content-wrapper {
-        margin: 0;
-        padding: 0;
-    }
-    .content-section {
-        margin-top: 0;
-    }
-    .content-section > div {
-        break-inside: avoid;
-        page-break-inside: avoid;
-        border: none;
-        box-shadow: none;
-        padding: 0.3cm 0;
-        margin-bottom: 0.3cm;
-    }
-    h1 {
-        font-size: 12pt;
-        color: black !important;
-        margin-bottom: 0.6cm;
-    }
-    h2 {
-        font-size: 10pt;
-        color: black !important;
-        margin-bottom: 0.2cm;
-    }
-    p {
-        margin-bottom: 0.12cm;
-    }
-    a {
-        text-decoration: none;
-        color: black;
-    }
-    a[href]::after {
-        content: " (" attr(href) ")";
-        font-size: 14pt;  /* Modifica la dimensione del font dell'URL */
-        font-style: italic;
-    }
-    a[href^="https://www.bibliotechediroma.it"]::after,
-    a[href^="https://www.facebook.com"]::after,
-    a[href^="https://www.instagram.com"]::after,
-    a[href^="https://x.com"]::after,
-    a[href^="https://www.youtube.com"]::after {
-        content: "";
-    }
-    .flex.items-center.mb-4 {
-        display: none !important;
-    }
-
- 
-
-     
+@media print {
+  .print-button {
+    color: var(--primary);
+  }
+  body {
+    background: white;
+    font-size: 9pt;
+    color: black;
+    margin: 0;
+    padding: 0;
+  }
+  .top-banner, .nav-icons, .social-icons, footer {
+    display: none !important;
+  }
+  header {
+    display: none !important;
+  }
+  .content-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+  .content-section {
+    margin-top: 0;
+  }
+  .content-section > div {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: none;
+    box-shadow: none;
+    padding: 0.3cm 0;
+    margin-bottom: 0.3cm;
+  }
+  h1 {
+    font-size: 12pt;
+    color: black !important;
+    margin-bottom: 0.6cm;
+  }
+  h2 {
+    font-size: 10pt;
+    color: black !important;
+    margin-bottom: 0.2cm;
+  }
+  p {
+    margin-bottom: 0.12cm;
+  }
+  a {
+    text-decoration: none;
+    color: black;
+  }
+  a[href]::after {
+    content: " (" attr(href) ")";
+    font-size: 14pt;
+    font-style: italic;
+  }
+  a[href^="https://www.bibliotechediroma.it"]::after,
+  a[href^="https://www.facebook.com"]::after,
+  a[href^="https://www.instagram.com"]::after,
+  a[href^="https://x.com"]::after,
+  a[href^="https://www.youtube.com"]::after {
+    content: "";
+  }
+  a[href="mailto:assclementeriva@gmail.com"] {
+    display: none !important;
+  }
+  .flex.items-center.mb-4 {
+    display: none !important;
+  }
 }
+
         
 
 
