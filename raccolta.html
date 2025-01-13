@@ -285,7 +285,7 @@ footer a {
         
 
  @media print {
-       /* Existing print styles */
+    /* Existing print styles */
     .print-button { color: var(--primary); }
     body {
         background: white;
@@ -312,34 +312,30 @@ footer a {
         margin-bottom: 0.3cm;
     }
     
-    /* Modified link styles for printing */
-    a[href^="mailto:"]::after {
-        content: "" !important; /* Prevents mailto links from being displayed */
-    }
-    
-    /* Keep other print styles */
     h1 { font-size: 12pt; color: black !important; margin-bottom: 0.6cm; }
     h2 { font-size: 10pt; color: black !important; margin-bottom: 0.2cm; }
     p { margin-bottom: 0.12cm; }
     a { text-decoration: none; color: black; }
     
-    /* Regular links still show their URLs */
-    a[href]:not([href^="mailto:"])::after {
+    /* Handle regular links */
+    a[href]::after {
         content: " (" attr(href) ")";
         font-size: 14pt;
         font-style: italic;
     }
     
-    /* Keep existing exceptions */
+    /* Exclude specific links from showing URLs */
     a[href^="https://www.bibliotechediroma.it"]::after,
     a[href^="https://www.facebook.com"]::after,
     a[href^="https://www.instagram.com"]::after,
     a[href^="https://x.com"]::after,
-    a[href^="https://www.youtube.com"]::after {
-        content: "";
+    a[href^="https://www.youtube.com"]::after,
+    a[href^="mailto:"]::after,
+    a[href^="https://www.openstreetmap.org"]::after,
+    .flex.items-center.mb-4 a[href^="https://www.bibliotechediroma.it"]::after {
+        content: "" !important;
     }
 }
-
  
 
      
