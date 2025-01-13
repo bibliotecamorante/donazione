@@ -348,10 +348,17 @@ footer a {
   a[href="mailto:assclementeriva@gmail.com"] {
     display: none !important;
   }
+  a[href^="mailto:"]::after {
+    content: ""; /* Nasconde il contenuto generato */
+  }
+  a[href^="mailto:"] {
+    display: none !important; /* Nasconde completamente il link */
+  }
   .flex.items-center.mb-4 {
     display: none !important;
   }
 }
+
 
         
 
