@@ -285,78 +285,76 @@ footer a {
         
 
 @media print {
-  .print-button {
-    color: var(--primary);
-  }
-  body {
-    background: white;
-    font-size: 9pt;
-    color: black;
-    margin: 0;
-    padding: 0;
-  }
-  .top-banner, .nav-icons, .social-icons, footer {
-    display: none !important;
-  }
-  header {
-    display: none !important;
-  }
-  .content-wrapper {
-    margin: 0;
-    padding: 0;
-  }
-  .content-section {
-    margin-top: 0;
-  }
-  .content-section > div {
-    break-inside: avoid;
-    page-break-inside: avoid;
-    border: none;
-    box-shadow: none;
-    padding: 0.3cm 0;
-    margin-bottom: 0.3cm;
-  }
-  h1 {
-    font-size: 12pt;
-    color: black !important;
-    margin-bottom: 0.6cm;
-  }
-  h2 {
-    font-size: 10pt;
-    color: black !important;
-    margin-bottom: 0.2cm;
-  }
-  p {
-    margin-bottom: 0.12cm;
-  }
-  a {
-    text-decoration: none;
-    color: black;
-  }
-  a[href]::after {
-    content: " (" attr(href) ")";
-    font-size: 14pt;
-    font-style: italic;
-  }
-  a[href^="https://www.bibliotechediroma.it"]::after,
-  a[href^="https://www.facebook.com"]::after,
-  a[href^="https://www.instagram.com"]::after,
-  a[href^="https://x.com"]::after,
-  a[href^="https://www.youtube.com"]::after {
-    content: "";
-  }
-  a[href="mailto:assclementeriva@gmail.com"] {
-    display: none !important;
-  }
-  a[href^="mailto:"]::after {
-    content: ""; /* Nasconde il contenuto generato */
-  }
-  a[href^="mailto:"] {
-    display: none !important; /* Nasconde completamente il link */
-  }
-  .flex.items-center.mb-4 {
-    display: none !important;
-  }
+    /* Existing print styles */
+    .print-button { color: var(--primary); }
+    body {
+        background: white;
+        font-size: 9pt;
+        color: black;
+        margin: 0;
+        padding: 0;
+    }
+    .top-banner, .nav-icons, .social-icons, footer { display: none !important; }
+    header { display: none !important; }
+    .content-wrapper {
+        margin: 0;
+        padding: 0;
+    }
+    .content-section {
+        margin-top: 0;
+    }
+    .content-section > div {
+        break-inside: avoid;
+        page-break-inside: avoid;
+        border: none;
+        box-shadow: none;
+        padding: 0.3cm 0;
+        margin-bottom: 0.3cm;
+    }
+    h1 {
+        font-size: 12pt;
+        color: black !important;
+        margin-bottom: 0.6cm;
+    }
+    h2 {
+        font-size: 10pt;
+        color: black !important;
+        margin-bottom: 0.2cm;
+    }
+    p { margin-bottom: 0.12cm; }
+    a {
+        text-decoration: none;
+        color: black;
+    }
+    a[href]::after {
+        content: " (" attr(href) ")";
+        font-size: 14pt;
+        font-style: italic;
+    }
+    /* Hide specific URLs in print */
+    a[href^="https://www.bibliotechediroma.it"]::after,
+    a[href^="https://www.facebook.com"]::after,
+    a[href^="https://www.instagram.com"]::after,
+    a[href^="https://x.com"]::after,
+    a[href^="https://www.youtube.com"]::after {
+        content: "";
+    }
+    
+    /* Hide email completely in print */
+    a[href^="mailto:"] {
+        display: none !important;
+    }
+    
+    /* Hide the containing span element for email */
+    span:has(a[href^="mailto:"]) {
+        display: none !important;
+    }
+    
+    /* Additional specific rule for the assclementeriva email */
+    a[href="mailto:assclementeriva@gmail.com"],
+    span:has(a[href="mailto:assclementeriva@gmail.com"]) {
+        display: none !important;
+    }
 }
 
 
