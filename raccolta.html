@@ -284,17 +284,49 @@ footer a {
 
         
 
+
+/* Footer desktop fix */
+footer .container {
+    max-width: 900px;  /* Match content-wrapper max-width */
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
 @media print {
     /* Base print styles */
     body {
         background: white;
-        font-size: 8pt;  /* Reduced from 9pt */
+        font-size: 8pt;
         color: black;
         margin: 0;
         padding: 0;
-        line-height: 1.2;  /* Tighter line height */
+        line-height: 1.2;
     }
     
+    /* Reduced main title */
+    h1 {
+        font-size: 9pt !important;  /* Reduced from 11pt */
+        color: black !important;
+        margin-bottom: 0.4cm !important;
+        white-space: nowrap !important;
+    }
+    
+    /* Increased subtitle sizes */
+    h2 {
+        font-size: 10pt !important;  /* Increased from 9pt */
+        color: black !important;
+        margin-bottom: 0.1cm !important;
+        font-weight: bold !important;
+    }
+    
+    /* Increased bookcrossing text size */
+    .bookcrossing-points {
+        font-size: 9pt !important;  /* Increased from 8pt */
+        display: block !important;
+        white-space: nowrap !important;
+    }
+    
+    /* Other print styles remain the same */
     .top-banner, .nav-icons, .social-icons, footer { display: none !important; }
     header { display: none !important; }
     
@@ -312,40 +344,18 @@ footer a {
         page-break-inside: avoid;
         border: none;
         box-shadow: none;
-        padding: 0.2cm 0;  /* Reduced padding */
-        margin-bottom: 0.2cm;  /* Reduced margin */
-    }
-    
-    /* Title modifications */
-    h1 {
-        font-size: 11pt !important;
-        color: black !important;
-        margin-bottom: 0.4cm !important;
-        white-space: nowrap !important;  /* Force single line */
-    }
-    
-    h2 {
-        font-size: 9pt !important;
-        color: black !important;
-        margin-bottom: 0.1cm !important;
+        padding: 0.2cm 0;
+        margin-bottom: 0.2cm;
     }
     
     p {
         margin-bottom: 0.1cm !important;
     }
     
-    /* Hide specific content in print */
     .hide-in-print {
         display: none !important;
     }
     
-    /* Bookcrossing points in single line */
-    .bookcrossing-points {
-        display: block !important;
-        white-space: nowrap !important;
-    }
-    
-    /* Remove list styles and spacing for bookcrossing points */
     .bookcrossing-points ul {
         list-style: none !important;
         padding: 0 !important;
@@ -359,29 +369,7 @@ footer a {
     .bookcrossing-points li:not(:last-child)::after {
         content: " | " !important;
     }
-    
-    /* Other print styles remain the same */
-    a { text-decoration: none; color: black; }
-    
-    a[href]::after {
-        content: " (" attr(href) ")";
-        font-size: 12pt;
-        font-style: italic;
-    }
-    
-    a[href^="https://www.bibliotechediroma.it"]::after,
-    a[href^="https://www.facebook.com"]::after,
-    a[href^="https://www.instagram.com"]::after,
-    a[href^="https://x.com"]::after,
-    a[href^="https://www.youtube.com"]::after,
-    a[href^="https://www.openstreetmap.org"]::after,
-    .flex.items-center.mb-4 a[href^="https://www.bibliotechediroma.it"]::after {
-        content: "" !important;
-    }
-
-    .email-text { display: inline !important; }
-    .email-link { display: none !important; }
-}
+}        
 
 
 
@@ -687,8 +675,8 @@ a:hover {
     
 
 
-    <footer class="bg-[#970a2c] text-white mt-16 py-8"> <!-- Increased padding -->
-    <div class="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between">
+    <footer class="bg-[#970a2c] text-white mt-16"> <!-- Increased padding -->
+    <div class="container">
         <div class="mb-4 md:mb-0">
             <!-- Logo con onclick -->
 <img src="footermorante.png" alt="Logo Biblioteca Morante" class="h-8 md:h-10" 
