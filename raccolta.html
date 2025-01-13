@@ -285,46 +285,90 @@ footer a {
         
 
 @media print {
-    /* Existing print styles */
-    .print-button { color: var(--primary); }
+    /* Base print styles */
     body {
         background: white;
-        font-size: 9pt;
+        font-size: 8pt;  /* Reduced from 9pt */
         color: black;
         margin: 0;
         padding: 0;
+        line-height: 1.2;  /* Tighter line height */
     }
+    
     .top-banner, .nav-icons, .social-icons, footer { display: none !important; }
     header { display: none !important; }
+    
     .content-wrapper {
         margin: 0;
         padding: 0;
     }
+    
     .content-section {
         margin-top: 0;
     }
+    
     .content-section > div {
         break-inside: avoid;
         page-break-inside: avoid;
         border: none;
         box-shadow: none;
-        padding: 0.3cm 0;
-        margin-bottom: 0.3cm;
+        padding: 0.2cm 0;  /* Reduced padding */
+        margin-bottom: 0.2cm;  /* Reduced margin */
     }
     
-    h1 { font-size: 12pt; color: black !important; margin-bottom: 0.6cm; }
-    h2 { font-size: 10pt; color: black !important; margin-bottom: 0.2cm; }
-    p { margin-bottom: 0.12cm; }
+    /* Title modifications */
+    h1 {
+        font-size: 11pt !important;
+        color: black !important;
+        margin-bottom: 0.4cm !important;
+        white-space: nowrap !important;  /* Force single line */
+    }
+    
+    h2 {
+        font-size: 9pt !important;
+        color: black !important;
+        margin-bottom: 0.1cm !important;
+    }
+    
+    p {
+        margin-bottom: 0.1cm !important;
+    }
+    
+    /* Hide specific content in print */
+    .hide-in-print {
+        display: none !important;
+    }
+    
+    /* Bookcrossing points in single line */
+    .bookcrossing-points {
+        display: block !important;
+        white-space: nowrap !important;
+    }
+    
+    /* Remove list styles and spacing for bookcrossing points */
+    .bookcrossing-points ul {
+        list-style: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .bookcrossing-points li {
+        display: inline !important;
+    }
+    
+    .bookcrossing-points li:not(:last-child)::after {
+        content: " | " !important;
+    }
+    
+    /* Other print styles remain the same */
     a { text-decoration: none; color: black; }
     
-    /* Handle regular links */
     a[href]::after {
         content: " (" attr(href) ")";
-        font-size: 14pt;
+        font-size: 12pt;
         font-style: italic;
     }
     
-    /* Exclude specific links from showing URLs */
     a[href^="https://www.bibliotechediroma.it"]::after,
     a[href^="https://www.facebook.com"]::after,
     a[href^="https://www.instagram.com"]::after,
@@ -335,15 +379,11 @@ footer a {
         content: "" !important;
     }
 
-    /* Hide email links completely in print */
     .email-text { display: inline !important; }
     .email-link { display: none !important; }
 }
 
-/* Non-print email handling */
-.email-text { display: none; }
-.email-link { display: inline; }
- 
+
 
      
 
@@ -606,14 +646,10 @@ a:hover {
             </div>
 
             <div class="bg-white shadow-md rounded-lg p-6 mb-6">
-                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Gruppo Facebook "La cultura non è spazzatura"</h2>
-                <p class="mb-2">Scopo: Salvare libri dalla spazzatura</p>
-                 <strong>Gruppo:</strong> 
-                    <a href="https://www.facebook.com/groups/2486179871416075" hover:underline" target="_blank">Pagina Facebook</a>
-                <p>
-                   
-                </p>
-            </div>
+    <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Gruppo Facebook "La cultura non è spazzatura"</h2>
+    <p class="mb-2 hide-in-print">Scopo: Salvare libri dalla spazzatura</p>
+    <p class="hide-in-print"><strong>Gruppo:</strong> <a href="https://www.facebook.com/groups/2486179871416075" hover:underline" target="_blank">Pagina Facebook</a></p>
+</div>
 
             <div class="bg-white shadow-md rounded-lg p-6 mb-6">
                 <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Centro di Raccolta Chiesa San Carlo da Sezze</h2>
@@ -637,16 +673,16 @@ a:hover {
                 </p>
             </div>
 
-            <div class="bg-white shadow-md rounded-lg p-6">
-                <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Punti di Bookcrossing</h2>
-                <ul class="list-disc list-inside">
-                    <li>Mercato di via dell'Appagliatore</li>
-                    <li>Mercato di Fiamme Gialle</li>
-                    <li>Via Oletta, angolo Viale della Vittoria</li>
-                </ul>
-            </div>
-        </div>
+<div class="bg-white shadow-md rounded-lg p-6">
+    <h2 class="text-2xl font-semibold mb-4" style="color: #970a2c;">Punti di Bookcrossing</h2>
+    <div class="bookcrossing-points">
+        <ul>
+            <li>Mercato di via dell'Appagliatore</li>
+            <li>Mercato di Fiamme Gialle</li>
+            <li>Via Oletta, angolo Viale della Vittoria</li>
+        </ul>
     </div>
+</div>
 
     
 
