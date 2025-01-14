@@ -229,58 +229,8 @@ footer a {
     transform: scale(1.2);
 }
 
-.tooltip-container {
-    position: relative;
-    display: inline-block;
-}
 
-.tooltip-container::after {
-    content: "Questo link si apre in una nuova finestra";
-    position: absolute;
-    background-color: white;
-    color: #666;
-    padding: 4px 12px;
-    line-height: 1.3;
-    border-radius: 4px;
-    font-size: 13px;
-    font-style: italic;
-    white-space: nowrap;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    border: 1px solid #ddd;
-    z-index: 100000;
-}
 
-.tooltip-container:hover::after {
-    visibility: visible;
-    opacity: 1;
-}
-
-.social-icons .tooltip-container::after {
-    bottom: -30px; /* Reduced from -40px */
-    left: -150% !important;
-    transform: translateX(-50%);
-    top: auto;
-    background-color: white !important;
-    padding: 2px 8px; /* Reduced padding */
-    font-size: 12px; /* Slightly smaller font */
-}
-
-.top-banner > a.tooltip-container::after {
-    bottom: -40px !important;
-    top: auto !important;
-    left: 85% !important;
-    transform: translateX(-50%) !important;
-    position: absolute !important;
-    background-color: white !important;
-    height: 24px !important;
-    line-height: 1 !important;
-    display: flex !important;
-    align-items: center !important;
-}
 
         
 
@@ -537,37 +487,32 @@ a:hover {
 </head>
 <body>
 
-    <div class="top-banner">
+    
+<div class="top-banner">
+    <a href="https://culture.roma.it/" target="_blank" title="Questo link si apre in una nuova finestra">
+        <img src="roma.png" alt="Logo Roma" class="roma-logo">
+    </a>
+    <div class="social-icons">
         
-     <a href="https://culture.roma.it/" class="tooltip-container" target="_blank" rel="noopener noreferrer">
-    <img src="roma.png" alt="Logo Roma" class="roma-logo">
-</a>
-
-        
-        <div class="social-icons">
-            <button onclick="window.print()" class="print-button" title="Stampa">
+<button onclick="window.print()" class="print-button" title="Stampa">
                 <i class="fas fa-print"></i>
             </button>
-            
-            
-            
-            <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" aria-label="Facebook" class="tooltip-container">
-                <i class="fab fa-facebook"></i>
-            </a>
-            <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" aria-label="Instagram" class="tooltip-container">
-                <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://x.com/bibliomorante" target="_blank" aria-label="X" class="tooltip-container">
-                <i class="fab fa-x-twitter"></i>
-            </a>
-            <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" aria-label="YouTube" class="tooltip-container">
-                <i class="fab fa-youtube"></i>
-            </a>
 
-
-            
-        </div>
+        
+        <a href="https://www.facebook.com/biblioteca.elsamorante?locale=it_IT" target="_blank" title="Questo link si apre in una nuova finestra">
+            <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://www.instagram.com/bibliotecaelsamorante/" target="_blank" title="Questo link si apre in una nuova finestra">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://x.com/bibliomorante" target="_blank" title="Questo link si apre in una nuova finestra">
+            <i class="fab fa-x-twitter"></i>
+        </a>
+        <a href="https://www.youtube.com/@bibliotecaelsamorante1172/featured" target="_blank" title="Questo link si apre in una nuova finestra">
+            <i class="fab fa-youtube"></i>
+        </a>
     </div>
+</div>
 
    
     
@@ -604,12 +549,18 @@ a:hover {
 
 
         
-     <div class="flex items-center mb-4" style="color: #970a2c;">
-        <a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" 
-           target="_blank" 
-           title="Visualizza la posizione sulla mappa">
-            <img src="location.svg" alt="Location Icon" class="mr-2" style="height: 24px; width: 24px;">
-        </a>
+<div class="flex items-center mb-4">
+<!-- Find and replace the location icon link section with this updated code -->
+
+<a href="https://www.openstreetmap.org/?mlat=41.7325117&mlon=12.2718834&zoom=18" target="_blank" title="Visualizza la posizione sulla mappa">
+  <img src="location.svg" alt="Location Icon" class="mr-2" style="height: 24px; width: 24px; 
+    filter: invert(13%) sepia(82%) saturate(2079%) hue-rotate(334deg) brightness(87%) contrast(101%);
+    transition: filter 0.3s ease, transform 0.3s ease;  /* Aggiunta transizione per transform */
+    transform: scale(1);"  /* Stato iniziale */
+    onmouseover="this.style.filter='invert(45%) sepia(45%) saturate(794%) hue-rotate(314deg) brightness(89%) contrast(92%)'; this.style.transform='scale(1.2)'"  /* Aggiunto scale */
+    onmouseout="this.style.filter='invert(13%) sepia(82%) saturate(2079%) hue-rotate(334deg) brightness(87%) contrast(101%)'; this.style.transform='scale(1)'">
+</a>
+         
        <a href="https://www.bibliotechediroma.it/opac/library/Biblioteca%20Elsa%20Morante/RMBO2" 
        class="text-xl" 
        style="color: #970a2c; font-size: 1rem; transition: color 0.3s ease;" 
