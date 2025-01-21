@@ -1501,7 +1501,7 @@ window.selectBookAndClear = function(element, bookData) {
 // Event Listeners
 searchInput.addEventListener('input', () => {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(performSearch, 800);
+    debounceTimer = setTimeout(performSearch, 600);
 });
 
 searchInput.addEventListener('keydown', handleKeyNavigation);
