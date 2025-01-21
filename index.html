@@ -1481,6 +1481,10 @@ const handleKeyNavigation = (e) => {
             if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
                 const selectedResult = resultsDiv.querySelectorAll('.search-result')[selectedIndex];
                 selectedResult.click();
+            } else {
+                // If no result is selected, perform immediate search
+                clearTimeout(debounceTimer);
+                performSearch();
             }
             break;
             
