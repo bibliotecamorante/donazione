@@ -1481,10 +1481,6 @@ const handleKeyNavigation = (e) => {
             if (selectedIndex >= 0 && selectedIndex < searchResults.length) {
                 const selectedResult = resultsDiv.querySelectorAll('.search-result')[selectedIndex];
                 selectedResult.click();
-            } else {
-                // If no result is selected, perform immediate search
-                clearTimeout(debounceTimer);
-                performSearch();
             }
             break;
             
@@ -1526,14 +1522,7 @@ document.addEventListener('click', (e) => {
 
 
 	
-    // Close results when clicking outside
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.quick-search') && !e.target.closest('.search-results')) {
-            resultsDiv.classList.add('hidden');
-        }
-    });
-
-    const inputs = bookDiv.querySelectorAll('input');
+const inputs = bookDiv.querySelectorAll('input');
     inputs.forEach(input => {
         if (input.classList.contains('book-year') || input.classList.contains('book-isbn')) {
             input.addEventListener('input', () => validateBookField(input));
