@@ -615,26 +615,10 @@ document.head.appendChild(style);
   white-space: normal !important;
   line-height: 1.4 !important;
 }	
-    /* Cambia il colore del numero quando viene cliccato o "tappato" */
+/* Cambia il colore del numero quando viene cliccato o "tappato" */
     .phone-link:active {
         color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
-    }
- /* Stile per la data di creazione */
-        #creation-date {
-            font-size: 0.7rem; /* Testo molto piccolo */
-            color: rgba(255, 255, 255, 0.6); /* Colore molto tenue */
-            text-align: right; /* Allinea a destra */
-            padding: 0 1rem 0.5rem 0; /* Spazio a destra e un po' di padding inferiore */
-            position: absolute; /* Posiziona in modo assoluto */
-            bottom: 0; /* Allinea in basso */
-            right: 0; /* Allinea a destra */
-            width: 100%; /* Occupa tutta la larghezza per l'allineamento */
-        }
-
-        /* Assicurati che il footer abbia una posizione relativa */
-        footer {
-            position: relative; /* Necessario per posizionare la data in modo assoluto */
-        }
+    }	
 </style>
 
 
@@ -1892,26 +1876,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
       </div>
     </div>
   </div>
-<!-- Aggiungi qui l'elemento per la data di creazione -->
-        <div id="creation-date"></div>
 </footer>
-
-<script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const creationDateElement = document.getElementById('creation-date');
-            if (creationDateElement) {
-                const currentDate = new Date();
-                const formattedDate = currentDate.toLocaleDateString('it-IT', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-                creationDateElement.textContent = `Pagina creata il: ${formattedDate}`;
-            }
-        });
-    </script>
-	
-
 
 
 
