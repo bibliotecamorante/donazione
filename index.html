@@ -615,7 +615,10 @@ document.head.appendChild(style);
   white-space: normal !important;
   line-height: 1.4 !important;
 }	
-	
+    /* Cambia il colore del numero quando viene cliccato o "tappato" */
+    .phone-link:active {
+        color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
+    }	
 </style>
 
 
@@ -1873,19 +1876,28 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
       </div>
     </div>
   </div>
+<div id="creation-date" class="text-sm text-gray-500 mt-4 text-center"></div>
+
 </footer>
 
-
+ <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const creationDateElement = document.getElementById('creation-date');
+            if (creationDateElement) {
+                const currentDate = new Date();
+                const formattedDate = currentDate.toLocaleDateString('it-IT', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+                creationDateElement.textContent = `Pagina creata il: ${formattedDate}`;
+            }
+        });
+    </script>
 	
-
-<style>
-    /* Cambia il colore del numero quando viene cliccato o "tappato" */
-    .phone-link:active {
-        color: rgba(255, 255, 255, 0.7); /* Bianco più leggero */
-    }
-</style>
-
-
 
 
 
