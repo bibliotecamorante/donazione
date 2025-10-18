@@ -1930,30 +1930,16 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
     });
 
     // Format books for email
+    // Format books as table rows for email
+// Format books as table rows for email
     const formattedBooks = books.map((book, index) => 
-        `<br><em>Libro ${index + 1}:</em><br>` +
-        `<table style="width:100%; border-collapse: collapse; margin-bottom: 10px; table-layout: fixed;">
-            <colgroup>
-                <col style="width: 100px;">
-                <col style="width: auto;">
-            </colgroup>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Titolo:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Editore:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.publisher}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>Anno:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.year}</td>
-            </tr>
-            <tr>
-                <td style="padding:5px; border:1px solid #ddd;"><strong>ISBN:</strong></td>
-                <td style="padding:5px; border:1px solid #ddd;">${book.isbn}</td>
-            </tr>
-        </table>`
+        `<tr>
+            <td>${index + 1}</td>
+            <td>${book.title} / ${book.author !== 'Non specificato' ? book.author : 'Non specificato'}</td>
+            <td>${book.publisher}</td>
+            <td>${book.year}</td>
+            <td>${book.isbn}</td>
+        </tr>`
     ).join('');
 
     showLoadingOverlay();
@@ -1969,7 +1955,7 @@ document.getElementById('donationForm').addEventListener('submit', async (event)
                 reply_to: email,
                 tessera: tessera || 'Non specificata',
                 telefono: telefono || 'Non specificato',
-                books: formattedBooks,
+                books_table: formattedBooks,
                 notes: document.getElementById('notes').value.trim() || 'Nessuna nota aggiuntiva'
             },
             config.emailjs.publicKey
